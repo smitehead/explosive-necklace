@@ -1,4 +1,4 @@
-package com.cookandroid.ex1;//2
+package com.cookandroid.ex1;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
