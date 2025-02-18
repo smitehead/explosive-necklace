@@ -1,4 +1,4 @@
-package com.cookandroid.ex1;//메인
+package com.cookandroid.ex1;//박종권
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -30,7 +30,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {//ㅇㅇ
 
     private ImageView imageView;
     private TextView textView;
