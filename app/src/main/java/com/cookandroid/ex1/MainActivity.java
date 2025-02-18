@@ -1,4 +1,4 @@
-package com.cookandroid.ex1;//박종권
+package com.cookandroid.ex1;//김태우
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
