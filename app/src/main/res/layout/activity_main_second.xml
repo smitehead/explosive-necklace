@@ -173,7 +173,7 @@
 
         </LinearLayout>
 
-        <!-- 버튼들 -->
+        <!-- 사진 버튼 -->
 
         <Button
             android:id="@+id/kcalMeasureButton"
