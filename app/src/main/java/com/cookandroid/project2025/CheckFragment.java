@@ -151,7 +151,7 @@ public class CheckFragment extends Fragment {
 
                                 textView.setText(textToShow.toString());
                                 Toast.makeText(getContext(), "텍스트 수신 성공!", Toast.LENGTH_SHORT).show();
-
+                                //수정
                                 // ResultFoodFragment로 이동 (JSONArray를 직접 전달)
                                 ResultFoodFragment resultFragment = ResultFoodFragment.newInstance(classArray == null ? "[]" : classArray.toString());
                                 getParentFragmentManager().beginTransaction()
