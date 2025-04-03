@@ -19,13 +19,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 public class KcalFragment extends Fragment {
 
-    private TextView kcalTextView, carbTextView, proteinTextView, fatTextView;
+    private TextView kcalTextView, carbsTextView, proteinTextView, fatTextView;
+    private final DecimalFormat decimalFormat = new DecimalFormat("#.##");  // 소수점 둘째 자리까지 표시
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,11 +39,11 @@ public class KcalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // ID 연결
-        kcalTextView = view.findViewById(R.id.textView7);      // kcal
-        carbTextView = view.findViewById(R.id.textViewt5);     // 탄수화물
-        proteinTextView = view.findViewById(R.id.textView5);   // 단백질
-        fatTextView = view.findViewById(R.id.textView6);       // 지방
+        // XML에 맞는 ID 연결
+        kcalTextView = view.findViewById(R.id.kcalAmountTextView);
+        carbsTextView = view.findViewById(R.id.carbsAmountTextView);
+        proteinTextView = view.findViewById(R.id.proteinAmountTextView);
+        fatTextView = view.findViewById(R.id.fatAmountTextView);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
@@ -52,15 +54,16 @@ public class KcalFragment extends Fragment {
         String uid = user.getUid();
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("UserNutritionData").child(uid).child(today);
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("UserNutritionData").child(uid).child(today);
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int totalEnergy = 0;
-                int totalCarbs = 0;
-                int totalProtein = 0;
-                int totalFat = 0;
+                double totalEnergy = 0;
+                double totalCarbs = 0;
+                double totalProtein = 0;
+                double totalFat = 0;
 
                 for (DataSnapshot foodSnap : snapshot.getChildren()) {
                     String value = foodSnap.getValue(String.class);
@@ -68,23 +71,25 @@ public class KcalFragment extends Fragment {
 
                     String[] lines = value.split("\n");
                     for (String line : lines) {
-                        if (line.contains("에너지")) {
-                            totalEnergy += extractInt(line);
+                        line = line.toLowerCase(); // 대소문자 무시 처리
+
+                        if (line.contains("에너지") || line.contains("kcal") || line.contains("칼로리")) {
+                            totalEnergy += extractFloat(line);
                         } else if (line.contains("탄수화물")) {
-                            totalCarbs += extractInt(line);
+                            totalCarbs += extractFloat(line);
                         } else if (line.contains("단백질")) {
-                            totalProtein += extractInt(line);
+                            totalProtein += extractFloat(line);
                         } else if (line.contains("지방")) {
-                            totalFat += extractInt(line);
+                            totalFat += extractFloat(line);
                         }
                     }
                 }
 
-                // 위치에 맞춰서 출력
-                kcalTextView.setText(totalEnergy + " Kcal");
-                carbTextView.setText("탄수화물 " + totalCarbs + "g");
-                proteinTextView.setText("단백질 " + totalProtein + "g");
-                fatTextView.setText("지방 " + totalFat + "g");
+                // 최종 누적 영양소 결과 표시
+                kcalTextView.setText(decimalFormat.format(totalEnergy) + " Kcal");
+                carbsTextView.setText(decimalFormat.format(totalCarbs) + "g");
+                proteinTextView.setText(decimalFormat.format(totalProtein) + "g");
+                fatTextView.setText(decimalFormat.format(totalFat) + "g");
             }
 
             @Override
@@ -94,8 +99,12 @@ public class KcalFragment extends Fragment {
         });
     }
 
-    private int extractInt(String line) {
-        String digits = line.replaceAll("[^0-9]", "");
-        return digits.isEmpty() ? 0 : Integer.parseInt(digits);
+    // "에너지: 253.7" → 253.7
+    private double extractFloat(String line) {
+        try {
+            return Double.parseDouble(line.split(":")[1].trim());
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }
