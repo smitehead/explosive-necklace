@@ -22,7 +22,12 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:text="" />
-
     </ScrollView>
 
+    <Button
+        android:id="@+id/buttonConfirmSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="오늘 식단으로 저장하기"
+        android:layout_margin="16dp" />
 </LinearLayout>
