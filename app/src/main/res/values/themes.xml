@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Project2025" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- 기본 배경색 설정 -->
+        <item name="android:windowBackground">@color/back_color</item> <!-- 원하는 색상으로 변경 -->
+
+        <!-- 기본 글꼴 설정 -->
+        <item name="android:fontFamily">@font/pretendard</item>
+
+    </style>
+
+    <style name="Theme.Project2025" parent="Base.Theme.Project2025" />
+</resources>
