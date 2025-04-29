@@ -22,7 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -31,8 +30,6 @@ public class KcalFragment extends Fragment {
 
     private TextView kcalTextView, carbsTextView, proteinTextView, fatTextView;
     private ProgressBar progressKcal, progressCarbs, progressProtein, progressFat;
-
-    private final DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -131,16 +128,17 @@ public class KcalFragment extends Fragment {
                             }
                         }
 
-                        kcalTextView.setText(decimalFormat.format(totalEnergy) + " Kcal");
-                        carbsTextView.setText(decimalFormat.format(totalCarbs) + "g");
-                        proteinTextView.setText(decimalFormat.format(totalProtein) + "g");
-                        fatTextView.setText(decimalFormat.format(totalFat) + "g");
+                        // 정수로 변환하여 텍스트 표시
+                        kcalTextView.setText((int) totalEnergy + " Kcal");
+                        carbsTextView.setText((int) totalCarbs + "g");
+                        proteinTextView.setText((int) totalProtein + "g");
+                        fatTextView.setText((int) totalFat + "g");
 
-                        // 색상 로드
+                        // 색상 로딩
                         int blue = ContextCompat.getColor(requireContext(), R.color.blue);
                         int red = ContextCompat.getColor(requireContext(), R.color.red);
 
-                        // 각 항목의 진행도 설정 및 색상 변경
+                        // 진행도 및 색상 설정
                         setProgressWithColor(progressKcal, totalEnergy, kcalGoal, blue, red);
                         setProgressWithColor(progressCarbs, totalCarbs, carbsGoal, blue, red);
                         setProgressWithColor(progressProtein, totalProtein, proteinGoal, blue, red);
