@@ -40,10 +40,10 @@ public class KcalFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // XML에 맞는 ID 연결
-        kcalTextView = view.findViewById(R.id.kcalAmountTextView);
-        carbsTextView = view.findViewById(R.id.carbsAmountTextView);
-        proteinTextView = view.findViewById(R.id.proteinAmountTextView);
-        fatTextView = view.findViewById(R.id.fatAmountTextView);
+        kcalTextView = view.findViewById(R.id.kcalText);
+        carbsTextView = view.findViewById(R.id.carbsText);
+        proteinTextView = view.findViewById(R.id.proteinText);
+        fatTextView = view.findViewById(R.id.fatText);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
