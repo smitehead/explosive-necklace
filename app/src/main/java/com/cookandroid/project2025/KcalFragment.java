@@ -1,5 +1,6 @@
 package com.cookandroid.project2025;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -84,7 +86,7 @@ public class KcalFragment extends Fragment {
                         proteinGoal = 70;
                         fatGoal = 55;
                     }
-                } else { // 기본값: 남자
+                } else {
                     if (age < 30) {
                         kcalGoal = 2600;
                         carbsGoal = 330;
@@ -134,11 +136,15 @@ public class KcalFragment extends Fragment {
                         proteinTextView.setText(decimalFormat.format(totalProtein) + "g");
                         fatTextView.setText(decimalFormat.format(totalFat) + "g");
 
-                        // ProgressBar 반영
-                        progressKcal.setProgress((int) Math.min((totalEnergy / kcalGoal) * 100, 100));
-                        progressCarbs.setProgress((int) Math.min((totalCarbs / carbsGoal) * 100, 100));
-                        progressProtein.setProgress((int) Math.min((totalProtein / proteinGoal) * 100, 100));
-                        progressFat.setProgress((int) Math.min((totalFat / fatGoal) * 100, 100));
+                        // 색상 로드
+                        int blue = ContextCompat.getColor(requireContext(), R.color.blue);
+                        int red = ContextCompat.getColor(requireContext(), R.color.red);
+
+                        // 각 항목의 진행도 설정 및 색상 변경
+                        setProgressWithColor(progressKcal, totalEnergy, kcalGoal, blue, red);
+                        setProgressWithColor(progressCarbs, totalCarbs, carbsGoal, blue, red);
+                        setProgressWithColor(progressProtein, totalProtein, proteinGoal, blue, red);
+                        setProgressWithColor(progressFat, totalFat, fatGoal, blue, red);
                     }
 
                     @Override
@@ -161,5 +167,11 @@ public class KcalFragment extends Fragment {
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    private void setProgressWithColor(ProgressBar bar, double value, double goal, int normalColor, int exceedColor) {
+        int percent = (int) ((value / goal) * 100);
+        bar.setProgress(Math.min(percent, 100));
+        bar.setProgressTintList(ColorStateList.valueOf((value > goal) ? exceedColor : normalColor));
     }
 }

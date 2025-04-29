@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SelfCheckActivity">
+    tools:context=".KcalFragment">
 
     <!-- 상단 바 -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,14 +25,14 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:lineSpacingExtra="2dp"
-            android:textAlignment="center"
             android:gravity="center"
+            android:textAlignment="center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- 하단 카드 -->
+    <!-- 영양 정보 카드 영역 -->
     <LinearLayout
         android:id="@+id/nutrient_area"
         android:layout_width="match_parent"
@@ -56,11 +56,11 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="#FFFFFFFF"
+            android:layout_marginBottom="12dp"
             app:cardCornerRadius="32dp"
             app:cardElevation="4dp"
             app:cardUseCompatPadding="true"
-            android:layout_marginBottom="12dp">
+            app:cardBackgroundColor="@android:color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -73,8 +73,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="60dp"
@@ -88,18 +88,18 @@
                         style="@android:style/Widget.ProgressBar.Horizontal"
                         android:layout_width="0dp"
                         android:layout_height="16dp"
+                        android:layout_weight="1"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_weight="1"
                         android:max="100"
-                        android:progress="75"
+                        android:progress="0"
                         android:progressTint="@color/blue" />
 
                     <TextView
                         android:id="@+id/kcalText"
                         android:layout_width="60dp"
-                        android:layout_height="22dp"
-                        android:text="1,620g"
+                        android:layout_height="wrap_content"
+                        android:text="0 Kcal"
                         android:textAlignment="viewEnd"
                         android:textColor="#000000"
                         android:textSize="16sp" />
@@ -110,8 +110,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="60dp"
@@ -125,18 +125,18 @@
                         style="@android:style/Widget.ProgressBar.Horizontal"
                         android:layout_width="0dp"
                         android:layout_height="16dp"
+                        android:layout_weight="1"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_weight="1"
                         android:max="100"
-                        android:progress="65"
+                        android:progress="0"
                         android:progressTint="@color/blue" />
 
                     <TextView
                         android:id="@+id/proteinText"
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:text="95g"
+                        android:text="0g"
                         android:textAlignment="viewEnd"
                         android:textColor="#000000"
                         android:textSize="16sp" />
@@ -147,8 +147,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="60dp"
@@ -162,18 +162,18 @@
                         style="@android:style/Widget.ProgressBar.Horizontal"
                         android:layout_width="0dp"
                         android:layout_height="16dp"
+                        android:layout_weight="1"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_weight="1"
                         android:max="100"
-                        android:progress="80"
+                        android:progress="0"
                         android:progressTint="@color/blue" />
 
                     <TextView
                         android:id="@+id/carbsText"
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:text="230g"
+                        android:text="0g"
                         android:textAlignment="viewEnd"
                         android:textColor="#000000"
                         android:textSize="16sp" />
@@ -183,8 +183,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="60dp"
@@ -198,18 +198,18 @@
                         style="@android:style/Widget.ProgressBar.Horizontal"
                         android:layout_width="0dp"
                         android:layout_height="16dp"
+                        android:layout_weight="1"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_weight="1"
                         android:max="100"
-                        android:progress="50"
+                        android:progress="0"
                         android:progressTint="@color/blue" />
 
                     <TextView
                         android:id="@+id/fatText"
                         android:layout_width="60dp"
-                        android:layout_height="22dp"
-                        android:text="70g"
+                        android:layout_height="wrap_content"
+                        android:text="0g"
                         android:textAlignment="viewEnd"
                         android:textColor="#000000"
                         android:textSize="16sp" />
