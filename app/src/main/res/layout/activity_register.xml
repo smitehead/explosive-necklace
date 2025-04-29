@@ -70,7 +70,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="58dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextEmail"
@@ -105,7 +105,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/btn_show"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="58dp"
                 app:hintAnimationEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +146,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="58dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextNickname"
@@ -223,7 +223,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="58dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextBirthYear"
