@@ -91,7 +91,7 @@ public class CheckFragment extends Fragment {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("https://3f87-118-39-131-129.ngrok-free.app/upload_image")
+                    .url("https://6fc4-118-39-131-129.ngrok-free.app/upload_image")
                     .post(requestBody)
                     .build();
 
