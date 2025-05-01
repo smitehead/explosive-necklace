@@ -3,7 +3,6 @@ package com.cookandroid.project2025;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +16,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -98,7 +94,7 @@ public class LabelFragment extends Fragment {
                     String responseString = response.body().string();
                     if (getActivity() == null) return;
                     getActivity().runOnUiThread(() -> {
-                        NutritionLabelResultFragment resultFragment = NutritionLabelResultFragment.newInstance(responseString);
+                        LabelResultFragment resultFragment = LabelResultFragment.newInstance(responseString);
                         getParentFragmentManager().beginTransaction()
                                 .replace(R.id.frame_layout, resultFragment)
                                 .addToBackStack(null)
