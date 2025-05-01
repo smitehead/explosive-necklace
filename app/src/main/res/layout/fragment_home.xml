@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
-                android:text="오늘의 영양소"
+                android:text="오늘의"
                 android:textColor="#767676"
                 android:textSize="16sp"
                 android:textStyle="bold" />
