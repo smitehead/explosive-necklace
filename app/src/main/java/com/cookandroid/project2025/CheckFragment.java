@@ -90,8 +90,14 @@ public class CheckFragment extends Fragment {
                             RequestBody.create(MediaType.parse("image/jpeg"), imageBytes))
                     .build();
 
+            // 자동으로 URL 구성
+            String baseUrl = "https://4675-211-197-158-208.ngrok-free.app";
+            String endpoint = "upload_image";
+            if (!baseUrl.endsWith("/")) baseUrl += "/";
+            String fullUrl = baseUrl + endpoint;
+
             Request request = new Request.Builder()
-                    .url("https://559f-118-39-131-129.ngrok-free.app/upload_image")
+                    .url(fullUrl)
                     .post(requestBody)
                     .build();
 
@@ -107,10 +113,19 @@ public class CheckFragment extends Fragment {
 
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    if (!response.isSuccessful()) {
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(() -> {
+                                Toast.makeText(getContext(), "서버 오류: 상태 코드 " + response.code(), Toast.LENGTH_SHORT).show();
+                                Log.e("Upload", "Server responded with code: " + response.code());
+                            });
+                        }
+                        return;
+                    }
+
                     if (response.body() == null) return;
                     String responseBodyString = response.body().string();
                     Log.d("Response", responseBodyString);
-                    Log.d("ServerResponseRaw", "Raw Response: " + responseBodyString); // 서버 응답 로깅
 
                     try {
                         JSONObject jsonResponse = new JSONObject(responseBodyString);
@@ -151,8 +166,7 @@ public class CheckFragment extends Fragment {
 
                                 textView.setText(textToShow.toString());
                                 Toast.makeText(getContext(), "텍스트 수신 성공!", Toast.LENGTH_SHORT).show();
-                                //수정
-                                // ResultFoodFragment로 이동 (JSONArray를 직접 전달)
+
                                 ResultFoodFragment resultFragment = ResultFoodFragment.newInstance(classArray == null ? "[]" : classArray.toString());
                                 getParentFragmentManager().beginTransaction()
                                         .replace(R.id.frame_layout, resultFragment)
