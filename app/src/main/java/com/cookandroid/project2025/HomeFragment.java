@@ -1,10 +1,10 @@
 package com.cookandroid.project2025;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,9 +19,7 @@ import java.util.*;
 
 public class HomeFragment extends Fragment {
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
+    public HomeFragment() {}
 
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
@@ -40,6 +38,15 @@ public class HomeFragment extends Fragment {
 
         TextView overKcalTextView = view.findViewById(R.id.overKcalTextView);
         TextView recommendationTextView = view.findViewById(R.id.recommendationTextView);
+        Button labelScanButton = view.findViewById(R.id.buttonLabelScan);
+
+        labelScanButton.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, new LabelFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) return view;

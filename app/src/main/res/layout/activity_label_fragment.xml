@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent" android:layout_height="200dp"
+        android:layout_marginBottom="16dp" android:scaleType="centerCrop"
+        android:background="#EEEEEE"/>
+
+    <Button
+        android:id="@+id/uploadButton"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="성분표 업로드"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="분석 결과가 여기에 표시됩니다." android:layout_marginTop="16dp"/>
+</LinearLayout>
