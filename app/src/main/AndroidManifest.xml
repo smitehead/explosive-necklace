@@ -23,6 +23,12 @@
             android:name=".LabelFragment"
             android:exported="false" />
         <activity
+            android:name=".NutritionLabelResultFragment"
+            android:exported="false" />
+        <activity
+            android:name=".LabelFragment"
+            android:exported="false" />
+        <activity
             android:name=".ExerciseRecommendationActivity"
             android:exported="false" />
         <activity
