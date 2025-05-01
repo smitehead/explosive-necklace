@@ -16,5 +16,5 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:text="분석 결과가 여기에 표시됩니다." android:layout_marginTop="16dp"/>
+        android:text="분석 결과가 표시됩니다" android:layout_marginTop="16dp"/>
 </LinearLayout>
