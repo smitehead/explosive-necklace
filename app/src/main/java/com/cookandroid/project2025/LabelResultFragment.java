@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class NutritionLabelResultFragment extends Fragment {
+public class LabelResultFragment extends Fragment {
 
     private static final String ARG_JSON = "nutritionJson";
     private String nutritionJson;
@@ -37,8 +37,8 @@ public class NutritionLabelResultFragment extends Fragment {
             "나트륨", "칼륨", "마그네슘", "철", "아연", "콜레스테롤", "트랜스지방"
     };
 
-    public static NutritionLabelResultFragment newInstance(String json) {
-        NutritionLabelResultFragment fragment = new NutritionLabelResultFragment();
+    public static LabelResultFragment newInstance(String json) {
+        LabelResultFragment fragment = new LabelResultFragment();
         Bundle args = new Bundle();
         args.putString(ARG_JSON, json);
         fragment.setArguments(args);
@@ -47,7 +47,7 @@ public class NutritionLabelResultFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_nutrition_label_result_fragment, container, false);
+        return inflater.inflate(R.layout.activity_label_result_fragment, container, false);
     }
 
     @Override
