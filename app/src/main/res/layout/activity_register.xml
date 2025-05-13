@@ -27,7 +27,6 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -50,19 +49,16 @@
         app:layout_constraintTop_toBottomOf="@id/textView"
         tools:layout_editor_absoluteX="0dp">
 
-
+        <!-- 이메일 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-
             <TextView
-                android:id="@+id/textView1"
                 android:layout_width="48dp"
-                android:layout_height="19dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
                 android:text="이메일"
                 android:textSize="16sp"
@@ -82,63 +78,52 @@
                     android:paddingEnd="16dp"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
-
         </LinearLayout>
 
+        <!-- 비밀번호 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
             android:layout_marginTop="24dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView2"
                 android:layout_width="62dp"
-                android:layout_height="19dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:text="비밀번호"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/btn_show"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
-                app:hintAnimationEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edittext"
                 app:passwordToggleEnabled="true">
 
                 <EditText
                     android:id="@+id/editText1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical|left"
                     android:hint="비밀번호 입력"
                     android:inputType="textPassword"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    android:textSize="16sp"
-                    tools:ignore="TouchTargetSizeCheck" />
+                    android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
-
         </LinearLayout>
 
+        <!-- 닉네임 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
             android:layout_marginTop="24dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView3"
                 android:layout_width="48dp"
-                android:layout_height="19dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
                 android:text="닉네임"
                 android:textSize="16sp"
@@ -158,22 +143,19 @@
                     android:paddingEnd="16dp"
                     android:textSize="16sp"/>
             </com.google.android.material.textfield.TextInputLayout>
-
         </LinearLayout>
 
-
+        <!-- 성별 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
             android:layout_marginTop="24dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView4"
                 android:layout_width="35dp"
-                android:layout_height="19dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="43dp"
                 android:text="성별"
                 android:textSize="16sp"
@@ -183,39 +165,35 @@
                 android:id="@+id/radioGroupGender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/radioMale"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="남자"
                     android:textSize="16sp" />
 
                 <RadioButton
                     android:id="@+id/radioFemale"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="여자"
                     android:textSize="16sp" />
             </RadioGroup>
         </LinearLayout>
 
+        <!-- 나이 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
             android:layout_marginTop="24dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView5"
                 android:layout_width="62dp"
-                android:layout_height="19dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:text="나이"
                 android:textSize="16sp"
@@ -230,17 +208,81 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="나이(만) 입력"
-                    android:inputType="date"
+                    android:inputType="number"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:textSize="16sp"/>
             </com.google.android.material.textfield.TextInputLayout>
-
         </LinearLayout>
 
+        <!-- 키 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="키(cm)"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="58dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextHeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="키 입력"
+                    android:inputType="number"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:textSize="16sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!-- 몸무게 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="몸무게(kg)"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="58dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="몸무게 입력"
+                    android:inputType="number"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:textSize="16sp"/>
+            </com.google.android.material.textfield.TextInputEditText>
+        </LinearLayout>
+
+        <!-- 가입 버튼 -->
         <Button
             android:id="@+id/buttonJoin"
-            android:layout_width="364dp"
+            android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginTop="32dp"
             android:backgroundTint="@color/blue"
@@ -248,6 +290,5 @@
             android:text="가입하기" />
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

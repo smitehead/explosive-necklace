@@ -1,6 +1,8 @@
 package com.cookandroid.project2025;
 
 public class UserAccount {
+    private int height;
+    private int weight;
     private String idToken;
     private String emailId;
     private String password;
@@ -12,6 +14,13 @@ public class UserAccount {
 
     public String getIdToken() { return idToken; }
     public void setIdToken(String idToken) { this.idToken = idToken; }
+    public int getHeight() { return height; }
+
+    public void setHeight(int height) { this.height = height; }
+
+    public int getWeight() { return weight; }
+
+    public void setWeight(int weight) { this.weight = weight; }
 
     public String getEmailId() { return emailId; }
     public void setEmailId(String emailId) { this.emailId = emailId; }
