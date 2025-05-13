@@ -113,7 +113,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="12dp"
         android:backgroundTint="@color/blue"
-        android:text="이미지 업로드"
+        android:text="등록하기"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -121,6 +121,22 @@
         app:layout_constraintStart_toEndOf="@id/selfUploadButton"
         app:layout_constraintTop_toBottomOf="@id/textCard"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/buttonLabelScan"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/teal_200"
+        android:text="성분표 스캔하기"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/uploadButton" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/cameraFab"

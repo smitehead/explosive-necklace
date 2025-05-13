@@ -40,6 +40,7 @@ public class CheckFragment extends Fragment {
     private ImageView imageView;
     private TextView textView;
     private Button uploadButton;
+    private Button labelScanButton;
     private Uri selectedImageUri;
     private final OkHttpClient client = new OkHttpClient();
     private ActivityResultLauncher<String> getContent;
@@ -56,6 +57,16 @@ public class CheckFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
+        labelScanButton = view.findViewById(R.id.buttonLabelScan);  // 추가된 부분
+
+        // 성분표 스캔하기 → LabelFragment로 이동
+        labelScanButton.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, new LabelFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 uri -> {
@@ -90,7 +101,6 @@ public class CheckFragment extends Fragment {
                             RequestBody.create(MediaType.parse("image/jpeg"), imageBytes))
                     .build();
 
-            // 자동으로 URL 구성
             String baseUrl = "https://4675-211-197-158-208.ngrok-free.app";
             String endpoint = "upload_image";
             if (!baseUrl.endsWith("/")) baseUrl += "/";

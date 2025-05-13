@@ -1,15 +1,27 @@
 package com.cookandroid.project2025;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
@@ -19,16 +31,10 @@ import java.util.*;
 
 public class HomeFragment extends Fragment {
 
-    public HomeFragment() {}
-
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString("param1", param1);
-        args.putString("param2", param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private TextView kcalTextView, carbsTextView, proteinTextView, fatTextView, textRemainingKcal;
+    private ProgressBar progressKcal, progressCarbs, progressProtein, progressFat;
+    private TextView overKcalTextView, recommendationTextView;
+    private PieChart pieChart;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,17 +42,21 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        TextView overKcalTextView = view.findViewById(R.id.overKcalTextView);
-        TextView recommendationTextView = view.findViewById(R.id.recommendationTextView);
-        Button labelScanButton = view.findViewById(R.id.buttonLabelScan);
+        kcalTextView = view.findViewById(R.id.kcalText);
+        carbsTextView = view.findViewById(R.id.carbsText);
+        proteinTextView = view.findViewById(R.id.proteinText);
+        fatTextView = view.findViewById(R.id.fatText);
+        textRemainingKcal = view.findViewById(R.id.textRemainingKcal);
 
-        labelScanButton.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frame_layout, new LabelFragment())
-                    .addToBackStack(null)
-                    .commit();
-        });
+
+        progressKcal = view.findViewById(R.id.progressKcal);
+        progressCarbs = view.findViewById(R.id.progressCarbs);
+        progressProtein = view.findViewById(R.id.progressProtein);
+        progressFat = view.findViewById(R.id.progressFat);
+
+        overKcalTextView = view.findViewById(R.id.overKcalTextView);
+        recommendationTextView = view.findViewById(R.id.recommendationTextView);
+        pieChart = view.findViewById(R.id.pieChart);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) return view;
@@ -91,75 +101,85 @@ public class HomeFragment extends Fragment {
                             }
                         }
 
+                        kcalTextView.setText((int) totalKcal + "k");
+                        carbsTextView.setText((int) totalCarbs + "g");
+                        proteinTextView.setText((int) totalProtein + "g");
+                        fatTextView.setText((int) totalFat + "g");
+
+                        int kcalPercent = (int) ((totalKcal / kcalGoal) * 100);
+                        int carbsPercent = (int) ((totalCarbs / carbsGoal) * 100);
+                        int proteinPercent = (int) ((totalProtein / proteinGoal) * 100);
+                        int fatPercent = (int) ((totalFat / fatGoal) * 100);
+
+                        progressKcal.setProgress(Math.min(kcalPercent, 100));
+                        progressCarbs.setProgress(Math.min(carbsPercent, 100));
+                        progressProtein.setProgress(Math.min(proteinPercent, 100));
+                        progressFat.setProgress(Math.min(fatPercent, 100));
+
+                        float kcalConsumed = (float) totalKcal;
+                        float kcalRemaining = (float) Math.max(kcalGoal - totalKcal, 0);
+
+                        // Pie Chart 설정
+                        List<PieEntry> entries = new ArrayList<>();
+                        entries.add(new PieEntry(kcalConsumed, ""));
+                        entries.add(new PieEntry(kcalRemaining, ""));
+
+                        PieDataSet dataSet = new PieDataSet(entries, "");
+                        dataSet.setDrawValues(false);
+                        dataSet.setColors(new int[]{R.color.teal_200, R.color.gray}, requireContext());
+                        PieData pieData = new PieData(dataSet);
+
+                        pieChart.setData(pieData);
+                        pieChart.setUsePercentValues(false);
+                        pieChart.setDrawHoleEnabled(true);
+                        pieChart.setHoleRadius(72f);
+                        pieChart.setTransparentCircleRadius(74f);
+                        pieChart.getLegend().setEnabled(false);
+
+                        Description desc = new Description();
+                        desc.setText("");
+                        pieChart.setDescription(desc);
+
+                        Typeface pretendard = ResourcesCompat.getFont(requireContext(), R.font.pretendard_medium);
+                        pieChart.setCenterTextTypeface(pretendard);
+
+                        String kcalValue = String.valueOf((int) kcalConsumed);
+                        SpannableString styledText = new SpannableString(kcalValue + "\nkcal");
+                        styledText.setSpan(new RelativeSizeSpan(2.4f), 0, kcalValue.length(), 0);
+                        styledText.setSpan(new StyleSpan(Typeface.BOLD), 0, kcalValue.length(), 0);
+                        styledText.setSpan(new RelativeSizeSpan(1.6f), kcalValue.length() + 1, styledText.length(), 0);
+                        pieChart.setCenterText(styledText);
+
+                        pieChart.invalidate();
+                        textRemainingKcal.setText("남은 칼로리: " + (int) kcalRemaining + " kcal");
+
+                        // 초과 섭취 정보 계산 및 표시
                         double overKcal = Math.max(totalKcal - kcalGoal, 0);
                         double overCarbs = Math.max(totalCarbs - carbsGoal, 0);
                         double overProtein = Math.max(totalProtein - proteinGoal, 0);
                         double overFat = Math.max(totalFat - fatGoal, 0);
 
-                        overKcalTextView.setText("오늘 초과 섭취: " +
-                                (int) overKcal + "Kcal, " +
-                                (int) overCarbs + "g 탄수화물, " +
-                                (int) overProtein + "g 단백질, " +
-                                (int) overFat + "g 지방");
-
                         if (overKcal <= 0 && overCarbs <= 0 && overProtein <= 0 && overFat <= 0) {
-                            recommendationTextView.setText("초과된 섭취가 없어 운동 추천이 필요하지 않습니다.");
-                            return;
+                            overKcalTextView.setText("초과된 섭취 없음");
+                        } else {
+                            overKcalTextView.setText("오늘 초과 섭취: " +
+                                    (int) overKcal + "Kcal, " +
+                                    (int) overCarbs + "g 탄수화물, " +
+                                    (int) overProtein + "g 단백질, " +
+                                    (int) overFat + "g 지방");
                         }
-
-                        DatabaseReference exerciseRef = FirebaseDatabase.getInstance().getReference("운동소모칼로리");
-                        exerciseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                Map<String, Double> scoreMap = new HashMap<>();
-                                Map<String, Integer> timeMap = new HashMap<>();
-
-                                for (DataSnapshot exercise : snapshot.getChildren()) {
-                                    String name = exercise.getKey();
-                                    double burn = exercise.child("소모칼로리").getValue(Double.class);
-                                    DataSnapshot ratio = exercise.child("비율");
-
-                                    double cRatio = ratio.child("탄수화물").getValue(Double.class);
-                                    double pRatio = ratio.child("단백질").getValue(Double.class);
-                                    double fRatio = ratio.child("지방").getValue(Double.class);
-
-                                    double score = (overCarbs * cRatio) + (overProtein * pRatio) + (overFat * fRatio);
-                                    int minutes = (int) ((overKcal / burn) * 30);
-
-                                    scoreMap.put(name, score);
-                                    timeMap.put(name, minutes);
-                                }
-
-                                List<Map.Entry<String, Double>> sorted = new ArrayList<>(scoreMap.entrySet());
-                                sorted.sort((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()));
-
-                                StringBuilder top3 = new StringBuilder("추천 운동 상위 3개\n");
-                                for (int i = 0; i < Math.min(3, sorted.size()); i++) {
-                                    String name = sorted.get(i).getKey();
-                                    int minutes = timeMap.get(name);
-                                    top3.append("• ").append(name).append(": ").append(minutes).append("분\n");
-                                }
-
-                                recommendationTextView.setText(top3.toString());
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                recommendationTextView.setText("운동 데이터를 불러올 수 없습니다.");
-                            }
-                        });
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        overKcalTextView.setText("섭취량 데이터 로드 실패");
+                        Toast.makeText(getContext(), "섭취량 데이터 로드 실패", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                overKcalTextView.setText("사용자 정보 로드 실패");
+                Toast.makeText(getContext(), "사용자 정보 로드 실패", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -168,7 +188,8 @@ public class HomeFragment extends Fragment {
 
     private double extractFloat(String line) {
         try {
-            return Double.parseDouble(line.split(":")[1].trim());
+            String value = line.split(":")[1].trim().replaceAll("[^\\d.]", "");
+            return Double.parseDouble(value);
         } catch (Exception e) {
             return 0;
         }

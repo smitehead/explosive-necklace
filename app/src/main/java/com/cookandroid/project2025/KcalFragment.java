@@ -101,7 +101,7 @@ public class KcalFragment extends Fragment {
                             }
                         }
 
-                        kcalTextView.setText((int) totalEnergy + " Kcal");
+                        kcalTextView.setText((int) totalEnergy + "k");
                         carbsTextView.setText((int) totalCarbs + "g");
                         proteinTextView.setText((int) totalProtein + "g");
                         fatTextView.setText((int) totalFat + "g");
