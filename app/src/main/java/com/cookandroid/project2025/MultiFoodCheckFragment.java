@@ -43,9 +43,9 @@ public class MultiFoodCheckFragment extends Fragment {
     private Button uploadButton;
     private Uri selectedImageUri;
     private final OkHttpClient client = new OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
             .build();
     private ActivityResultLauncher<String> getContent;
 
@@ -96,7 +96,7 @@ public class MultiFoodCheckFragment extends Fragment {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("https://5a1a-118-39-131-129.ngrok-free.app/upload_image_multi")
+                    .url("https://53a7-118-39-131-129.ngrok-free.app/upload_image_multi")
                     .post(requestBody)
                     .build();
 
