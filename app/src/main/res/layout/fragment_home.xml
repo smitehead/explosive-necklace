@@ -248,6 +248,19 @@
         app:layout_constraintTop_toBottomOf="@id/nutrient_area"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+        <Button
+            android:id="@+id/buttonMultiFood"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:text="다중 음식 인식"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/teal_200"
+            android:textSize="16sp"
+            android:layout_gravity="center_horizontal" />
+
 
         <TextView
             android:id="@+id/overKcalTextView"

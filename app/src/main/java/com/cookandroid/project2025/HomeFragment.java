@@ -35,6 +35,7 @@ public class HomeFragment extends Fragment {
     private ProgressBar progressKcal, progressCarbs, progressProtein, progressFat;
     private TextView overKcalTextView, recommendationTextView;
     private PieChart pieChart;
+    private Button buttonMultiFood;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,7 +49,6 @@ public class HomeFragment extends Fragment {
         fatTextView = view.findViewById(R.id.fatText);
         textRemainingKcal = view.findViewById(R.id.textRemainingKcal);
 
-
         progressKcal = view.findViewById(R.id.progressKcal);
         progressCarbs = view.findViewById(R.id.progressCarbs);
         progressProtein = view.findViewById(R.id.progressProtein);
@@ -57,6 +57,14 @@ public class HomeFragment extends Fragment {
         overKcalTextView = view.findViewById(R.id.overKcalTextView);
         recommendationTextView = view.findViewById(R.id.recommendationTextView);
         pieChart = view.findViewById(R.id.pieChart);
+        buttonMultiFood = view.findViewById(R.id.buttonMultiFood);
+
+        buttonMultiFood.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_layout, new MultiFoodCheckFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) return view;
@@ -119,7 +127,6 @@ public class HomeFragment extends Fragment {
                         float kcalConsumed = (float) totalKcal;
                         float kcalRemaining = (float) Math.max(kcalGoal - totalKcal, 0);
 
-                        // Pie Chart 설정
                         List<PieEntry> entries = new ArrayList<>();
                         entries.add(new PieEntry(kcalConsumed, ""));
                         entries.add(new PieEntry(kcalRemaining, ""));
@@ -153,7 +160,6 @@ public class HomeFragment extends Fragment {
                         pieChart.invalidate();
                         textRemainingKcal.setText("남은 칼로리: " + (int) kcalRemaining + " kcal");
 
-                        // 초과 섭취 정보 계산 및 표시
                         double overKcal = Math.max(totalKcal - kcalGoal, 0);
                         double overCarbs = Math.max(totalCarbs - carbsGoal, 0);
                         double overProtein = Math.max(totalProtein - proteinGoal, 0);
