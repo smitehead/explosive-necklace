@@ -29,6 +29,7 @@ import com.google.firebase.storage.StorageReference;
 
 public class ProfileFragment extends Fragment {
     private TextView tvNickname, tvGender, tvAge, tvHeight, tvWeight;
+    private TextView tvBMIResult;
     private ImageView ivProfileImage;
     private Button btnChangeProfile;
 
@@ -77,6 +78,7 @@ public class ProfileFragment extends Fragment {
         tvAge = view.findViewById(R.id.yearValue);
         tvHeight = view.findViewById(R.id.heightValue);
         tvWeight = view.findViewById(R.id.weightValue);
+        tvBMIResult = view.findViewById(R.id.bmiResultTextView); // 새로 추가
         ivProfileImage = view.findViewById(R.id.imageView);
         btnChangeProfile = view.findViewById(R.id.btn_change_profile);
 
@@ -95,6 +97,8 @@ public class ProfileFragment extends Fragment {
                             tvHeight.setText(user.getHeight() + " cm");
                             tvWeight.setText(user.getWeight() + " kg");
 
+                            calculateAndDisplayBMI(user.getHeight(), user.getWeight(), user.getGender());
+
                             StorageReference profileImageRef = mStorageRef.child(userId + ".jpg");
                             profileImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                                 if (ivProfileImage != null) {
@@ -112,12 +116,7 @@ public class ProfileFragment extends Fragment {
             });
         }
 
-        btnChangeProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openGallery();
-            }
-        });
+        btnChangeProfile.setOnClickListener(v -> openGallery());
     }
 
     private void openGallery() {
@@ -133,11 +132,32 @@ public class ProfileFragment extends Fragment {
         StorageReference fileRef = mStorageRef.child(userId + ".jpg");
 
         fileRef.putFile(imageUri)
-                .addOnSuccessListener(taskSnapshot -> {
-                    Toast.makeText(getContext(), "프로필 이미지 변경 완료!", Toast.LENGTH_SHORT).show();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "이미지 업로드 실패!", Toast.LENGTH_SHORT).show();
-                });
+                .addOnSuccessListener(taskSnapshot ->
+                        Toast.makeText(getContext(), "프로필 이미지 변경 완료!", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e ->
+                        Toast.makeText(getContext(), "이미지 업로드 실패!", Toast.LENGTH_SHORT).show());
+    }
+
+    private void calculateAndDisplayBMI(double heightCm, double weightKg, String gender) {
+        if (heightCm <= 0 || weightKg <= 0) {
+            tvBMIResult.setText("BMI 정보 없음");
+            return;
+        }
+
+        double heightM = heightCm / 100.0;
+        double bmi = weightKg / (heightM * heightM);
+        String category;
+
+        if (bmi < 18.5) {
+            category = "저체중";
+        } else if (bmi < 23) {
+            category = "정상";
+        } else if (bmi < 25) {
+            category = "과체중";
+        } else {
+            category = "비만";
+        }
+
+        tvBMIResult.setText(String.format("BMI: %.1f (%s)", bmi, category));
     }
 }
