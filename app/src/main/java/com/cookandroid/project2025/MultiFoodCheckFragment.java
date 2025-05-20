@@ -3,6 +3,7 @@ package com.cookandroid.project2025;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
 
 import org.json.JSONArray;
@@ -53,13 +55,11 @@ public class MultiFoodCheckFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_check, container, false);
+        return inflater.inflate(R.layout.fragment_check, container, false);  // 기존 레이아웃 사용
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         imageView = view.findViewById(R.id.imageView);
         textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
@@ -88,8 +88,8 @@ public class MultiFoodCheckFragment extends Fragment {
             Context context = getContext();
             if (context == null) return;
 
-            // ✅ 640x640 리사이즈 적용
-            Bitmap resizedBitmap = resizeImage(context, uri, 640, 640);
+            // ✅ 회전 보정 + 640x640 리사이즈
+            Bitmap resizedBitmap = resizeImageWithRotation(context, uri, 640, 640);
             byte[] imageBytes = bitmapToByteArray(resizedBitmap);
 
             RequestBody requestBody = new MultipartBody.Builder()
@@ -99,7 +99,7 @@ public class MultiFoodCheckFragment extends Fragment {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("https://60fa-118-39-131-129.ngrok-free.app/upload_image_multi")
+                    .url("https://18b0-118-39-131-129.ngrok-free.app/upload_image_multi")
                     .post(requestBody)
                     .build();
 
@@ -144,11 +144,33 @@ public class MultiFoodCheckFragment extends Fragment {
         }
     }
 
-    // ✅ 640x640 리사이즈 함수
-    private Bitmap resizeImage(Context context, Uri imageUri, int width, int height) throws IOException {
+    // ✅ 회전 보정 + 리사이즈 함수
+    private Bitmap resizeImageWithRotation(Context context, Uri imageUri, int width, int height) throws IOException {
         InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
         Bitmap original = BitmapFactory.decodeStream(inputStream);
-        return Bitmap.createScaledBitmap(original, width, height, true);
+
+        // 회전 정보 읽기
+        InputStream exifInputStream = context.getContentResolver().openInputStream(imageUri);
+        ExifInterface exif = new ExifInterface(exifInputStream);
+        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+        int degrees = exifToDegrees(orientation);
+        Bitmap rotated = rotateBitmap(original, degrees);
+
+        return Bitmap.createScaledBitmap(rotated, width, height, true);
+    }
+
+    private int exifToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) return 90;
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) return 180;
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) return 270;
+        return 0;
+    }
+
+    private Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
+        if (degrees == 0) return bitmap;
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degrees);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
     private byte[] bitmapToByteArray(Bitmap bitmap) {
