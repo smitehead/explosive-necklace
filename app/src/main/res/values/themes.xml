@@ -11,6 +11,5 @@
         <item name="android:fontFamily">@font/pretendard</item>
 
     </style>
-
     <style name="Theme.Project2025" parent="Base.Theme.Project2025" />
 </resources>
