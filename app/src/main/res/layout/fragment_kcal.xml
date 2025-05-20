@@ -32,6 +32,95 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <LinearLayout
+        android:id="@+id/calendarLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/top_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- 월 이동 버튼 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="10dp">
+
+            <ImageButton
+                android:id="@+id/btnPrevMonth"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/baseline_arrow_circle_left_24"
+                android:contentDescription="이전 달"/>
+
+            <TextView
+                android:id="@+id/tvMonthYear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="May 2025"
+                android:textSize="18sp"
+                android:gravity="center"/>
+
+            <!-- 오른쪽 더미 공간으로 균형 맞춤 -->
+            <View
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:importantForAccessibility="no" />
+        </LinearLayout>
+
+        <!-- 날짜 스크롤 뷰 -->
+        <HorizontalScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="false"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/datesContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp"
+                android:gravity="center"/>
+        </HorizontalScrollView>
+
+        <!-- 오늘로 돌아가기 -->
+        <Button
+            android:id="@+id/btnToday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오늘로 돌아가기"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <!-- 상세 정보 표시 -->
+        <LinearLayout
+            android:id="@+id/detailLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="16dp"
+            android:background="#EFEFEF"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/detailText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="선택된 날짜 상세 내용"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
     <!-- 영양 정보 카드 영역 -->
     <LinearLayout
         android:id="@+id/nutrient_area"
@@ -41,7 +130,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/top_bar">
+        app:layout_constraintTop_toBottomOf="@id/calendarLayout">
 
         <TextView
             android:id="@+id/summaryTextView"
