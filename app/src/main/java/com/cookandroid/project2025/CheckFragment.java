@@ -3,6 +3,7 @@ package com.cookandroid.project2025;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
 
 import org.json.JSONArray;
@@ -54,8 +56,6 @@ public class CheckFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         imageView = view.findViewById(R.id.imageView);
         textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
@@ -93,8 +93,7 @@ public class CheckFragment extends Fragment {
             Context context = getContext();
             if (context == null) return;
 
-            // ✅ 리사이즈: 640x640로 모델에 최적화
-            Bitmap resizedBitmap = resizeImage(context, uri, 640, 640);
+            Bitmap resizedBitmap = resizeImageWithRotation(context, uri, 640, 640);
             byte[] imageBytes = bitmapToByteArray(resizedBitmap);
 
             RequestBody requestBody = new MultipartBody.Builder()
@@ -103,73 +102,34 @@ public class CheckFragment extends Fragment {
                             RequestBody.create(MediaType.parse("image/jpeg"), imageBytes))
                     .build();
 
-            String baseUrl = "https://4675-211-197-158-208.ngrok-free.app";
-            String endpoint = "upload_image";
-            if (!baseUrl.endsWith("/")) baseUrl += "/";
-            String fullUrl = baseUrl + endpoint;
+            String url = "https://4675-211-197-158-208.ngrok-free.app/upload_image";
 
             Request request = new Request.Builder()
-                    .url(fullUrl)
+                    .url(url)
                     .post(requestBody)
                     .build();
 
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                    if (getActivity() == null) return;
-                    getActivity().runOnUiThread(() -> {
-                        Toast.makeText(getContext(), "업로드 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e("Upload", "Error: " + e.getMessage());
-                    });
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(() ->
+                                Toast.makeText(getContext(), "업로드 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    }
                 }
 
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                    if (!response.isSuccessful() || response.body() == null) {
-                        if (getActivity() != null) {
-                            getActivity().runOnUiThread(() ->
-                                    Toast.makeText(getContext(), "서버 오류: 상태 코드 " + response.code(), Toast.LENGTH_SHORT).show());
-                        }
-                        return;
-                    }
-
+                    if (response.body() == null) return;
                     String responseBodyString = response.body().string();
                     Log.d("Response", responseBodyString);
 
                     try {
                         JSONObject jsonResponse = new JSONObject(responseBodyString);
                         JSONArray classArray = jsonResponse.getJSONArray("class");
-                        JSONArray bboxArray = jsonResponse.optJSONArray("bbox");
 
                         if (getActivity() != null) {
                             getActivity().runOnUiThread(() -> {
-                                StringBuilder textToShow = new StringBuilder();
-                                textToShow.append("Class: ");
-                                for (int i = 0; i < classArray.length(); i++) {
-                                    try {
-                                        textToShow.append(classArray.getString(i));
-                                        if (i < classArray.length() - 1) textToShow.append(", ");
-                                    } catch (JSONException e) {
-                                        textToShow.append("Error ");
-                                    }
-                                }
-                                textToShow.append("\n");
-
-                                if (bboxArray != null) {
-                                    textToShow.append("Bounding Box: ");
-                                    for (int i = 0; i < bboxArray.length(); i++) {
-                                        try {
-                                            textToShow.append(bboxArray.get(i)).append(" ");
-                                        } catch (JSONException e) {
-                                            textToShow.append("Error ");
-                                        }
-                                    }
-                                    textToShow.append("\n");
-                                }
-
-                                textView.setText(textToShow.toString());
-                                Toast.makeText(getContext(), "텍스트 수신 성공!", Toast.LENGTH_SHORT).show();
-
                                 ResultFoodFragment resultFragment = ResultFoodFragment.newInstance(classArray.toString());
                                 getParentFragmentManager().beginTransaction()
                                         .replace(R.id.frame_layout, resultFragment)
@@ -178,27 +138,41 @@ public class CheckFragment extends Fragment {
                             });
                         }
                     } catch (JSONException e) {
-                        if (getActivity() != null) {
-                            getActivity().runOnUiThread(() -> {
-                                Toast.makeText(getContext(), "JSON 파싱 오류 (CheckFragment): " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                textView.setText("JSON 파싱 오류: " + e.getMessage());
-                            });
-                        }
+                        Toast.makeText(getContext(), "JSON 파싱 오류: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
 
         } catch (IOException e) {
-            e.printStackTrace();
             Toast.makeText(getContext(), "이미지 업로드 오류", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // ✅ 640x640 리사이즈 함수
-    private Bitmap resizeImage(Context context, Uri imageUri, int width, int height) throws IOException {
+    private Bitmap resizeImageWithRotation(Context context, Uri imageUri, int width, int height) throws IOException {
         InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
         Bitmap original = BitmapFactory.decodeStream(inputStream);
-        return Bitmap.createScaledBitmap(original, width, height, true);
+
+        InputStream exifInputStream = context.getContentResolver().openInputStream(imageUri);
+        ExifInterface exif = new ExifInterface(exifInputStream);
+        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+        int degrees = exifToDegrees(orientation);
+        Bitmap rotated = rotateBitmap(original, degrees);
+
+        return Bitmap.createScaledBitmap(rotated, width, height, true);
+    }
+
+    private int exifToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) return 90;
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) return 180;
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) return 270;
+        return 0;
+    }
+
+    private Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
+        if (degrees == 0) return bitmap;
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degrees);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
     private byte[] bitmapToByteArray(Bitmap bitmap) {
