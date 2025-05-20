@@ -1,6 +1,8 @@
 package com.cookandroid.project2025;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,9 +45,9 @@ public class MultiFoodCheckFragment extends Fragment {
     private Button uploadButton;
     private Uri selectedImageUri;
     private final OkHttpClient client = new OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(180, TimeUnit.SECONDS)
+            .readTimeout(180, TimeUnit.SECONDS)
+            .writeTimeout(180, TimeUnit.SECONDS)
             .build();
     private ActivityResultLauncher<String> getContent;
 
@@ -86,8 +88,9 @@ public class MultiFoodCheckFragment extends Fragment {
             Context context = getContext();
             if (context == null) return;
 
-            InputStream inputStream = context.getContentResolver().openInputStream(uri);
-            byte[] imageBytes = convertInputStreamToByteArray(inputStream);
+            // ✅ 640x640 리사이즈 적용
+            Bitmap resizedBitmap = resizeImage(context, uri, 640, 640);
+            byte[] imageBytes = bitmapToByteArray(resizedBitmap);
 
             RequestBody requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
@@ -96,7 +99,7 @@ public class MultiFoodCheckFragment extends Fragment {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("https://5a1a-118-39-131-129.ngrok-free.app/upload_image_multi")
+                    .url("https://60fa-118-39-131-129.ngrok-free.app/upload_image_multi")
                     .post(requestBody)
                     .build();
 
@@ -141,13 +144,16 @@ public class MultiFoodCheckFragment extends Fragment {
         }
     }
 
-    private byte[] convertInputStreamToByteArray(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int bytesRead;
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
-        }
-        return outputStream.toByteArray();
+    // ✅ 640x640 리사이즈 함수
+    private Bitmap resizeImage(Context context, Uri imageUri, int width, int height) throws IOException {
+        InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
+        Bitmap original = BitmapFactory.decodeStream(inputStream);
+        return Bitmap.createScaledBitmap(original, width, height, true);
+    }
+
+    private byte[] bitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        return stream.toByteArray();
     }
 }

@@ -28,12 +28,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 public class ProfileFragment extends Fragment {
-    // UI 요소 (이메일은 삭제)
-    private TextView tvNickname, tvGender, tvAge;
+    private TextView tvNickname, tvGender, tvAge, tvHeight, tvWeight;
+    private TextView tvBMIResult;
     private ImageView ivProfileImage;
     private Button btnChangeProfile;
 
-    // Firebase 관련 변수
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
     private FirebaseStorage mFirebaseStorage;
@@ -45,13 +44,11 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Firebase 초기화
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("UserAccount");
         mFirebaseStorage = FirebaseStorage.getInstance();
         mStorageRef = mFirebaseStorage.getReference("profile_images");
 
-        // ActivityResultLauncher 등록 (Fragment에서도 registerForActivityResult 사용 가능)
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -69,21 +66,22 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // fragment_profile.xml 레이아웃을 inflate 함
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // UI 요소 연결 (findViewById는 inflate된 view에서)
+
         tvNickname = view.findViewById(R.id.nicknameTextView);
         tvGender = view.findViewById(R.id.sexValue);
         tvAge = view.findViewById(R.id.yearValue);
+        tvHeight = view.findViewById(R.id.heightValue);
+        tvWeight = view.findViewById(R.id.weightValue);
+        tvBMIResult = view.findViewById(R.id.bmiResultTextView); // 새로 추가
         ivProfileImage = view.findViewById(R.id.imageView);
         btnChangeProfile = view.findViewById(R.id.btn_change_profile);
 
-        // 현재 로그인한 유저 정보 가져오기
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             String userId = firebaseUser.getUid();
@@ -96,15 +94,17 @@ public class ProfileFragment extends Fragment {
                             tvNickname.setText(user.getNickname());
                             tvGender.setText(user.getGender());
                             tvAge.setText(String.valueOf(user.getAge()));
+                            tvHeight.setText(user.getHeight() + " cm");
+                            tvWeight.setText(user.getWeight() + " kg");
 
-                            // Firebase Storage에서 프로필 이미지 가져오기
+                            calculateAndDisplayBMI(user.getHeight(), user.getWeight(), user.getGender());
+
                             StorageReference profileImageRef = mStorageRef.child(userId + ".jpg");
                             profileImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                                 if (ivProfileImage != null) {
                                     ivProfileImage.setImageURI(uri);
                                 }
                             }).addOnFailureListener(e -> {
-                                // 기본 프로필 이미지를 유지하거나 별도 처리를 할 수 있음
                             });
                         }
                     }
@@ -112,27 +112,18 @@ public class ProfileFragment extends Fragment {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    // 에러 처리 (원한다면 Toast 메시지 등 추가)
                 }
             });
         }
 
-        // 프로필 변경 버튼 클릭 시 갤러리 열기
-        btnChangeProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openGallery();
-            }
-        });
+        btnChangeProfile.setOnClickListener(v -> openGallery());
     }
 
-    // 갤러리 열기 메서드
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         imagePickerLauncher.launch(intent);
     }
 
-    // Firebase Storage에 이미지 업로드
     private void uploadImageToFirebase(Uri imageUri) {
         if (imageUri == null) return;
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -141,11 +132,32 @@ public class ProfileFragment extends Fragment {
         StorageReference fileRef = mStorageRef.child(userId + ".jpg");
 
         fileRef.putFile(imageUri)
-                .addOnSuccessListener(taskSnapshot -> {
-                    Toast.makeText(getContext(), "프로필 이미지 변경 완료!", Toast.LENGTH_SHORT).show();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "이미지 업로드 실패!", Toast.LENGTH_SHORT).show();
-                });
+                .addOnSuccessListener(taskSnapshot ->
+                        Toast.makeText(getContext(), "프로필 이미지 변경 완료!", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e ->
+                        Toast.makeText(getContext(), "이미지 업로드 실패!", Toast.LENGTH_SHORT).show());
+    }
+
+    private void calculateAndDisplayBMI(double heightCm, double weightKg, String gender) {
+        if (heightCm <= 0 || weightKg <= 0) {
+            tvBMIResult.setText("BMI 정보 없음");
+            return;
+        }
+
+        double heightM = heightCm / 100.0;
+        double bmi = weightKg / (heightM * heightM);
+        String category;
+
+        if (bmi < 18.5) {
+            category = "저체중";
+        } else if (bmi < 23) {
+            category = "정상";
+        } else if (bmi < 25) {
+            category = "과체중";
+        } else {
+            category = "비만";
+        }
+
+        tvBMIResult.setText(String.format("BMI: %.1f (%s)", bmi, category));
     }
 }
