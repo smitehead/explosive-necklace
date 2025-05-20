@@ -1,6 +1,8 @@
 package com.cookandroid.project2025;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -74,8 +76,9 @@ public class LabelFragment extends Fragment {
             Context context = getContext();
             if (context == null) return;
 
-            InputStream inputStream = context.getContentResolver().openInputStream(uri);
-            byte[] imageBytes = convertInputStreamToByteArray(inputStream);
+            // ✅ 640x640 리사이즈 적용
+            Bitmap resizedBitmap = resizeImage(context, uri, 640, 640);
+            byte[] imageBytes = bitmapToByteArray(resizedBitmap);
 
             RequestBody requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
@@ -105,7 +108,8 @@ public class LabelFragment extends Fragment {
                 @Override
                 public void onFailure(@NonNull Call call, @NonNull IOException e) {
                     if (getActivity() != null) {
-                        getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "업로드 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                        getActivity().runOnUiThread(() ->
+                                Toast.makeText(getContext(), "업로드 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                     }
                 }
             });
@@ -116,13 +120,16 @@ public class LabelFragment extends Fragment {
         }
     }
 
-    private byte[] convertInputStreamToByteArray(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int bytesRead;
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
-        }
-        return outputStream.toByteArray();
+    // ✅ 640x640 리사이즈 함수
+    private Bitmap resizeImage(Context context, Uri imageUri, int width, int height) throws IOException {
+        InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
+        Bitmap original = BitmapFactory.decodeStream(inputStream);
+        return Bitmap.createScaledBitmap(original, width, height, true);
+    }
+
+    private byte[] bitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        return stream.toByteArray();
     }
 }

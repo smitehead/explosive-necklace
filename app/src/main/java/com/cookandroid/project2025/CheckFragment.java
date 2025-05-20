@@ -1,6 +1,8 @@
 package com.cookandroid.project2025;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,9 +59,8 @@ public class CheckFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
-        labelScanButton = view.findViewById(R.id.buttonLabelScan);  // 추가된 부분
+        labelScanButton = view.findViewById(R.id.buttonLabelScan);
 
-        // 성분표 스캔하기 → LabelFragment로 이동
         labelScanButton.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
@@ -92,8 +93,9 @@ public class CheckFragment extends Fragment {
             Context context = getContext();
             if (context == null) return;
 
-            InputStream inputStream = context.getContentResolver().openInputStream(uri);
-            byte[] imageBytes = convertInputStreamToByteArray(inputStream);
+            // ✅ 리사이즈: 640x640로 모델에 최적화
+            Bitmap resizedBitmap = resizeImage(context, uri, 640, 640);
+            byte[] imageBytes = bitmapToByteArray(resizedBitmap);
 
             RequestBody requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
@@ -123,17 +125,14 @@ public class CheckFragment extends Fragment {
 
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                    if (!response.isSuccessful()) {
+                    if (!response.isSuccessful() || response.body() == null) {
                         if (getActivity() != null) {
-                            getActivity().runOnUiThread(() -> {
-                                Toast.makeText(getContext(), "서버 오류: 상태 코드 " + response.code(), Toast.LENGTH_SHORT).show();
-                                Log.e("Upload", "Server responded with code: " + response.code());
-                            });
+                            getActivity().runOnUiThread(() ->
+                                    Toast.makeText(getContext(), "서버 오류: 상태 코드 " + response.code(), Toast.LENGTH_SHORT).show());
                         }
                         return;
                     }
 
-                    if (response.body() == null) return;
                     String responseBodyString = response.body().string();
                     Log.d("Response", responseBodyString);
 
@@ -146,17 +145,12 @@ public class CheckFragment extends Fragment {
                             getActivity().runOnUiThread(() -> {
                                 StringBuilder textToShow = new StringBuilder();
                                 textToShow.append("Class: ");
-                                if (classArray != null) {
-                                    for (int i = 0; i < classArray.length(); i++) {
-                                        try {
-                                            textToShow.append(classArray.getString(i));
-                                            if (i < classArray.length() - 1) {
-                                                textToShow.append(", ");
-                                            }
-                                        } catch (JSONException e) {
-                                            Log.e("JSON", "Error getting class at index " + i + ": " + e.getMessage());
-                                            textToShow.append("Error");
-                                        }
+                                for (int i = 0; i < classArray.length(); i++) {
+                                    try {
+                                        textToShow.append(classArray.getString(i));
+                                        if (i < classArray.length() - 1) textToShow.append(", ");
+                                    } catch (JSONException e) {
+                                        textToShow.append("Error ");
                                     }
                                 }
                                 textToShow.append("\n");
@@ -167,8 +161,7 @@ public class CheckFragment extends Fragment {
                                         try {
                                             textToShow.append(bboxArray.get(i)).append(" ");
                                         } catch (JSONException e) {
-                                            Log.e("JSON", "Error getting bbox at index " + i + ": " + e.getMessage());
-                                            textToShow.append("Error");
+                                            textToShow.append("Error ");
                                         }
                                     }
                                     textToShow.append("\n");
@@ -177,7 +170,7 @@ public class CheckFragment extends Fragment {
                                 textView.setText(textToShow.toString());
                                 Toast.makeText(getContext(), "텍스트 수신 성공!", Toast.LENGTH_SHORT).show();
 
-                                ResultFoodFragment resultFragment = ResultFoodFragment.newInstance(classArray == null ? "[]" : classArray.toString());
+                                ResultFoodFragment resultFragment = ResultFoodFragment.newInstance(classArray.toString());
                                 getParentFragmentManager().beginTransaction()
                                         .replace(R.id.frame_layout, resultFragment)
                                         .addToBackStack(null)
@@ -188,7 +181,6 @@ public class CheckFragment extends Fragment {
                         if (getActivity() != null) {
                             getActivity().runOnUiThread(() -> {
                                 Toast.makeText(getContext(), "JSON 파싱 오류 (CheckFragment): " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                Log.e("JSON", "Error parsing JSON (CheckFragment): " + e.getMessage());
                                 textView.setText("JSON 파싱 오류: " + e.getMessage());
                             });
                         }
@@ -198,17 +190,20 @@ public class CheckFragment extends Fragment {
 
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), "이미지 업로드 준비 중 오류 발생.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "이미지 업로드 오류", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private byte[] convertInputStreamToByteArray(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int bytesRead;
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
-        }
-        return outputStream.toByteArray();
+    // ✅ 640x640 리사이즈 함수
+    private Bitmap resizeImage(Context context, Uri imageUri, int width, int height) throws IOException {
+        InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
+        Bitmap original = BitmapFactory.decodeStream(inputStream);
+        return Bitmap.createScaledBitmap(original, width, height, true);
+    }
+
+    private byte[] bitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        return stream.toByteArray();
     }
 }
