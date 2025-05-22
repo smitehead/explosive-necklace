@@ -79,7 +79,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="58dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextNickname"
@@ -96,7 +96,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="58dp"
             android:layout_gravity="left"
             android:layout_marginTop="16sp"
             android:gravity="center_vertical"
@@ -154,8 +154,8 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_width="140dp"
+                android:layout_height="58dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextBirthYear"
@@ -167,6 +167,13 @@
                     android:paddingEnd="16dp"
                     android:textSize="16sp"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="세"
+                android:textSize="16sp"
+                android:layout_marginStart="8dp"/>
 
         </LinearLayout>
 
@@ -188,8 +195,8 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_width="140dp"
+                android:layout_height="58dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTall"
@@ -201,6 +208,13 @@
                     android:paddingEnd="16dp"
                     android:textSize="16sp"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cm"
+                android:textSize="16sp"
+                android:layout_marginStart="8dp"/>
 
         </LinearLayout>
 
@@ -217,13 +231,13 @@
                 android:layout_width="62dp"
                 android:layout_height="19dp"
                 android:layout_marginEnd="16dp"
-                android:text="나이"
+                android:text="몸무게"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_width="140dp"
+                android:layout_height="58dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editWeigh"
@@ -235,6 +249,13 @@
                     android:paddingEnd="16dp"
                     android:textSize="16sp"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="kg"
+                android:textSize="16sp"
+                android:layout_marginStart="8dp"/>
 
         </LinearLayout>
 

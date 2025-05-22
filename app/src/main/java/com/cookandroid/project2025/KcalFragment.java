@@ -1,12 +1,12 @@
 package com.cookandroid.project2025;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,24 +14,32 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.*;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 public class KcalFragment extends Fragment {
 
     private TextView kcalTextView, carbsTextView, proteinTextView, fatTextView;
     private ProgressBar progressKcal, progressCarbs, progressProtein, progressFat;
 
+    // 📅 캘린더 관련
+    private LinearLayout datesContainer, detailLayout;
+    private TextView detailText, tvMonthYear;
+    private ImageButton btnPrevMonth;
+    private Button btnToday;
+    private HorizontalScrollView scrollView;
+
+    private Calendar todayCalendar;
+    private Calendar currentMonthCalendar;
+
+    private Button selectedButton = null;
+    private final List<Button> allDateButtons = new ArrayList<>();
+    private final List<Calendar> allDates = new ArrayList<>();
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_kcal, container, false);
     }
 
@@ -39,6 +47,7 @@ public class KcalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // 🔗 Firebase View 연결
         kcalTextView = view.findViewById(R.id.kcalText);
         carbsTextView = view.findViewById(R.id.carbsText);
         proteinTextView = view.findViewById(R.id.proteinText);
@@ -49,6 +58,152 @@ public class KcalFragment extends Fragment {
         progressProtein = view.findViewById(R.id.progressProtein);
         progressFat = view.findViewById(R.id.progressFat);
 
+        // 📅 달력 View 연결
+        datesContainer = view.findViewById(R.id.datesContainer);
+        detailLayout = view.findViewById(R.id.detailLayout);
+        detailText = view.findViewById(R.id.detailText);
+        tvMonthYear = view.findViewById(R.id.tvMonthYear);
+        btnPrevMonth = view.findViewById(R.id.btnPrevMonth);
+        btnToday = view.findViewById(R.id.btnToday);
+        scrollView = view.findViewById(R.id.scrollView);
+
+        todayCalendar = Calendar.getInstance();
+        currentMonthCalendar = (Calendar) todayCalendar.clone();
+
+        btnPrevMonth.setOnClickListener(v -> {
+            currentMonthCalendar.add(Calendar.MONTH, -1);
+            renderMonth();
+        });
+
+        btnToday.setOnClickListener(v -> {
+            currentMonthCalendar = (Calendar) todayCalendar.clone();
+            renderMonth();
+            btnToday.post(() -> {
+                for (int i = 0; i < allDates.size(); i++) {
+                    if (isSameDay(allDates.get(i), todayCalendar)) {
+                        allDateButtons.get(i).performClick();
+                        break;
+                    }
+                }
+            });
+        });
+
+        renderMonth();
+        datesContainer.post(() -> {
+            for (int i = 0; i < allDates.size(); i++) {
+                if (isSameDay(allDates.get(i), todayCalendar)) {
+                    allDateButtons.get(i).performClick();
+                    break;
+                }
+            }
+        });
+
+        // 🔗 Firebase 데이터 처리
+        loadFirebaseNutritionData();
+    }
+
+    private void renderMonth() {
+        datesContainer.removeAllViews();
+        allDateButtons.clear();
+        allDates.clear();
+
+        Calendar temp = (Calendar) currentMonthCalendar.clone();
+        temp.set(Calendar.DAY_OF_MONTH, 1);
+        int maxDay = temp.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        tvMonthYear.setText(new SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(temp.getTime()));
+
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int screenWidth = displayMetrics.widthPixels;
+        int buttonWidth = screenWidth / 5 - 20;
+        int buttonHeight = 200;
+
+        for (int i = 1; i <= maxDay; i++) {
+            Calendar date = (Calendar) temp.clone();
+            date.set(Calendar.DAY_OF_MONTH, i);
+
+            Button btn = new Button(getContext());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(buttonWidth, buttonHeight);
+            params.setMargins(10, 0, 10, 0);
+            btn.setLayoutParams(params);
+            btn.setText(new SimpleDateFormat("d\nEEE", Locale.getDefault()).format(date.getTime()));
+            btn.setAllCaps(false);
+            btn.setTextSize(14);
+            btn.setTag(date);
+
+            if (isSameDay(date, todayCalendar)) {
+                btn.setBackgroundColor(Color.parseColor("#2196F3"));
+                btn.setTextColor(Color.WHITE);
+            } else {
+                btn.setBackgroundColor(Color.TRANSPARENT);
+                btn.setTextColor(Color.BLACK);
+            }
+
+            btn.setOnClickListener(v -> {
+                Calendar clickedDate = (Calendar) btn.getTag();
+
+                if (clickedDate.get(Calendar.MONTH) != currentMonthCalendar.get(Calendar.MONTH)
+                        || clickedDate.get(Calendar.YEAR) != currentMonthCalendar.get(Calendar.YEAR)) {
+                    currentMonthCalendar = (Calendar) clickedDate.clone();
+                    renderMonth();
+                    datesContainer.post(() -> {
+                        for (int j = 0; j < allDates.size(); j++) {
+                            if (isSameDay(allDates.get(j), clickedDate)) {
+                                allDateButtons.get(j).performClick();
+                                break;
+                            }
+                        }
+                    });
+                    return;
+                }
+
+                for (Button b : allDateButtons) {
+                    Calendar bDate = (Calendar) b.getTag();
+                    if (isSameDay(bDate, todayCalendar)) {
+                        b.setBackgroundColor(Color.parseColor("#2196F3"));
+                        b.setTextColor(Color.WHITE);
+                    } else {
+                        b.setBackgroundColor(Color.TRANSPARENT);
+                        b.setTextColor(Color.BLACK);
+                    }
+                }
+
+                btn.setBackgroundColor(Color.parseColor("#FF9800"));
+                btn.setTextColor(Color.WHITE);
+                selectedButton = btn;
+
+                detailLayout.setVisibility(View.VISIBLE);
+                detailText.setText("선택한 날짜: " +
+                        new SimpleDateFormat("yyyy-MM-dd (EEE)", Locale.getDefault()).format(clickedDate.getTime()));
+
+                scrollToDate(clickedDate);
+            });
+
+            allDateButtons.add(btn);
+            allDates.add(date);
+            datesContainer.addView(btn);
+        }
+    }
+
+    private void scrollToDate(Calendar targetDate) {
+        for (int i = 0; i < allDates.size(); i++) {
+            if (isSameDay(allDates.get(i), targetDate)) {
+                View target = allDateButtons.get(i);
+                if (target != null) {
+                    int scrollX = target.getLeft() - (scrollView.getWidth() / 2) + (target.getWidth() / 2);
+                    scrollView.post(() -> scrollView.smoothScrollTo(scrollX, 0));
+                }
+                break;
+            }
+        }
+    }
+
+    private boolean isSameDay(Calendar c1, Calendar c2) {
+        return c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)
+                && c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR);
+    }
+
+    private void loadFirebaseNutritionData() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             Toast.makeText(getContext(), "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
@@ -76,10 +231,7 @@ public class KcalFragment extends Fragment {
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        double totalEnergy = 0;
-                        double totalCarbs = 0;
-                        double totalProtein = 0;
-                        double totalFat = 0;
+                        double totalEnergy = 0, totalCarbs = 0, totalProtein = 0, totalFat = 0;
 
                         for (DataSnapshot foodSnap : snapshot.getChildren()) {
                             String value = foodSnap.getValue(String.class);
@@ -88,7 +240,6 @@ public class KcalFragment extends Fragment {
                             String[] lines = value.split("\n");
                             for (String line : lines) {
                                 line = line.toLowerCase();
-
                                 if (line.contains("에너지") || line.contains("kcal") || line.contains("칼로리")) {
                                     totalEnergy += extractFloat(line);
                                 } else if (line.contains("탄수화물")) {
@@ -106,16 +257,10 @@ public class KcalFragment extends Fragment {
                         proteinTextView.setText((int) totalProtein + "g");
                         fatTextView.setText((int) totalFat + "g");
 
-                        // 게이지 반영
-                        int kcalPercent = (int) ((totalEnergy / kcalGoal) * 100);
-                        int carbsPercent = (int) ((totalCarbs / carbsGoal) * 100);
-                        int proteinPercent = (int) ((totalProtein / proteinGoal) * 100);
-                        int fatPercent = (int) ((totalFat / fatGoal) * 100);
-
-                        progressKcal.setProgress(Math.min(kcalPercent, 100));
-                        progressCarbs.setProgress(Math.min(carbsPercent, 100));
-                        progressProtein.setProgress(Math.min(proteinPercent, 100));
-                        progressFat.setProgress(Math.min(fatPercent, 100));
+                        progressKcal.setProgress(Math.min((int) ((totalEnergy / kcalGoal) * 100), 100));
+                        progressCarbs.setProgress(Math.min((int) ((totalCarbs / carbsGoal) * 100), 100));
+                        progressProtein.setProgress(Math.min((int) ((totalProtein / proteinGoal) * 100), 100));
+                        progressFat.setProgress(Math.min((int) ((totalFat / fatGoal) * 100), 100));
                     }
 
                     @Override
