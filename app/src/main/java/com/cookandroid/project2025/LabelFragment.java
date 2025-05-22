@@ -97,7 +97,7 @@ public class LabelFragment extends Fragment {
                     String responseString = response.body().string();
                     if (getActivity() == null) return;
                     getActivity().runOnUiThread(() -> {
-                        LabelResultFragment resultFragment = LabelResultFragment.newInstance(responseString);
+                        LabelResultActivity resultFragment = LabelResultActivity.newInstance(responseString);
                         getParentFragmentManager().beginTransaction()
                                 .replace(R.id.frame_layout, resultFragment)
                                 .addToBackStack(null)

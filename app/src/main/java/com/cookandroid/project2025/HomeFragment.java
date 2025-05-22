@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
 
         buttonMultiFood.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frame_layout, new MultiFoodCheckFragment())
+                    .replace(R.id.frame_layout, new MultiCheckActivity())
                     .addToBackStack(null)
                     .commit();
         });

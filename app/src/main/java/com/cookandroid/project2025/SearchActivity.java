@@ -19,7 +19,7 @@ import com.google.firebase.database.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class SearchFragment extends Fragment {
+public class SearchActivity extends Fragment {
 
     private EditText editTextSearch, editTextGram;
     private TextView textViewResult;

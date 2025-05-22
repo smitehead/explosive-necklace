@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ResultFoodFragment extends Fragment {
+public class ResultActivity extends Fragment {
 
     private TextView nutritionInfoTextView;
     private TextView receivedJsonTextView;
@@ -43,8 +43,8 @@ public class ResultFoodFragment extends Fragment {
     private List<String> notFoundFoods = new ArrayList<>();
     private JSONArray foodNameArray;
 
-    public static ResultFoodFragment newInstance(String foodListJson) {
-        ResultFoodFragment fragment = new ResultFoodFragment();
+    public static ResultActivity newInstance(String foodListJson) {
+        ResultActivity fragment = new ResultActivity();
         Bundle args = new Bundle();
         args.putString("foodListJson", foodListJson);
         fragment.setArguments(args);
