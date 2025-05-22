@@ -65,119 +65,12 @@
             android:layout_marginTop="23dp"
             android:layout_marginBottom="23dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="식사 시간"
-                android:textSize="16sp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_marginBottom="6dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp">
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textSize="16sp"
-                    android:text="아침"
-                    android:textColor="@color/black"
-                    android:backgroundTint="@color/gray"/>
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textSize="16sp"
-                    android:text="점심"
-                    android:textColor="@color/black"
-                    android:backgroundTint="@color/gray"
-                    android:layout_marginStart="6dp"/>
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textSize="16sp"
-                    android:text="저녁"
-                    android:textColor="@color/black"
-                    android:backgroundTint="@color/gray"
-                    android:layout_marginStart="6dp"/>
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textSize="16sp"
-                    android:text="간식"
-                    android:textColor="@color/black"
-                    android:backgroundTint="@color/gray"
-                    android:layout_marginStart="6dp"/>
-            </LinearLayout>
-
-            <!-- 식사 사진 입력 영역 -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="음식 사진"
-                android:textSize="16sp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_marginTop="22dp"
-                android:layout_marginBottom="6dp"/>
-
-            <!-- 이미지 선택 영역 -->
-            <FrameLayout
-                android:id="@+id/imageContainer"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginStart="10dp"
-                android:background="#EEEEEE"
-                android:layout_gravity="left"
-                android:clickable="true"
-                android:focusable="true">
-
-                <!-- 이미지 또는 기본 + 아이콘 -->
-                <ImageView
-                    android:id="@+id/mealImage"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/baseline_add_24"
-                    android:contentDescription="이미지 선택"
-                    android:gravity="center"
-                    android:background="#EEEEEE" />
-
-                <!-- 이미지 삭제 버튼 (선택 후 보이게) -->
-                <ImageButton
-                    android:id="@+id/deleteImageButton"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="top|end"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/baseline_clear_24"
-                    android:background="@drawable/round_white_bg"
-                    android:contentDescription="이미지 제거"
-                    android:visibility="gone"/>
-            </FrameLayout>
-
-
             <!-- 영양소 입력 필드 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="22dp">
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="60dp"

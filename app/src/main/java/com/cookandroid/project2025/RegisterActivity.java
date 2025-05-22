@@ -10,6 +10,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private EditText mEtEmail, mEtPassword, mEtNickname, mEtAge, mEtHeight, mEtWeight;
     private RadioGroup mRgGender;
+    private ImageButton backButton;
     private Button mBtnRegister;
     private String strGender = "남자";  // 기본값
 
@@ -50,6 +52,16 @@ public class RegisterActivity extends AppCompatActivity {
         mEtWeight = findViewById(R.id.editTextWeight);
         mRgGender = findViewById(R.id.radioGroupGender);
         mBtnRegister = findViewById(R.id.buttonJoin);
+        backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         // 성별 라디오 버튼 리스너
         mRgGender.setOnCheckedChangeListener((group, checkedId) -> {

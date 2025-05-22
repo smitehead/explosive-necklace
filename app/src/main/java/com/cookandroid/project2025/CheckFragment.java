@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
+import android.content.Intent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +45,7 @@ public class CheckFragment extends Fragment {
     private ImageView imageView;
     private TextView textView;
     private Button uploadButton;
+    private Button selfUploadButton;
     private Button labelScanButton;
     private Uri selectedImageUri;
     private final OkHttpClient client = new OkHttpClient();
@@ -60,6 +62,12 @@ public class CheckFragment extends Fragment {
         textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
         labelScanButton = view.findViewById(R.id.buttonLabelScan);
+        selfUploadButton = view.findViewById(R.id.selfUploadButton);
+
+        selfUploadButton.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), SelfCheckActivity.class);
+            startActivity(intent);
+        });
 
         labelScanButton.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager()
