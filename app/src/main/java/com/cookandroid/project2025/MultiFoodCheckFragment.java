@@ -99,7 +99,7 @@ public class MultiFoodCheckFragment extends Fragment {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("https://b23e-118-39-131-129.ngrok-free.app/upload_image_multi")
+                    .url("https://2fd0-118-39-131-129.ngrok-free.app/upload_image_multi")
                     .post(requestBody)
                     .build();
 

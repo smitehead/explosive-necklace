@@ -3,15 +3,63 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@android:color/white">
+    android:fillViewport="true">
 
     <LinearLayout
-        android:id="@+id/foodResultContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:layout_marginBottom="16dp" />
+        android:padding="16dp">
 
+        <!-- JSON 결과 확인용 -->
+        <TextView
+            android:id="@+id/receivedJsonTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Received JSON:"
+            android:textSize="14sp"
+            android:paddingBottom="8dp" />
+
+        <!-- 섭취량 입력 -->
+        <EditText
+            android:id="@+id/gramInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="섭취량 (g)을 입력하세요"
+            android:inputType="number"
+            android:background="@android:drawable/edit_text"
+            android:padding="12dp"
+            android:layout_marginTop="8dp" />
+
+        <!-- 영양 정보 출력 -->
+        <TextView
+            android:id="@+id/nutritionInfoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:padding="12dp"
+            android:layout_marginTop="12dp"
+            android:background="#EEEEEE"
+            android:textSize="15sp" />
+
+        <!-- 저장 버튼 -->
+        <Button
+            android:id="@+id/buttonConfirmSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="오늘 식단으로 저장하기"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@android:color/white" />
+
+        <!-- 직접 입력 페이지 이동 버튼 -->
+        <Button
+            android:id="@+id/buttonManualInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="직접 입력하기"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/teal_200"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 </ScrollView>

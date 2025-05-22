@@ -110,7 +110,7 @@ public class CheckFragment extends Fragment {
                             RequestBody.create(MediaType.parse("image/jpeg"), imageBytes))
                     .build();
 
-            String url = "https://c773-118-39-131-129.ngrok-free.app/upload_image";
+            String url = "https://2fd0-118-39-131-129.ngrok-free.app/upload_image";
 
             Request request = new Request.Builder()
                     .url(url)
