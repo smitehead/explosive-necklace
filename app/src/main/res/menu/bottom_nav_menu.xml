@@ -10,12 +10,6 @@
     <item
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:icon="@drawable/baseline_person_24"
-        android:title="프로필"
-        android:id="@+id/profile"/>
-    <item
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:icon="@drawable/baseline_add_circle_outline_24"
         android:title="측정"
         android:id="@+id/check"/>
@@ -25,4 +19,10 @@
         android:icon="@drawable/baseline_wysiwyg_24"
         android:title="칼로리"
         android:id="@+id/kcal"/>
+    <item
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/baseline_person_24"
+        android:title="프로필"
+        android:id="@+id/profile"/>
 </menu>
