@@ -32,12 +32,6 @@
             android:name=".LabelActivity"
             android:exported="false" />
         <activity
-            android:name=".LabelFragment"
-            android:exported="false" />
-        <activity
-            android:name=".ExerciseRecommendationActivity"
-            android:exported="false" />
-        <activity
             android:name=".ResultActivity"
             android:exported="false" />
         <activity
