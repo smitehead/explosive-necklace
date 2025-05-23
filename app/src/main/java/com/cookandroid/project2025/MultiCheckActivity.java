@@ -40,7 +40,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class MultiFoodCheckFragment extends Fragment {
+public class MultiCheckActivity extends Fragment {
 
     private ImageView imageView;
     private TextView textView;
@@ -99,7 +99,7 @@ public class MultiFoodCheckFragment extends Fragment {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("https://c773-118-39-131-129.ngrok-free.app/upload_image_multi")
+                    .url("https://2fd0-118-39-131-129.ngrok-free.app/upload_image_multi")
                     .post(requestBody)
                     .build();
 
@@ -125,7 +125,7 @@ public class MultiFoodCheckFragment extends Fragment {
                                 JSONArray classArray = jsonResponse.getJSONArray("class");
                                 textView.setText("인식된 음식: " + classArray.toString());
 
-                                ResultFoodFragment resultFragment = ResultFoodFragment.newInstance(classArray.toString());
+                                ResultActivity resultFragment = ResultActivity.newInstance(classArray.toString());
                                 getParentFragmentManager().beginTransaction()
                                         .replace(R.id.frame_layout, resultFragment)
                                         .addToBackStack(null)

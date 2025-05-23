@@ -110,7 +110,7 @@ public class CheckFragment extends Fragment {
                             RequestBody.create(MediaType.parse("image/jpeg"), imageBytes))
                     .build();
 
-            String url = "https://c773-118-39-131-129.ngrok-free.app/upload_image";
+            String url = "https://2fd0-118-39-131-129.ngrok-free.app/upload_image";
 
             Request request = new Request.Builder()
                     .url(url)
@@ -138,7 +138,7 @@ public class CheckFragment extends Fragment {
 
                         if (getActivity() != null) {
                             getActivity().runOnUiThread(() -> {
-                                ResultFoodFragment resultFragment = ResultFoodFragment.newInstance(classArray.toString());
+                                ResultActivity resultFragment = ResultActivity.newInstance(classArray.toString());
                                 getParentFragmentManager().beginTransaction()
                                         .replace(R.id.frame_layout, resultFragment)
                                         .addToBackStack(null)
@@ -158,9 +158,18 @@ public class CheckFragment extends Fragment {
 
     private Bitmap resizeImageWithRotation(Context context, Uri imageUri, int width, int height) throws IOException {
         InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
+        if (inputStream == null) {
+            throw new IOException("이미지 파일 열기 실패");
+        }
         Bitmap original = BitmapFactory.decodeStream(inputStream);
+        if (original == null) {
+            throw new IOException("이미지를 디코드하지 못했습니다.");
+        }
 
         InputStream exifInputStream = context.getContentResolver().openInputStream(imageUri);
+        if (exifInputStream == null) {
+            throw new IOException("EXIF 정보 접근 실패");
+        }
         ExifInterface exif = new ExifInterface(exifInputStream);
         int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
         int degrees = exifToDegrees(orientation);

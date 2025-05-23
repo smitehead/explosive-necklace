@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ResultFoodFragment extends Fragment {
+public class ResultActivity extends Fragment {
 
     private TextView nutritionInfoTextView;
     private TextView receivedJsonTextView;
@@ -43,8 +43,8 @@ public class ResultFoodFragment extends Fragment {
     private List<String> notFoundFoods = new ArrayList<>();
     private JSONArray foodNameArray;
 
-    public static ResultFoodFragment newInstance(String foodListJson) {
-        ResultFoodFragment fragment = new ResultFoodFragment();
+    public static ResultActivity newInstance(String foodListJson) {
+        ResultActivity fragment = new ResultActivity();
         Bundle args = new Bundle();
         args.putString("foodListJson", foodListJson);
         fragment.setArguments(args);
@@ -150,7 +150,7 @@ public class ResultFoodFragment extends Fragment {
 
             for (int i = 0; i < foodNameArray.length(); i++) {
                 String foodName = foodNameArray.getString(i).trim();
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("데이터");
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("UserNutritionData").child("데이터");
                 final String currentFoodName = foodName;
 
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -164,7 +164,7 @@ public class ResultFoodFragment extends Fragment {
                             if (numberSnapshot.hasChild("음식명")) {
                                 String dbFoodName = numberSnapshot.child("음식명").getValue(String.class);
                                 if (dbFoodName != null) {
-                                    String normalizedDbFoodName = dbFoodName.trim().replaceAll("\\u00A0", "").replaceAll("\\s+", " ");
+                                    String normalizedDbFoodName = dbFoodName.trim().replaceAll("\\u00A0", "").replaceAll("\\s+", " ").replace("\"", "");
                                     if (normalizedDbFoodName.equals(normalizedCurrentFoodName)) {
                                         currentFoodFound = true;
                                         for (DataSnapshot nutrientSnapshot : numberSnapshot.getChildren()) {
