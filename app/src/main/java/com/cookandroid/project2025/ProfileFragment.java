@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -31,6 +32,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvNickname, tvGender, tvAge, tvHeight, tvWeight;
     private TextView tvBMIResult;
     private ImageView ivProfileImage;
+    private ImageView settingsButton;
     private Button btnChangeProfile;
 
     private FirebaseAuth mFirebaseAuth;
@@ -81,6 +83,29 @@ public class ProfileFragment extends Fragment {
         tvBMIResult = view.findViewById(R.id.bmiResultTextView); // 새로 추가
         ivProfileImage = view.findViewById(R.id.imageView);
         btnChangeProfile = view.findViewById(R.id.btn_change_profile);
+        settingsButton = view.findViewById(R.id.rightButton);
+
+        settingsButton.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(requireContext(), v);
+            popupMenu.getMenuInflater().inflate(R.menu.profile_menu, popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.menu_edit_profile) {
+                    Intent intent = new Intent(requireContext(), SettingsFragment.class);
+                    startActivity(intent);
+                    return true;
+                } else if (id == R.id.menu_logout) {
+                    Toast.makeText(requireContext(), "로그아웃 클릭됨", Toast.LENGTH_SHORT).show();
+                    // TODO: 로그아웃 처리
+                    return true;
+                }
+                return false;
+            });
+
+            popupMenu.show();
+        });
+
 
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
         if (firebaseUser != null) {

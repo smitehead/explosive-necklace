@@ -23,16 +23,12 @@
             android:name=".LabelResultFragment"
             android:exported="false" />
         <activity
+            android:name=".SettingsFragment" />
+        <activity
             android:name=".LabelFragment"
             android:exported="false" />
         <activity
             android:name=".NutritionLabelResultFragment"
-            android:exported="false" />
-        <activity
-            android:name=".LabelFragment"
-            android:exported="false" />
-        <activity
-            android:name=".ExerciseRecommendationActivity"
             android:exported="false" />
         <activity
             android:name=".ResultFoodFragment"
@@ -55,6 +51,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />
