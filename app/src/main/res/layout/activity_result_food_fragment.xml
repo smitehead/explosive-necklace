@@ -28,6 +28,7 @@
             android:orientation="vertical"
             android:layout_marginTop="8dp" />
 
+
         <!-- 직접 입력 페이지 이동 버튼 -->
         <Button
             android:id="@+id/buttonManualInput"
