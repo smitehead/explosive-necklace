@@ -99,7 +99,7 @@ public class MultiCheckActivity extends Fragment {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("https://2fd0-118-39-131-129.ngrok-free.app/upload_image_multi")
+                    .url("https://bd33-118-39-131-129.ngrok-free.app/upload_image_multi")
                     .post(requestBody)
                     .build();
 
@@ -125,7 +125,7 @@ public class MultiCheckActivity extends Fragment {
                                 JSONArray classArray = jsonResponse.getJSONArray("class");
                                 textView.setText("인식된 음식: " + classArray.toString());
 
-                                ResultActivity resultFragment = ResultActivity.newInstance(classArray.toString());
+                                ResultFragment resultFragment = ResultFragment.newInstance(classArray.toString());
                                 getParentFragmentManager().beginTransaction()
                                         .replace(R.id.frame_layout, resultFragment)
                                         .addToBackStack(null)

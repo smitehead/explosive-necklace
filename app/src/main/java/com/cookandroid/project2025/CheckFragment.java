@@ -138,7 +138,7 @@ public class CheckFragment extends Fragment {
 
                         if (getActivity() != null) {
                             getActivity().runOnUiThread(() -> {
-                                ResultActivity resultFragment = ResultActivity.newInstance(classArray.toString());
+                                ResultFragment resultFragment = ResultFragment.newInstance(classArray.toString());
                                 getParentFragmentManager().beginTransaction()
                                         .replace(R.id.frame_layout, resultFragment)
                                         .addToBackStack(null)

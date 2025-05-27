@@ -32,7 +32,7 @@
             android:name=".LabelActivity"
             android:exported="false" />
         <activity
-            android:name=".ResultActivity"
+            android:name=".ResultFragment"
             android:exported="false" />
         <activity
             android:name=".SelfCheckActivity"
