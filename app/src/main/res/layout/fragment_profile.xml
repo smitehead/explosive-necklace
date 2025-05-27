@@ -90,16 +90,6 @@
         </FrameLayout>
 
         <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_gravity="center_horizontal"
-            android:text="건강지킴이"
-            android:textColor="#767676"
-            android:textSize="14sp"/>
-
-        <TextView
             android:id="@+id/dashboardTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,7 +97,7 @@
             android:textColor="#767676"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="12dp"
             android:layout_gravity="left" />
 
         <!-- 정보 4칸 (성별/나이/체중/키) -->
@@ -232,18 +222,23 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/bmiResultTextView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/bmiContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="BMI 계산 중..."
-            android:textSize="16sp"
-            android:textColor="#333333"
-            android:layout_gravity="left"
-            android:layout_marginBottom="8dp"/>
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:background="#21212F">
 
+            <TextView
+                android:id="@+id/bmiResultTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BMI 계산 중..."
+                android:textSize="16sp"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
 
-        <!-- 프로필 변경 버튼 -->
         <Button
             android:id="@+id/btn_change_profile"
             android:layout_width="wrap_content"
