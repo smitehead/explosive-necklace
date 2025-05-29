@@ -66,6 +66,16 @@ public class CheckFragment extends Fragment {
         textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
 
+        // ✅ 성분표 스캔 버튼 연결
+        Button buttonLabelScan = view.findViewById(R.id.buttonLabelScan);
+        buttonLabelScan.setOnClickListener(v -> {
+            LabelFragment labelFragment = new LabelFragment();
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.frame_layout, labelFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri != null) {
@@ -100,7 +110,7 @@ public class CheckFragment extends Fragment {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("https://139e-211-197-158-208.ngrok-free.app/upload_image") // 단일 인식용 주소
+                    .url("https://2ab2-118-39-131-129.ngrok-free.app/upload_image")
                     .post(requestBody)
                     .build();
 

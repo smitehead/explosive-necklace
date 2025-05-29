@@ -1,6 +1,7 @@
 package com.cookandroid.project2025;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -55,7 +56,7 @@ public class MultiCheckActivity extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_check, container, false);  // 기존 레이아웃 사용
+        return inflater.inflate(R.layout.fragment_check, container, false);
     }
 
     @Override
@@ -63,6 +64,18 @@ public class MultiCheckActivity extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
+
+        // ✅ "성분표 스캔하기" 버튼 클릭 시 LabelActivity로 이동
+        Button buttonLabelScan = view.findViewById(R.id.buttonLabelScan);
+        buttonLabelScan.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                LabelFragment labelFragment = new LabelFragment();
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout, labelFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 uri -> {
@@ -88,7 +101,6 @@ public class MultiCheckActivity extends Fragment {
             Context context = getContext();
             if (context == null) return;
 
-            // ✅ 회전 보정 + 640x640 리사이즈
             Bitmap resizedBitmap = resizeImageWithRotation(context, uri, 640, 640);
             byte[] imageBytes = bitmapToByteArray(resizedBitmap);
 
@@ -144,12 +156,10 @@ public class MultiCheckActivity extends Fragment {
         }
     }
 
-    // ✅ 회전 보정 + 리사이즈 함수
     private Bitmap resizeImageWithRotation(Context context, Uri imageUri, int width, int height) throws IOException {
         InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
         Bitmap original = BitmapFactory.decodeStream(inputStream);
 
-        // 회전 정보 읽기
         InputStream exifInputStream = context.getContentResolver().openInputStream(imageUri);
         ExifInterface exif = new ExifInterface(exifInputStream);
         int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
