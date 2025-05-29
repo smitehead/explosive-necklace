@@ -21,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
-import android.content.Intent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +29,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -45,10 +45,14 @@ public class CheckFragment extends Fragment {
     private ImageView imageView;
     private TextView textView;
     private Button uploadButton;
-    private Button selfUploadButton;
-    private Button labelScanButton;
     private Uri selectedImageUri;
-    private final OkHttpClient client = new OkHttpClient();
+
+    private final OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(180, TimeUnit.SECONDS)
+            .readTimeout(180, TimeUnit.SECONDS)
+            .writeTimeout(180, TimeUnit.SECONDS)
+            .build();
+
     private ActivityResultLauncher<String> getContent;
 
     @Override
@@ -61,21 +65,6 @@ public class CheckFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
-        labelScanButton = view.findViewById(R.id.buttonLabelScan);
-        selfUploadButton = view.findViewById(R.id.selfUploadButton);
-
-        selfUploadButton.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), SelfCheckActivity.class);
-            startActivity(intent);
-        });
-
-        labelScanButton.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frame_layout, new LabelFragment())
-                    .addToBackStack(null)
-                    .commit();
-        });
 
         getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 uri -> {
@@ -110,10 +99,8 @@ public class CheckFragment extends Fragment {
                             RequestBody.create(MediaType.parse("image/jpeg"), imageBytes))
                     .build();
 
-            String url = "https://2fd0-118-39-131-129.ngrok-free.app/upload_image";
-
             Request request = new Request.Builder()
-                    .url(url)
+                    .url("https://139e-211-197-158-208.ngrok-free.app/upload_image") // 단일 인식용 주소
                     .post(requestBody)
                     .build();
 
@@ -132,44 +119,37 @@ public class CheckFragment extends Fragment {
                     String responseBodyString = response.body().string();
                     Log.d("Response", responseBodyString);
 
-                    try {
-                        JSONObject jsonResponse = new JSONObject(responseBodyString);
-                        JSONArray classArray = jsonResponse.getJSONArray("class");
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(() -> {
+                            try {
+                                JSONObject jsonResponse = new JSONObject(responseBodyString);
+                                JSONArray classArray = jsonResponse.getJSONArray("class");
+                                textView.setText("인식된 음식: " + classArray.toString());
 
-                        if (getActivity() != null) {
-                            getActivity().runOnUiThread(() -> {
                                 ResultFragment resultFragment = ResultFragment.newInstance(classArray.toString());
                                 getParentFragmentManager().beginTransaction()
                                         .replace(R.id.frame_layout, resultFragment)
                                         .addToBackStack(null)
                                         .commit();
-                            });
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(getContext(), "JSON 파싱 오류: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                Toast.makeText(getContext(), "JSON 파싱 오류: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 }
             });
 
         } catch (IOException e) {
+            e.printStackTrace();
             Toast.makeText(getContext(), "이미지 업로드 오류", Toast.LENGTH_SHORT).show();
         }
     }
 
     private Bitmap resizeImageWithRotation(Context context, Uri imageUri, int width, int height) throws IOException {
         InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
-        if (inputStream == null) {
-            throw new IOException("이미지 파일 열기 실패");
-        }
         Bitmap original = BitmapFactory.decodeStream(inputStream);
-        if (original == null) {
-            throw new IOException("이미지를 디코드하지 못했습니다.");
-        }
 
         InputStream exifInputStream = context.getContentResolver().openInputStream(imageUri);
-        if (exifInputStream == null) {
-            throw new IOException("EXIF 정보 접근 실패");
-        }
         ExifInterface exif = new ExifInterface(exifInputStream);
         int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
         int degrees = exifToDegrees(orientation);
