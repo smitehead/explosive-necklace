@@ -133,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:text="성별"
                     android:textSize="14sp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:textColor="#767676" />
             </LinearLayout>
 
@@ -161,7 +161,7 @@
                     android:layout_height="wrap_content"
                     android:text="나이"
                     android:textSize="14sp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:textColor="#767676" />
             </LinearLayout>
 
@@ -189,7 +189,7 @@
                     android:layout_height="wrap_content"
                     android:text="체중"
                     android:textSize="14sp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:textColor="#767676" />
             </LinearLayout>
 
@@ -217,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:text="키"
                     android:textSize="14sp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:textColor="#767676" />
             </LinearLayout>
         </LinearLayout>
