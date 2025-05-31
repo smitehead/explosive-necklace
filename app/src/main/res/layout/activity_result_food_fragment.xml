@@ -1,41 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:padding="16dp">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
-        <!-- JSON 결과 확인용 -->
-        <TextView
-            android:id="@+id/receivedJsonTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Received JSON:"
-            android:textSize="14sp"
-            android:paddingBottom="8dp" />
-
-        <!-- 음식별 결과 동적 생성 영역 -->
         <LinearLayout
-            android:id="@+id/foodContainerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="8dp" />
+            android:padding="8dp">
 
-        <!-- 직접 입력 페이지 이동 버튼 -->
-        <Button
-            android:id="@+id/buttonManualInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="직접 입력하기"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/teal_200"
-            android:textColor="@android:color/white" />
-    </LinearLayout>
-</ScrollView>
+            <!-- JSON 원본 표시용 (생략 가능) -->
+            <TextView
+                android:id="@+id/receivedJsonTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="영양 성분 결과가 여기에 표시됩니다."
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:background="#FFF3E0"
+                android:padding="16dp"
+                android:elevation="2dp" />
+
+            <!-- 음식 영양소 리스트가 들어갈 동적 영역 -->
+            <LinearLayout
+                android:id="@+id/foodContainerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp" />
+
+            <!-- 직접 입력 이동 버튼 -->
+            <Button
+                android:id="@+id/buttonManualInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="직접 입력하기"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="@android:color/holo_orange_light"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

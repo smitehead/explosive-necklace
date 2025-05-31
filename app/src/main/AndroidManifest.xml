@@ -29,7 +29,7 @@
             android:name=".LabelFragment"
             android:exported="false" />
         <activity
-            android:name=".LabelActivity"
+            android:name=".LabelFragment"
             android:exported="false" />
         <activity
             android:name=".ResultFragment"

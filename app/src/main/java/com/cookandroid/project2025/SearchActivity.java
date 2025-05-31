@@ -3,14 +3,10 @@ package com.cookandroid.project2025;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.*;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,7 +15,7 @@ import com.google.firebase.database.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class SearchActivity extends Fragment {
+public class SearchActivity extends AppCompatActivity {
 
     private EditText editTextSearch, editTextGram;
     private TextView textViewResult;
@@ -27,34 +23,30 @@ public class SearchActivity extends Fragment {
     private ListView recentListView;
 
     private DataSnapshot latestSnapshot;
-
     private ArrayList<String> recentList = new ArrayList<>();
     private ArrayAdapter<String> recentAdapter;
 
     private static final String PREF_NAME = "RecentSearches";
     private static final String KEY_RECENT = "recent_keywords";
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_search_fragment, container, false);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_search_fragment); // XML 파일명은 유지하거나 바꿔도 OK
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        editTextSearch = view.findViewById(R.id.editTextSearch);
-        editTextGram = view.findViewById(R.id.editTextGram);
-        textViewResult = view.findViewById(R.id.textViewResult);
-        buttonSearch = view.findViewById(R.id.buttonSearch);
-        buttonSave = view.findViewById(R.id.buttonSave);
-        recentListView = view.findViewById(R.id.recentListView);
+        editTextSearch = findViewById(R.id.editTextSearch);
+        editTextGram = findViewById(R.id.editTextGram);
+        textViewResult = findViewById(R.id.textViewResult);
+        buttonSearch = findViewById(R.id.buttonSearch);
+        buttonSave = findViewById(R.id.buttonSave);
+        recentListView = findViewById(R.id.recentListView);
 
         loadRecentSearches();
 
-        recentAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, recentList);
+        recentAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, recentList);
         recentListView.setAdapter(recentAdapter);
 
-        recentListView.setOnItemClickListener((parent, view1, position, id) -> {
+        recentListView.setOnItemClickListener((parent, view, position, id) -> {
             String selected = recentList.get(position);
             editTextSearch.setText(selected);
             searchFood(selected);
@@ -72,8 +64,16 @@ public class SearchActivity extends Fragment {
     }
 
     private void searchFood(String foodName) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("UserNutritionData").child("데이터");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        String uid = user.getUid();
+
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("데이터");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -81,6 +81,7 @@ public class SearchActivity extends Fragment {
                     String dbName = item.child("음식명").getValue(String.class);
                     if (dbName != null && dbName.trim().equalsIgnoreCase(foodName)) {
                         latestSnapshot = item;
+
                         StringBuilder result = new StringBuilder();
                         for (DataSnapshot nutrient : item.getChildren()) {
                             result.append(nutrient.getKey()).append(": ").append(nutrient.getValue()).append("\n");
@@ -95,14 +96,14 @@ public class SearchActivity extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "검색 실패: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "검색 실패: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void saveFoodData() {
         if (latestSnapshot == null) {
-            Toast.makeText(getContext(), "먼저 음식을 검색하세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "먼저 음식을 검색하세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -129,7 +130,7 @@ public class SearchActivity extends Fragment {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
-            Toast.makeText(getContext(), "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -138,21 +139,22 @@ public class SearchActivity extends Fragment {
         String foodName = latestSnapshot.child("음식명").getValue(String.class);
 
         DatabaseReference userRef = FirebaseDatabase.getInstance()
-                .getReference("UserNutritionData").child(uid).child(today);
+                .getReference("UserNutritionData")
+                .child(uid)
+                .child(today);
 
         userRef.child(foodName).setValue(adjustedSummary.toString())
-                .addOnSuccessListener(unused -> Toast.makeText(getContext(), "섭취 정보 저장 완료!", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Toast.makeText(getContext(), "저장 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnSuccessListener(unused -> Toast.makeText(this, "섭취 정보 저장 완료!", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(this, "저장 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     private void saveRecentSearch(String keyword) {
-        SharedPreferences prefs = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         Set<String> set = new LinkedHashSet<>(prefs.getStringSet(KEY_RECENT, new LinkedHashSet<>()));
 
-        set.remove(keyword); // 중복 제거
-        set.add(keyword);    // 최신 항목으로 추가
+        set.remove(keyword);
+        set.add(keyword);
 
-        // 최대 5개 유지
         while (set.size() > 5) {
             Iterator<String> it = set.iterator();
             if (it.hasNext()) {
@@ -166,7 +168,7 @@ public class SearchActivity extends Fragment {
     }
 
     private void loadRecentSearches() {
-        SharedPreferences prefs = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         Set<String> set = prefs.getStringSet(KEY_RECENT, new LinkedHashSet<>());
         recentList.clear();
         recentList.addAll(set);
