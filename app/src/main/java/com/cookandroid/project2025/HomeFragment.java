@@ -57,14 +57,6 @@ public class HomeFragment extends Fragment {
         overKcalTextView = view.findViewById(R.id.overKcalTextView);
         recommendationTextView = view.findViewById(R.id.recommendationTextView);
         pieChart = view.findViewById(R.id.pieChart);
-        buttonMultiFood = view.findViewById(R.id.buttonMultiFood);
-
-        buttonMultiFood.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frame_layout, new MultiCheckActivity())
-                    .addToBackStack(null)
-                    .commit();
-        });
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) return view;

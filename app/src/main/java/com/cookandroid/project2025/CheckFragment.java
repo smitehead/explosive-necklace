@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
+
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -66,7 +68,13 @@ public class CheckFragment extends Fragment {
         textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
 
-        // ✅ 성분표 스캔 버튼 연결
+        Button selfUploadButton = view.findViewById(R.id.selfUploadButton);
+        selfUploadButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), SearchActivity.class);
+            startActivity(intent);
+        });
+
+        // 성분표 스캔 버튼 연결
         Button buttonLabelScan = view.findViewById(R.id.buttonLabelScan);
         buttonLabelScan.setOnClickListener(v -> {
             LabelFragment labelFragment = new LabelFragment();

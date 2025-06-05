@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new CheckFragment());
             } else if (itemId == R.id.kcal) {
                 replaceFragment(new KcalFragment());
+            } else if (itemId == R.id.multicheck) {
+                replaceFragment(new MultiCheckActivity());
             }
             return true;
 

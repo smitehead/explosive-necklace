@@ -25,7 +25,7 @@
         android:background="@drawable/nav_style_radius"
         app:itemIconTint="@drawable/nav_style_color"
         app:itemTextColor="@drawable/nav_style_color"
-        app:itemIconSize="24dp"
+        app:itemIconSize="26dp"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

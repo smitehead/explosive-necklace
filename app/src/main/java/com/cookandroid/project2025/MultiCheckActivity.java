@@ -65,7 +65,7 @@ public class MultiCheckActivity extends Fragment {
         textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
 
-        // ✅ "성분표 스캔하기" 버튼 클릭 시 LabelActivity로 이동
+        // "성분표 스캔하기" 버튼 클릭 시 LabelActivity로 이동
         Button buttonLabelScan = view.findViewById(R.id.buttonLabelScan);
         buttonLabelScan.setOnClickListener(v -> {
             if (getActivity() != null) {
