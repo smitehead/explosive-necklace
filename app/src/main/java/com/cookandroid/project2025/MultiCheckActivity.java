@@ -1,9 +1,6 @@
 package com.cookandroid.project2025;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.exifinterface.media.ExifInterface;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,7 +37,7 @@ public class MultiCheckActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_multi_check);  // ⚠ XML 파일명도 수정 필요!
+        setContentView(R.layout.fragment_multi_check);
 
         imageView = findViewById(R.id.imageView);
         textView = findViewById(R.id.textView);
@@ -87,7 +83,7 @@ public class MultiCheckActivity extends AppCompatActivity {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("http://yourserver.com/upload")  // ✅ 실제 서버 주소로 변경
+                    .url("http://yourserver.com/upload")
                     .post(requestBody)
                     .build();
 

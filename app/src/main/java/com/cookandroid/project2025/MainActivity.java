@@ -33,9 +33,10 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.check) {
                 replaceFragment(new CheckFragment());
             } else if (itemId == R.id.kcal) {
+                replaceFragment(new KcalFragment());
+            } else if (itemId == R.id.multicheck) {
                 Intent intent = new Intent(MainActivity.this, MultiCheckActivity.class);
                 startActivity(intent);
-                return true;
             }
 
             return true;
