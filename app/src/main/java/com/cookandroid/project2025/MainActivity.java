@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import com.cookandroid.project2025.MultiCheckActivity;
 
+
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.cookandroid.project2025.databinding.ActivityMainBinding;
@@ -22,20 +25,22 @@ public class MainActivity extends AppCompatActivity {
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if(itemId==R.id.home) {
+
+            if (itemId == R.id.home) {
                 replaceFragment(new HomeFragment());
-            } else if (itemId==R.id.profile) {
+            } else if (itemId == R.id.profile) {
                 replaceFragment(new ProfileFragment());
-            } else if (itemId==R.id.check) {
+            } else if (itemId == R.id.check) {
                 replaceFragment(new CheckFragment());
             } else if (itemId == R.id.kcal) {
-                replaceFragment(new KcalFragment());
-            } else if (itemId == R.id.multicheck) {
-                replaceFragment(new MultiCheckActivity());
+                Intent intent = new Intent(MainActivity.this, MultiCheckActivity.class);
+                startActivity(intent);
+                return true;
             }
-            return true;
 
+            return true;
         });
+
     }
 
     private void replaceFragment(Fragment fragment){
