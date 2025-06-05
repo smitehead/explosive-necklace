@@ -24,7 +24,6 @@ public class KcalFragment extends Fragment {
     private TextView kcalTextView, carbsTextView, proteinTextView, fatTextView;
     private ProgressBar progressKcal, progressCarbs, progressProtein, progressFat;
 
-    // 📅 캘린더 관련
     private LinearLayout datesContainer, detailLayout;
     private TextView detailText, tvMonthYear;
     private ImageButton btnPrevMonth;
@@ -47,7 +46,6 @@ public class KcalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // 🔗 Firebase View 연결
         kcalTextView = view.findViewById(R.id.kcalText);
         carbsTextView = view.findViewById(R.id.carbsText);
         proteinTextView = view.findViewById(R.id.proteinText);
@@ -58,7 +56,6 @@ public class KcalFragment extends Fragment {
         progressProtein = view.findViewById(R.id.progressProtein);
         progressFat = view.findViewById(R.id.progressFat);
 
-        // 📅 달력 View 연결
         datesContainer = view.findViewById(R.id.datesContainer);
         detailLayout = view.findViewById(R.id.detailLayout);
         detailText = view.findViewById(R.id.detailText);
@@ -97,9 +94,6 @@ public class KcalFragment extends Fragment {
                 }
             }
         });
-
-        // 🔗 Firebase 데이터 처리
-        loadFirebaseNutritionData();
     }
 
     private void renderMonth() {
@@ -177,6 +171,7 @@ public class KcalFragment extends Fragment {
                         new SimpleDateFormat("yyyy-MM-dd (EEE)", Locale.getDefault()).format(clickedDate.getTime()));
 
                 scrollToDate(clickedDate);
+                loadFirebaseNutritionData(clickedDate);
             });
 
             allDateButtons.add(btn);
@@ -203,7 +198,7 @@ public class KcalFragment extends Fragment {
                 && c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR);
     }
 
-    private void loadFirebaseNutritionData() {
+    private void loadFirebaseNutritionData(Calendar selectedDate) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             Toast.makeText(getContext(), "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
@@ -211,11 +206,11 @@ public class KcalFragment extends Fragment {
         }
 
         String uid = user.getUid();
-        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String selectedDateStr = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate.getTime());
 
         DatabaseReference userInfoRef = FirebaseDatabase.getInstance().getReference("UserAccount").child(uid);
         DatabaseReference ref = FirebaseDatabase.getInstance()
-                .getReference("UserNutritionData").child(uid).child(today);
+                .getReference("UserNutritionData").child(uid).child(selectedDateStr);
 
         userInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

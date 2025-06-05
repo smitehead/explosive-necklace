@@ -1,6 +1,10 @@
 package com.cookandroid.project2025;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -9,17 +13,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -32,105 +50,158 @@ import okhttp3.Response;
 
 public class MultiCheckFragment extends Fragment {
 
-    private static final int REQUEST_CODE_SELECT_IMAGE = 1001;
-
     private ImageView imageView;
     private TextView textView;
     private Button uploadButton;
+    private Uri selectedImageUri;
 
-    private Uri imageUri;
+    private final OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(180, TimeUnit.SECONDS)
+            .readTimeout(180, TimeUnit.SECONDS)
+            .writeTimeout(180, TimeUnit.SECONDS)
+            .build();
 
-    @Nullable
+    private ActivityResultLauncher<String> getContent;
+    private ActivityResultLauncher<Uri> cameraLauncher;
+    private Uri photoUri;
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_multi_check, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+        cameraLauncher = registerForActivityResult(
+                new ActivityResultContracts.TakePicture(),
+                result -> {
+                    if (result) {
+                        selectedImageUri = photoUri;
+                        imageView.setImageURI(photoUri);
+                    } else {
+                        Toast.makeText(getContext(), "사진 촬영이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_multi_check, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         imageView = view.findViewById(R.id.imageView);
         textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
 
-        imageView.setOnClickListener(v -> openGallery());
+        getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) {
+                        selectedImageUri = uri;
+                        imageView.setImageURI(uri);
+                    }
+                });
 
-        uploadButton.setOnClickListener(v -> {
-            if (imageUri != null) {
-                uploadImageToServer(imageUri);
+        imageView.setOnClickListener(v -> getContent.launch("image/*"));
+
+        FloatingActionButton cameraFab = view.findViewById(R.id.cameraFab);
+        cameraFab.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                    != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, 100);
             } else {
-                Toast.makeText(getContext(), "이미지를 먼저 선택하세요", Toast.LENGTH_SHORT).show();
+                launchCamera();
             }
         });
 
-        return view;
+        uploadButton.setOnClickListener(v -> {
+            if (selectedImageUri != null) {
+                uploadImage(selectedImageUri);
+            } else {
+                Toast.makeText(getContext(), "이미지를 선택해주세요.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
+    private void launchCamera() {
+        File photoFile = new File(requireContext().getExternalFilesDir(null), "temp_photo_multi.jpg");
+        photoUri = FileProvider.getUriForFile(
+                requireContext(),
+                requireContext().getPackageName() + ".fileprovider",
+                photoFile
+        );
+        cameraLauncher.launch(photoUri);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == getActivity().RESULT_OK && data != null) {
-            imageUri = data.getData();
-            imageView.setImageURI(imageUri);
-        }
-    }
-
-    private void uploadImageToServer(Uri imageUri) {
+    private void uploadImage(Uri uri) {
         try {
-            InputStream inputStream = requireContext().getContentResolver().openInputStream(imageUri);
-            byte[] imageBytes = getBytes(inputStream);
+            Context context = getContext();
+            if (context == null) return;
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            options.inSampleSize = 1;
+
+            InputStream inputStream = context.getContentResolver().openInputStream(uri);
+            Bitmap original = BitmapFactory.decodeStream(inputStream, null, options);
+
+            byte[] imageBytes = bitmapToByteArray(original);
 
             RequestBody requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
-                    .addFormDataPart("image", "upload.jpg",
-                            RequestBody.create(imageBytes, MediaType.parse("image/jpeg")))
+                    .addFormDataPart("image", "uploaded_image_multi.jpg",
+                            RequestBody.create(MediaType.parse("image/jpeg"), imageBytes))
                     .build();
 
             Request request = new Request.Builder()
-                    .url("http://yourserver.com/upload") // 실제 서버 주소로 바꿔야 함
+                    .url("https://5437-118-39-131-129.ngrok-free.app/upload_image_multi")
                     .post(requestBody)
                     .build();
 
-            OkHttpClient client = new OkHttpClient();
             client.newCall(request).enqueue(new Callback() {
                 @Override
-                public void onFailure(Call call, IOException e) {
-                    if (getActivity() == null) return;
-                    getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "업로드 실패", Toast.LENGTH_SHORT).show());
-                    Log.e("Upload", "에러", e);
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(() ->
+                                Toast.makeText(getContext(), "업로드 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    }
                 }
 
                 @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    if (getActivity() == null) return;
-                    if (response.isSuccessful()) {
-                        String result = response.body().string();
-                        getActivity().runOnUiThread(() -> textView.setText(result));
-                    } else {
-                        getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "서버 오류", Toast.LENGTH_SHORT).show());
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    if (response.body() == null) return;
+                    String responseBodyString = response.body().string();
+                    Log.d("MultiResponse", responseBodyString);
+
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(() -> {
+                            try {
+                                JSONObject jsonResponse = new JSONObject(responseBodyString);
+                                JSONArray classArray = jsonResponse.getJSONArray("class");
+                                textView.setText("인식된 음식: " + classArray.toString());
+
+                                // 결과 페이지로 이동
+                                ResultFragment resultFragment = ResultFragment.newInstance(classArray.toString());
+                                getParentFragmentManager().beginTransaction()
+                                        .replace(R.id.frame_layout, resultFragment)
+                                        .addToBackStack(null)
+                                        .commit();
+                            } catch (JSONException e) {
+                                Toast.makeText(getContext(), "JSON 파싱 오류: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 }
             });
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), "이미지 처리 실패", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "이미지 업로드 오류", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private byte[] getBytes(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-
-        int len;
-        while ((len = inputStream.read(buffer)) != -1) {
-            byteBuffer.write(buffer, 0, len);
-        }
-        return byteBuffer.toByteArray();
+    private byte[] bitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        return stream.toByteArray();
     }
 }
