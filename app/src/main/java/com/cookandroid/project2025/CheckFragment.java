@@ -1,11 +1,14 @@
 package com.cookandroid.project2025;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,21 +18,25 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
-
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
@@ -57,6 +64,25 @@ public class CheckFragment extends Fragment {
             .build();
 
     private ActivityResultLauncher<String> getContent;
+    private ActivityResultLauncher<Uri> cameraLauncher;
+    private Uri photoUri;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        cameraLauncher = registerForActivityResult(
+                new ActivityResultContracts.TakePicture(),
+                result -> {
+                    if (result) {
+                        selectedImageUri = photoUri;
+                        imageView.setImageURI(photoUri);
+                    } else {
+                        Toast.makeText(getContext(), "사진 촬영이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,7 +101,6 @@ public class CheckFragment extends Fragment {
             startActivity(intent);
         });
 
-        // 성분표 스캔 버튼 연결
         ImageButton buttonLabelScan = view.findViewById(R.id.buttonLabelScan);
         buttonLabelScan.setOnClickListener(v -> {
             LabelFragment labelFragment = new LabelFragment();
@@ -95,6 +120,16 @@ public class CheckFragment extends Fragment {
 
         imageView.setOnClickListener(v -> getContent.launch("image/*"));
 
+        FloatingActionButton cameraFab = view.findViewById(R.id.cameraFab);
+        cameraFab.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                    != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, 100);
+            } else {
+                launchCamera();
+            }
+        });
+
         uploadButton.setOnClickListener(v -> {
             if (selectedImageUri != null) {
                 uploadImage(selectedImageUri);
@@ -104,13 +139,29 @@ public class CheckFragment extends Fragment {
         });
     }
 
+    private void launchCamera() {
+        File photoFile = new File(requireContext().getExternalFilesDir(null), "temp_photo.jpg");
+        photoUri = FileProvider.getUriForFile(
+                requireContext(),
+                requireContext().getPackageName() + ".fileprovider",
+                photoFile
+        );
+        cameraLauncher.launch(photoUri);
+    }
+
     private void uploadImage(Uri uri) {
         try {
             Context context = getContext();
             if (context == null) return;
 
-            Bitmap resizedBitmap = resizeImageWithRotation(context, uri, 640, 640);
-            byte[] imageBytes = bitmapToByteArray(resizedBitmap);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            options.inSampleSize = 1;
+
+            InputStream inputStream = context.getContentResolver().openInputStream(uri);
+            Bitmap original = BitmapFactory.decodeStream(inputStream, null, options);
+
+            byte[] imageBytes = bitmapToByteArray(original);
 
             RequestBody requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
@@ -119,7 +170,7 @@ public class CheckFragment extends Fragment {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("https://2ab2-118-39-131-129.ngrok-free.app/upload_image")
+                    .url("https://5a21-118-39-131-129.ngrok-free.app/upload_image")
                     .post(requestBody)
                     .build();
 
@@ -162,33 +213,6 @@ public class CheckFragment extends Fragment {
             e.printStackTrace();
             Toast.makeText(getContext(), "이미지 업로드 오류", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private Bitmap resizeImageWithRotation(Context context, Uri imageUri, int width, int height) throws IOException {
-        InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
-        Bitmap original = BitmapFactory.decodeStream(inputStream);
-
-        InputStream exifInputStream = context.getContentResolver().openInputStream(imageUri);
-        ExifInterface exif = new ExifInterface(exifInputStream);
-        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-        int degrees = exifToDegrees(orientation);
-        Bitmap rotated = rotateBitmap(original, degrees);
-
-        return Bitmap.createScaledBitmap(rotated, width, height, true);
-    }
-
-    private int exifToDegrees(int exifOrientation) {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) return 90;
-        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) return 180;
-        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) return 270;
-        return 0;
-    }
-
-    private Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
-        if (degrees == 0) return bitmap;
-        Matrix matrix = new Matrix();
-        matrix.postRotate(degrees);
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
     private byte[] bitmapToByteArray(Bitmap bitmap) {
