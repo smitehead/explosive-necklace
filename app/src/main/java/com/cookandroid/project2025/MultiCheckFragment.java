@@ -5,13 +5,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,7 +30,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class MultiCheckActivity extends AppCompatActivity {
+public class MultiCheckFragment extends Fragment {
 
     private static final int REQUEST_CODE_SELECT_IMAGE = 1001;
 
@@ -34,14 +38,18 @@ public class MultiCheckActivity extends AppCompatActivity {
     private TextView textView;
     private Button uploadButton;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_multi_check);
+    private Uri imageUri;
 
-        imageView = findViewById(R.id.imageView);
-        textView = findViewById(R.id.textView);
-        uploadButton = findViewById(R.id.uploadButton);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_multi_check, container, false);
+
+        imageView = view.findViewById(R.id.imageView);
+        textView = view.findViewById(R.id.textView);
+        uploadButton = view.findViewById(R.id.uploadButton);
 
         imageView.setOnClickListener(v -> openGallery());
 
@@ -49,12 +57,12 @@ public class MultiCheckActivity extends AppCompatActivity {
             if (imageUri != null) {
                 uploadImageToServer(imageUri);
             } else {
-                Toast.makeText(this, "이미지를 먼저 선택하세요", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "이미지를 먼저 선택하세요", Toast.LENGTH_SHORT).show();
             }
         });
-    }
 
-    private Uri imageUri;
+        return view;
+    }
 
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -62,10 +70,10 @@ public class MultiCheckActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK && data != null) {
+        if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == getActivity().RESULT_OK && data != null) {
             imageUri = data.getData();
             imageView.setImageURI(imageUri);
         }
@@ -73,7 +81,7 @@ public class MultiCheckActivity extends AppCompatActivity {
 
     private void uploadImageToServer(Uri imageUri) {
         try {
-            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+            InputStream inputStream = requireContext().getContentResolver().openInputStream(imageUri);
             byte[] imageBytes = getBytes(inputStream);
 
             RequestBody requestBody = new MultipartBody.Builder()
@@ -83,7 +91,7 @@ public class MultiCheckActivity extends AppCompatActivity {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("http://yourserver.com/upload")
+                    .url("http://yourserver.com/upload") // 실제 서버 주소로 바꿔야 함
                     .post(requestBody)
                     .build();
 
@@ -91,24 +99,26 @@ public class MultiCheckActivity extends AppCompatActivity {
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    runOnUiThread(() -> Toast.makeText(MultiCheckActivity.this, "업로드 실패", Toast.LENGTH_SHORT).show());
+                    if (getActivity() == null) return;
+                    getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "업로드 실패", Toast.LENGTH_SHORT).show());
                     Log.e("Upload", "에러", e);
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
+                    if (getActivity() == null) return;
                     if (response.isSuccessful()) {
                         String result = response.body().string();
-                        runOnUiThread(() -> textView.setText(result));
+                        getActivity().runOnUiThread(() -> textView.setText(result));
                     } else {
-                        runOnUiThread(() -> Toast.makeText(MultiCheckActivity.this, "서버 오류", Toast.LENGTH_SHORT).show());
+                        getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "서버 오류", Toast.LENGTH_SHORT).show());
                     }
                 }
             });
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "이미지 처리 실패", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "이미지 처리 실패", Toast.LENGTH_SHORT).show();
         }
     }
 

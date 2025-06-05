@@ -20,9 +20,6 @@
             android:name=".SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".MultiCheckActivity"
-            android:exported="false" />
-        <activity
             android:name=".LabelResultActivity"
             android:exported="false" />
         <activity

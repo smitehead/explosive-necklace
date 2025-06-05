@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import com.cookandroid.project2025.MultiCheckActivity;
 
 
 import android.content.Intent;
@@ -35,8 +34,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.kcal) {
                 replaceFragment(new KcalFragment());
             } else if (itemId == R.id.multicheck) {
-                Intent intent = new Intent(MainActivity.this, MultiCheckActivity.class);
-                startActivity(intent);
+                replaceFragment(new MultiCheckFragment());
             }
 
             return true;
