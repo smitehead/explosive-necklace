@@ -45,7 +45,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:textSize="16sp"
-            android:fontFamily="@font/pretendard_medium"/>
+            android:fontFamily="@font/pretendard_medium" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- 비밀번호 입력 -->
@@ -70,7 +70,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:textSize="16sp"
-            android:fontFamily="@font/pretendard_medium"/>
+            android:fontFamily="@font/pretendard_medium" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- 로그인 버튼 -->
@@ -112,7 +112,7 @@
             android:text="or"
             android:textColor="@color/black"
             android:textSize="14sp"
-            android:fontFamily="@font/pretendard_semibold"/>
+            android:fontFamily="@font/pretendard_semibold" />
     </LinearLayout>
 
     <!-- 회원가입 버튼 -->
@@ -130,6 +130,6 @@
         android:fontFamily="@font/pretendard_semibold"
         app:layout_constraintTop_toBottomOf="@id/dividerLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"  />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

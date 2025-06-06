@@ -54,7 +54,8 @@
             android:scaleType="centerCrop"
             android:contentDescription="업로드한 이미지"
             android:adjustViewBounds="true"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@tools:sample/avatars"
+            android:fontFamily="@font/pretendard_regular" />
     </com.google.android.material.card.MaterialCardView>
 
     <!-- 결과 텍스트 카드 -->
@@ -83,7 +84,7 @@
             android:hint="인식 결과가 여기에 표시됩니다."
             android:padding="16dp"
             android:textSize="16sp"
-            android:fontFamily="@font/pretendard_medium"/>
+            android:fontFamily="@font/pretendard_medium" />
     </com.google.android.material.card.MaterialCardView>
 
     <!-- 등록 버튼 -->

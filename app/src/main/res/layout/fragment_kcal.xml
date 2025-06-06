@@ -57,7 +57,9 @@
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/baseline_arrow_circle_left_24"
-                android:contentDescription="이전 달"/>
+                android:contentDescription="이전 달"
+                android:fontFamily="@font/pretendard_regular" />
+
 
             <TextView
                 android:id="@+id/tvMonthYear"
@@ -67,7 +69,7 @@
                 android:text="May 2025"
                 android:textSize="18sp"
                 android:gravity="center"
-                android:fontFamily="@font/pretendard_bold"/>
+                android:fontFamily="@font/pretendard_bold" />
 
             <!-- 오른쪽 더미 공간으로 균형 맞춤 -->
             <View
@@ -101,7 +103,7 @@
             android:text="오늘로 돌아가기"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/pretendard_semibold"/>
+            android:fontFamily="@font/pretendard_semibold" />
 
         <!-- 상세 정보 표시 -->
         <LinearLayout
@@ -119,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="선택된 날짜 상세 내용"
-                android:fontFamily="@font/pretendard_regular"/>
+                android:fontFamily="@font/pretendard_regular" />
         </LinearLayout>
 
     </LinearLayout>
@@ -143,7 +145,7 @@
             android:layout_marginStart="14dp"
             android:textColor="#000000"
             android:textSize="20sp"
-            android:fontFamily="@font/pretendard_semibold"/>
+            android:fontFamily="@font/pretendard_semibold" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -174,7 +176,7 @@
                         android:text="KCAL"
                         android:textColor="#000000"
                         android:textSize="16sp"
-                        android:fontFamily="@font/pretendard_medium" />
+                        android:fontFamily="@font/pretendard_medium"  />
 
                     <ProgressBar
                         android:id="@+id/progressKcal"
@@ -196,7 +198,7 @@
                         android:textAlignment="viewEnd"
                         android:textColor="#000000"
                         android:textSize="16sp"
-                        android:fontFamily="@font/pretendard_medium"/>
+                        android:fontFamily="@font/pretendard_medium" />
                 </LinearLayout>
 
                 <!-- 단백질 -->
@@ -213,7 +215,7 @@
                         android:text="단백질"
                         android:textColor="#000000"
                         android:textSize="16sp"
-                        android:fontFamily="@font/pretendard_medium"/>
+                        android:fontFamily="@font/pretendard_medium" />
 
                     <ProgressBar
                         android:id="@+id/progressProtein"
@@ -235,7 +237,7 @@
                         android:textAlignment="viewEnd"
                         android:textColor="#000000"
                         android:textSize="16sp"
-                        android:fontFamily="@font/pretendard_medium"/>
+                        android:fontFamily="@font/pretendard_medium" />
                 </LinearLayout>
 
                 <!-- 탄수화물 -->
@@ -252,7 +254,7 @@
                         android:text="탄수화물"
                         android:textColor="#000000"
                         android:textSize="16sp"
-                        android:fontFamily="@font/pretendard_medium"/>
+                        android:fontFamily="@font/pretendard_medium" />
 
                     <ProgressBar
                         android:id="@+id/progressCarbs"
@@ -274,7 +276,7 @@
                         android:textAlignment="viewEnd"
                         android:textColor="#000000"
                         android:textSize="16sp"
-                        android:fontFamily="@font/pretendard_medium"/>
+                        android:fontFamily="@font/pretendard_medium" />
                 </LinearLayout>
 
                 <!-- 지방 -->
@@ -290,7 +292,7 @@
                         android:text="지방"
                         android:textColor="#000000"
                         android:textSize="16sp"
-                        android:fontFamily="@font/pretendard_medium"/>
+                        android:fontFamily="@font/pretendard_medium" />
 
                     <ProgressBar
                         android:id="@+id/progressFat"
@@ -312,7 +314,7 @@
                         android:textAlignment="viewEnd"
                         android:textColor="#000000"
                         android:textSize="16sp"
-                        android:fontFamily="@font/pretendard_medium"/>
+                        android:fontFamily="@font/pretendard_medium" />
                 </LinearLayout>
 
             </LinearLayout>

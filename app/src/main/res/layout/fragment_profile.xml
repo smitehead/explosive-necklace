@@ -41,7 +41,8 @@
             android:src="@drawable/baseline_settings_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:fontFamily="@font/pretendard_regular" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- 콘텐츠 전체 영역 -->
@@ -86,7 +87,7 @@
                     android:gravity="center"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:fontFamily="@font/pretendard_semibold"/>
+                    android:fontFamily="@font/pretendard_semibold" />
             </FrameLayout>
         </FrameLayout>
 
@@ -99,7 +100,7 @@
             android:textSize="16sp"
             android:layout_marginTop="12dp"
             android:layout_gravity="left"
-            android:fontFamily="@font/pretendard_semibold"/>
+            android:fontFamily="@font/pretendard_semibold" />
 
         <!-- 정보 4칸 (성별/나이/체중/키) -->
         <LinearLayout
@@ -127,7 +128,7 @@
                     android:textColor="@android:color/black"
                     android:gravity="center"
                     android:background="@drawable/circle_border"
-                    android:fontFamily="@font/pretendard_semibold"/>
+                    android:fontFamily="@font/pretendard_semibold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -136,7 +137,7 @@
                     android:textSize="14sp"
                     android:layout_marginTop="4dp"
                     android:textColor="#767676"
-                    android:fontFamily="@font/pretendard_regular"/>
+                    android:fontFamily="@font/pretendard_regular" />
             </LinearLayout>
 
             <!-- 나이 -->
@@ -156,7 +157,7 @@
                     android:textColor="@android:color/black"
                     android:gravity="center"
                     android:background="@drawable/circle_border"
-                    android:fontFamily="@font/pretendard_semibold"/>
+                    android:fontFamily="@font/pretendard_semibold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -165,7 +166,7 @@
                     android:textSize="14sp"
                     android:layout_marginTop="4dp"
                     android:textColor="#767676"
-                    android:fontFamily="@font/pretendard_regular"/>
+                    android:fontFamily="@font/pretendard_regular" />
             </LinearLayout>
 
             <!-- 체중 -->
@@ -185,7 +186,7 @@
                     android:textColor="@android:color/black"
                     android:gravity="center"
                     android:background="@drawable/circle_border"
-                    android:fontFamily="@font/pretendard_semibold"/>
+                    android:fontFamily="@font/pretendard_semibold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -194,7 +195,7 @@
                     android:textSize="14sp"
                     android:layout_marginTop="4dp"
                     android:textColor="#767676"
-                    android:fontFamily="@font/pretendard_regular"/>
+                    android:fontFamily="@font/pretendard_regular" />
             </LinearLayout>
 
             <!-- 키 -->
@@ -214,7 +215,7 @@
                     android:textColor="@android:color/black"
                     android:gravity="center"
                     android:background="@drawable/circle_border"
-                    android:fontFamily="@font/pretendard_semibold"/>
+                    android:fontFamily="@font/pretendard_semibold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -223,7 +224,7 @@
                     android:textSize="14sp"
                     android:layout_marginTop="4dp"
                     android:textColor="#767676"
-                    android:fontFamily="@font/pretendard_regular"/>
+                    android:fontFamily="@font/pretendard_regular" />
             </LinearLayout>
         </LinearLayout>
 
@@ -242,7 +243,7 @@
                 android:text="BMI 계산 중..."
                 android:textSize="16sp"
                 android:textColor="#FFFFFF"
-                android:fontFamily="@font/pretendard_medium"/>
+                android:fontFamily="@font/pretendard_medium" />
         </LinearLayout>
 
         <Button
@@ -251,6 +252,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="프로필 변경"
-            android:fontFamily="@font/pretendard_semibold"/>
+            android:fontFamily="@font/pretendard_semibold" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

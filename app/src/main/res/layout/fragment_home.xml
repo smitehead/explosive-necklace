@@ -68,7 +68,7 @@
                 android:layout_height="200dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="8dp"
-                android:fontFamily="@font/pretendard_medium"/>
+                android:fontFamily="@font/pretendard_medium" />
 
             <TextView
                 android:id="@+id/textRemainingKcal"
@@ -80,7 +80,7 @@
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="10dp"
-                android:fontFamily="@font/pretendard_semibold"/>
+                android:fontFamily="@font/pretendard_semibold" />
 
             <!-- 카드: 영양 정보 -->
             <com.google.android.material.card.MaterialCardView
@@ -111,7 +111,7 @@
                             android:text="KCAL"
                             android:textColor="#000000"
                             android:textSize="16sp"
-                            android:fontFamily="@font/pretendard_medium"/>
+                            android:fontFamily="@font/pretendard_medium" />
 
                         <ProgressBar
                             android:id="@+id/progressKcal"
@@ -133,7 +133,7 @@
                             android:textAlignment="viewEnd"
                             android:textColor="#000000"
                             android:textSize="16sp"
-                            android:fontFamily="@font/pretendard_medium"/>
+                            android:fontFamily="@font/pretendard_medium" />
                     </LinearLayout>
 
                     <!-- 단백질 -->
@@ -150,7 +150,7 @@
                             android:text="단백질"
                             android:textColor="#000000"
                             android:textSize="16sp"
-                            android:fontFamily="@font/pretendard_medium"/>
+                            android:fontFamily="@font/pretendard_medium" />
 
                         <ProgressBar
                             android:id="@+id/progressProtein"
@@ -172,7 +172,7 @@
                             android:textAlignment="viewEnd"
                             android:textColor="#000000"
                             android:textSize="16sp"
-                            android:fontFamily="@font/pretendard_medium"/>
+                            android:fontFamily="@font/pretendard_medium" />
                     </LinearLayout>
 
                     <!-- 탄수화물 -->
@@ -189,7 +189,7 @@
                             android:text="탄수화물"
                             android:textColor="#000000"
                             android:textSize="16sp"
-                            android:fontFamily="@font/pretendard_medium"/>
+                            android:fontFamily="@font/pretendard_medium" />
 
                         <ProgressBar
                             android:id="@+id/progressCarbs"
@@ -211,7 +211,7 @@
                             android:textAlignment="viewEnd"
                             android:textColor="#000000"
                             android:textSize="16sp"
-                            android:fontFamily="@font/pretendard_medium"/>
+                            android:fontFamily="@font/pretendard_medium" />
                     </LinearLayout>
 
                     <!-- 지방 -->
@@ -227,7 +227,7 @@
                             android:text="지방"
                             android:textColor="#000000"
                             android:textSize="16sp"
-                            android:fontFamily="@font/pretendard_medium"/>
+                            android:fontFamily="@font/pretendard_medium" />
 
                         <ProgressBar
                             android:id="@+id/progressFat"
@@ -249,7 +249,7 @@
                             android:textAlignment="viewEnd"
                             android:textColor="#000000"
                             android:textSize="16sp"
-                            android:fontFamily="@font/pretendard_medium"/>
+                            android:fontFamily="@font/pretendard_medium" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -275,7 +275,7 @@
                     android:textSize="18sp"
                     android:textColor="#000000"
                     android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/pretendard_medium"/>
+                    android:fontFamily="@font/pretendard_medium" />
 
                 <TextView
                     android:id="@+id/recommendationTextView"
@@ -284,7 +284,7 @@
                     android:text="운동 추천 결과가 여기에 표시됩니다."
                     android:textSize="16sp"
                     android:textColor="#333333"
-                    android:fontFamily="@font/pretendard_regular"/>
+                    android:fontFamily="@font/pretendard_regular" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
