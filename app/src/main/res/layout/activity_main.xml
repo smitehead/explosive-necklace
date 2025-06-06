@@ -14,7 +14,11 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+<<<<<<< HEAD
         app:layout_constraintTop_toTopOf="parent" >
+=======
+        app:layout_constraintTop_toTopOf="parent">
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
     </FrameLayout>
 
 

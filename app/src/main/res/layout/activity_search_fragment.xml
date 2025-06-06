@@ -19,8 +19,12 @@
             android:hint="음식 이름을 입력하세요"
             android:inputType="text"
             android:background="@android:drawable/edit_text"
+<<<<<<< HEAD
             android:padding="12dp"
             android:fontFamily="@font/pretendard_medium" />
+=======
+            android:padding="12dp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
         <!-- 검색 버튼 -->
         <Button
@@ -30,8 +34,12 @@
             android:text="검색"
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/blue"
+<<<<<<< HEAD
             android:textColor="@android:color/white"
             android:fontFamily="@font/pretendard_semibold" />
+=======
+            android:textColor="@android:color/white" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
         <!-- 검색 결과 텍스트 -->
         <TextView
@@ -42,8 +50,12 @@
             android:layout_marginTop="12dp"
             android:text="결과가 여기에 표시됩니다."
             android:background="#EEEEEE"
+<<<<<<< HEAD
             android:textSize="16sp"
             android:fontFamily="@font/pretendard_medium" />
+=======
+            android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
         <!-- 섭취량 입력 -->
         <EditText
@@ -54,8 +66,12 @@
             android:inputType="number"
             android:background="@android:drawable/edit_text"
             android:layout_marginTop="12dp"
+<<<<<<< HEAD
             android:padding="12dp"
             android:fontFamily="@font/pretendard_medium" />
+=======
+            android:padding="12dp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
         <!-- 저장 버튼 -->
         <Button
@@ -65,8 +81,12 @@
             android:text="섭취 정보 저장"
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/teal_200"
+<<<<<<< HEAD
             android:textColor="@android:color/white"
             android:fontFamily="@font/pretendard_semibold" />
+=======
+            android:textColor="@android:color/white" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
         <!-- 최근 검색어 리스트 -->
         <TextView
@@ -74,9 +94,15 @@
             android:layout_height="wrap_content"
             android:text="최근 검색어"
             android:textSize="16sp"
+<<<<<<< HEAD
             android:layout_marginTop="24dp"
             android:paddingTop="8dp"
             android:fontFamily="@font/pretendard_semibold" />
+=======
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:paddingTop="8dp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
         <ListView
             android:id="@+id/recentListView"
@@ -85,8 +111,12 @@
             android:divider="@android:color/darker_gray"
             android:dividerHeight="1dp"
             android:paddingTop="4dp"
+<<<<<<< HEAD
             android:nestedScrollingEnabled="true"
             android:fontFamily="@font/pretendard_medium"  />
+=======
+            android:nestedScrollingEnabled="true" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
     </LinearLayout>
 </ScrollView>

@@ -16,10 +16,17 @@
         android:text="Caloric\nCoach"
         android:textColor="@color/black"
         android:textSize="35sp"
+<<<<<<< HEAD
         android:gravity="center"
         android:textAlignment="center"
         android:lineSpacingExtra="4dp"
         android:fontFamily="@font/pretendard_bold"
+=======
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:lineSpacingExtra="4dp"
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -44,8 +51,12 @@
             android:inputType="textEmailAddress"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
+<<<<<<< HEAD
             android:textSize="16sp"
             android:fontFamily="@font/pretendard_medium" />
+=======
+            android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- 비밀번호 입력 -->
@@ -59,7 +70,11 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
+<<<<<<< HEAD
         app:endIconMode="password_toggle" >
+=======
+        app:endIconMode="password_toggle">
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextPassword"
@@ -69,8 +84,12 @@
             android:inputType="textPassword"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
+<<<<<<< HEAD
             android:textSize="16sp"
             android:fontFamily="@font/pretendard_medium" />
+=======
+            android:textSize="16sp"/>
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- 로그인 버튼 -->
@@ -85,7 +104,10 @@
         android:text="로그인"
         android:textColor="@color/white"
         android:textSize="20sp"
+<<<<<<< HEAD
         android:fontFamily="@font/pretendard_semibold"
+=======
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextPasswordLayout" />
@@ -106,6 +128,7 @@
 
         <TextView
             android:layout_width="wrap_content"
+<<<<<<< HEAD
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
@@ -113,6 +136,14 @@
             android:textColor="@color/black"
             android:textSize="14sp"
             android:fontFamily="@font/pretendard_semibold" />
+=======
+            android:layout_height="wrap_content"
+            android:text="또는"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_gravity="center" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
     </LinearLayout>
 
     <!-- 회원가입 버튼 -->
@@ -127,9 +158,15 @@
         android:text="회원가입"
         android:textColor="@color/black"
         android:textSize="20sp"
+<<<<<<< HEAD
         android:fontFamily="@font/pretendard_semibold"
         app:layout_constraintTop_toBottomOf="@id/dividerLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"  />
+=======
+        app:layout_constraintTop_toBottomOf="@id/dividerLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
 </androidx.constraintlayout.widget.ConstraintLayout>

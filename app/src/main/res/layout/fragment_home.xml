@@ -23,10 +23,17 @@
             android:text="Caloric\nCoach"
             android:textColor="#000000"
             android:textSize="20sp"
+<<<<<<< HEAD
             android:lineSpacingExtra="2dp"
             android:textAlignment="center"
             android:gravity="center"
             android:fontFamily="@font/pretendard_bold"
+=======
+            android:textStyle="bold"
+            android:lineSpacingExtra="2dp"
+            android:textAlignment="center"
+            android:gravity="center"
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -67,8 +74,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="15dp"
+<<<<<<< HEAD
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/pretendard_medium" />
+=======
+                android:layout_marginBottom="8dp"/>
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
             <TextView
                 android:id="@+id/textRemainingKcal"
@@ -79,8 +90,12 @@
                 android:textColor="#000000"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
+<<<<<<< HEAD
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/pretendard_semibold" />
+=======
+                android:layout_marginBottom="10dp"/>
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
             <!-- 카드: 영양 정보 -->
             <com.google.android.material.card.MaterialCardView
@@ -110,8 +125,12 @@
                             android:layout_height="wrap_content"
                             android:text="KCAL"
                             android:textColor="#000000"
+<<<<<<< HEAD
                             android:textSize="16sp"
                             android:fontFamily="@font/pretendard_medium" />
+=======
+                            android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                         <ProgressBar
                             android:id="@+id/progressKcal"
@@ -132,8 +151,12 @@
                             android:text="0k"
                             android:textAlignment="viewEnd"
                             android:textColor="#000000"
+<<<<<<< HEAD
                             android:textSize="16sp"
                             android:fontFamily="@font/pretendard_medium" />
+=======
+                            android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                     </LinearLayout>
 
                     <!-- 단백질 -->
@@ -149,8 +172,12 @@
                             android:layout_height="wrap_content"
                             android:text="단백질"
                             android:textColor="#000000"
+<<<<<<< HEAD
                             android:textSize="16sp"
                             android:fontFamily="@font/pretendard_medium" />
+=======
+                            android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                         <ProgressBar
                             android:id="@+id/progressProtein"
@@ -171,8 +198,12 @@
                             android:text="0g"
                             android:textAlignment="viewEnd"
                             android:textColor="#000000"
+<<<<<<< HEAD
                             android:textSize="16sp"
                             android:fontFamily="@font/pretendard_medium" />
+=======
+                            android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                     </LinearLayout>
 
                     <!-- 탄수화물 -->
@@ -188,8 +219,12 @@
                             android:layout_height="wrap_content"
                             android:text="탄수화물"
                             android:textColor="#000000"
+<<<<<<< HEAD
                             android:textSize="16sp"
                             android:fontFamily="@font/pretendard_medium" />
+=======
+                            android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                         <ProgressBar
                             android:id="@+id/progressCarbs"
@@ -210,8 +245,12 @@
                             android:text="0g"
                             android:textAlignment="viewEnd"
                             android:textColor="#000000"
+<<<<<<< HEAD
                             android:textSize="16sp"
                             android:fontFamily="@font/pretendard_medium" />
+=======
+                            android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                     </LinearLayout>
 
                     <!-- 지방 -->
@@ -226,8 +265,12 @@
                             android:layout_height="wrap_content"
                             android:text="지방"
                             android:textColor="#000000"
+<<<<<<< HEAD
                             android:textSize="16sp"
                             android:fontFamily="@font/pretendard_medium" />
+=======
+                            android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                         <ProgressBar
                             android:id="@+id/progressFat"
@@ -248,8 +291,12 @@
                             android:text="0g"
                             android:textAlignment="viewEnd"
                             android:textColor="#000000"
+<<<<<<< HEAD
                             android:textSize="16sp"
                             android:fontFamily="@font/pretendard_medium" />
+=======
+                            android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                     </LinearLayout>
 
                 </LinearLayout>
@@ -273,9 +320,15 @@
                     android:layout_height="wrap_content"
                     android:text="초과 섭취 영양소"
                     android:textSize="18sp"
+<<<<<<< HEAD
                     android:textColor="#000000"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/pretendard_medium" />
+=======
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:layout_marginBottom="8dp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                 <TextView
                     android:id="@+id/recommendationTextView"
@@ -283,8 +336,12 @@
                     android:layout_height="wrap_content"
                     android:text="운동 추천 결과가 여기에 표시됩니다."
                     android:textSize="16sp"
+<<<<<<< HEAD
                     android:textColor="#333333"
                     android:fontFamily="@font/pretendard_regular" />
+=======
+                    android:textColor="#333333" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

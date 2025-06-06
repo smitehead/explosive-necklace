@@ -23,10 +23,17 @@
             android:text="Caloric\nCoach"
             android:textColor="#000000"
             android:textSize="20sp"
+<<<<<<< HEAD
             android:lineSpacingExtra="2dp"
             android:gravity="center"
             android:textAlignment="center"
             android:fontFamily="@font/pretendard_bold"
+=======
+            android:textStyle="bold"
+            android:lineSpacingExtra="2dp"
+            android:gravity="center"
+            android:textAlignment="center"
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -57,9 +64,13 @@
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/baseline_arrow_circle_left_24"
+<<<<<<< HEAD
                 android:contentDescription="이전 달"
                 android:fontFamily="@font/pretendard_regular" />
 
+=======
+                android:contentDescription="이전 달"/>
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
             <TextView
                 android:id="@+id/tvMonthYear"
@@ -68,8 +79,12 @@
                 android:layout_weight="1"
                 android:text="May 2025"
                 android:textSize="18sp"
+<<<<<<< HEAD
                 android:gravity="center"
                 android:fontFamily="@font/pretendard_bold" />
+=======
+                android:gravity="center"/>
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
             <!-- 오른쪽 더미 공간으로 균형 맞춤 -->
             <View
@@ -102,8 +117,12 @@
             android:layout_height="wrap_content"
             android:text="오늘로 돌아가기"
             android:layout_gravity="center"
+<<<<<<< HEAD
             android:layout_marginTop="10dp"
             android:fontFamily="@font/pretendard_semibold" />
+=======
+            android:layout_marginTop="10dp"/>
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
         <!-- 상세 정보 표시 -->
         <LinearLayout
@@ -120,8 +139,12 @@
                 android:id="@+id/detailText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:text="선택된 날짜 상세 내용"
                 android:fontFamily="@font/pretendard_regular" />
+=======
+                android:text="선택된 날짜 상세 내용"/>
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
         </LinearLayout>
 
     </LinearLayout>
@@ -145,7 +168,11 @@
             android:layout_marginStart="14dp"
             android:textColor="#000000"
             android:textSize="20sp"
+<<<<<<< HEAD
             android:fontFamily="@font/pretendard_semibold" />
+=======
+            android:textStyle="bold"/>
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -175,8 +202,12 @@
                         android:layout_height="wrap_content"
                         android:text="KCAL"
                         android:textColor="#000000"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_medium"  />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                     <ProgressBar
                         android:id="@+id/progressKcal"
@@ -197,8 +228,12 @@
                         android:text="0k"
                         android:textAlignment="viewEnd"
                         android:textColor="#000000"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_medium" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                 </LinearLayout>
 
                 <!-- 단백질 -->
@@ -214,8 +249,12 @@
                         android:layout_height="wrap_content"
                         android:text="단백질"
                         android:textColor="#000000"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_medium" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                     <ProgressBar
                         android:id="@+id/progressProtein"
@@ -236,8 +275,12 @@
                         android:text="0g"
                         android:textAlignment="viewEnd"
                         android:textColor="#000000"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_medium" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                 </LinearLayout>
 
                 <!-- 탄수화물 -->
@@ -253,8 +296,12 @@
                         android:layout_height="wrap_content"
                         android:text="탄수화물"
                         android:textColor="#000000"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_medium" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                     <ProgressBar
                         android:id="@+id/progressCarbs"
@@ -275,8 +322,12 @@
                         android:text="0g"
                         android:textAlignment="viewEnd"
                         android:textColor="#000000"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_medium" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                 </LinearLayout>
 
                 <!-- 지방 -->
@@ -291,8 +342,12 @@
                         android:layout_height="wrap_content"
                         android:text="지방"
                         android:textColor="#000000"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_medium" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                     <ProgressBar
                         android:id="@+id/progressFat"
@@ -313,8 +368,12 @@
                         android:text="0g"
                         android:textAlignment="viewEnd"
                         android:textColor="#000000"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_medium" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                 </LinearLayout>
 
             </LinearLayout>

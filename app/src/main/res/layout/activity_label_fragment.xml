@@ -23,10 +23,17 @@
             android:text="Caloric\nCoach"
             android:textColor="#000000"
             android:textSize="20sp"
+<<<<<<< HEAD
             android:lineSpacingExtra="2dp"
             android:textAlignment="center"
             android:gravity="center"
             android:fontFamily="@font/pretendard_bold"
+=======
+            android:textStyle="bold"
+            android:lineSpacingExtra="2dp"
+            android:textAlignment="center"
+            android:gravity="center"
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -54,8 +61,12 @@
             android:scaleType="centerCrop"
             android:contentDescription="업로드한 이미지"
             android:adjustViewBounds="true"
+<<<<<<< HEAD
             tools:srcCompat="@tools:sample/avatars"
             android:fontFamily="@font/pretendard_regular" />
+=======
+            tools:srcCompat="@tools:sample/avatars" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
     </com.google.android.material.card.MaterialCardView>
 
     <!-- 결과 텍스트 카드 -->
@@ -83,8 +94,12 @@
             android:gravity="center"
             android:hint="인식 결과가 여기에 표시됩니다."
             android:padding="16dp"
+<<<<<<< HEAD
             android:textSize="16sp"
             android:fontFamily="@font/pretendard_medium" />
+=======
+            android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
     </com.google.android.material.card.MaterialCardView>
 
     <!-- 등록 버튼 -->
@@ -100,7 +115,10 @@
         android:text="등록하기"
         android:textColor="@android:color/white"
         android:textSize="16sp"
+<<<<<<< HEAD
         android:fontFamily="@font/pretendard_semibold"
+=======
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

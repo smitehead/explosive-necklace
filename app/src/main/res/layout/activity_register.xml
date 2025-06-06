@@ -24,8 +24,12 @@
             android:src="@drawable/baseline_arrow_back_ios_new_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+<<<<<<< HEAD
             app:layout_constraintBottom_toBottomOf="parent"
             android:fontFamily="@font/pretendard_regular" />
+=======
+            app:layout_constraintBottom_toBottomOf="parent"/>
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- 텍스트 -->
@@ -39,8 +43,12 @@
         app:layout_constraintTop_toBottomOf="@id/top_bar"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/blue"
+<<<<<<< HEAD
         android:textSize="24sp"
         android:fontFamily="@font/pretendard_bold" />
+=======
+        android:textSize="24sp"/>
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
     <!-- 스크롤 가능한 폼 영역 -->
     <ScrollView
@@ -78,7 +86,11 @@
                     android:layout_marginEnd="30dp"
                     android:text="이메일"
                     android:textSize="16sp"
+<<<<<<< HEAD
                     android:fontFamily="@font/pretendard_bold" />
+=======
+                    android:textStyle="bold" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -92,8 +104,12 @@
                         android:inputType="textEmailAddress"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_medium" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -111,7 +127,11 @@
                     android:layout_marginEnd="16dp"
                     android:text="비밀번호"
                     android:textSize="16sp"
+<<<<<<< HEAD
                     android:fontFamily="@font/pretendard_bold" />
+=======
+                    android:textStyle="bold" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -126,8 +146,12 @@
                         android:inputType="textPassword"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_medium" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -145,7 +169,11 @@
                     android:layout_marginEnd="30dp"
                     android:text="닉네임"
                     android:textSize="16sp"
+<<<<<<< HEAD
                     android:fontFamily="@font/pretendard_bold"  />
+=======
+                    android:textStyle="bold" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -159,8 +187,12 @@
                         android:inputType="textPersonName"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_medium" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -178,7 +210,11 @@
                     android:layout_marginEnd="43dp"
                     android:text="성별"
                     android:textSize="16sp"
+<<<<<<< HEAD
                     android:fontFamily="@font/pretendard_bold"  />
+=======
+                    android:textStyle="bold" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                 <RadioGroup
                     android:id="@+id/radioGroupGender"
@@ -192,8 +228,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="남자"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_semibold" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                     <RadioButton
                         android:id="@+id/radioFemale"
@@ -201,8 +241,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="여자"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_semibold" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                 </RadioGroup>
             </LinearLayout>
 
@@ -220,7 +264,11 @@
                     android:layout_marginEnd="16dp"
                     android:text="나이"
                     android:textSize="16sp"
+<<<<<<< HEAD
                     android:fontFamily="@font/pretendard_bold"  />
+=======
+                    android:textStyle="bold" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="140dp"
@@ -234,8 +282,12 @@
                         android:inputType="number"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_medium" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -243,8 +295,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="세"
+<<<<<<< HEAD
                     android:textSize="16sp"
                     android:fontFamily="@font/pretendard_semibold" />
+=======
+                    android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
             </LinearLayout>
 
             <!-- 키 -->
@@ -261,7 +317,11 @@
                     android:layout_marginEnd="16dp"
                     android:text="키"
                     android:textSize="16sp"
+<<<<<<< HEAD
                     android:fontFamily="@font/pretendard_bold"  />
+=======
+                    android:textStyle="bold" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="140dp"
@@ -275,8 +335,12 @@
                         android:inputType="number"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_medium" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -284,8 +348,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="cm"
+<<<<<<< HEAD
                     android:textSize="16sp"
                     android:fontFamily="@font/pretendard_semibold" />
+=======
+                    android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
             </LinearLayout>
 
             <!-- 몸무게 -->
@@ -302,7 +370,11 @@
                     android:layout_marginEnd="16dp"
                     android:text="몸무게"
                     android:textSize="16sp"
+<<<<<<< HEAD
                     android:fontFamily="@font/pretendard_bold"  />
+=======
+                    android:textStyle="bold" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="140dp"
@@ -316,8 +388,12 @@
                         android:inputType="number"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
+<<<<<<< HEAD
                         android:textSize="16sp"
                         android:fontFamily="@font/pretendard_medium" />
+=======
+                        android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -325,8 +401,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="kg"
+<<<<<<< HEAD
                     android:textSize="16sp"
                     android:fontFamily="@font/pretendard_semibold" />
+=======
+                    android:textSize="16sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
             </LinearLayout>
 
             <!-- 가입 버튼 -->
@@ -337,8 +417,12 @@
                 android:layout_marginTop="12dp"
                 android:backgroundTint="@color/blue"
                 android:text="가입하기"
+<<<<<<< HEAD
                 android:textSize="20sp"
                 android:fontFamily="@font/pretendard_semibold"  />
+=======
+                android:textSize="20sp" />
+>>>>>>> 06810e8a6f8c10091a87e3e6215ebed5006c3388
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
