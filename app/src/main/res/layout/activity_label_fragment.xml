@@ -83,7 +83,7 @@
             android:hint="인식 결과가 여기에 표시됩니다."
             android:padding="16dp"
             android:textSize="16sp"
-            android:fontFamily="@font/pretendard_regular"/>
+            android:fontFamily="@font/pretendard_medium"/>
     </com.google.android.material.card.MaterialCardView>
 
     <!-- 등록 버튼 -->

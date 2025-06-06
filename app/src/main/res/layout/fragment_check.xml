@@ -105,7 +105,7 @@
         android:fontFamily="@font/pretendard_semibold"
         app:layout_constraintTop_toBottomOf="@id/imageWithTextCard"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- 카드 컨테이너 (직접 업로드 + 성분표 등록) -->
     <androidx.constraintlayout.widget.ConstraintLayout

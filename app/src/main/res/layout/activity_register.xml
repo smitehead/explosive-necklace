@@ -337,7 +337,7 @@
                 android:backgroundTint="@color/blue"
                 android:text="가입하기"
                 android:textSize="20sp"
-                android:fontFamily="@font/pretendard_semibold"/>
+                android:fontFamily="@font/pretendard_semibold" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

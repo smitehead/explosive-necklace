@@ -86,7 +86,7 @@
             android:dividerHeight="1dp"
             android:paddingTop="4dp"
             android:nestedScrollingEnabled="true"
-            android:fontFamily="@font/pretendard_medium"/>
+            android:fontFamily="@font/pretendard_medium" />
 
     </LinearLayout>
 </ScrollView>
