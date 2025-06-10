@@ -17,7 +17,7 @@ import com.google.firebase.database.*;
 
 public class SettingsFragment extends Fragment {
 
-    private ImageView imageView;
+    private ImageView imageView, backButton;
     private TextInputEditText editTextNickname, editTextBirthYear, editTall, editWeigh;
     private RadioGroup radioGroupGender;
     private Button buttonSave, buttonChangePic;
@@ -39,6 +39,11 @@ public class SettingsFragment extends Fragment {
         radioGroupGender = view.findViewById(R.id.radioGroupGender);
         buttonSave = view.findViewById(R.id.buttonSave);
         buttonChangePic = view.findViewById(R.id.button);
+        backButton = view.findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager().popBackStack();
+        });
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());

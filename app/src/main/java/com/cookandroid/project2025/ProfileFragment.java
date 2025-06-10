@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -27,12 +26,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class ProfileFragment extends Fragment {
-    private TextView tvNickname, tvGender, tvAge, tvHeight, tvWeight;
+    private TextView tvNickname, tvGender, tvAge, tvHeight, tvWeight, logoutTextView;
     private TextView tvBMIResult;
     private ImageView ivProfileImage;
-    private ImageView settingsButton;
     private Button btnChangeProfile;
 
     private FirebaseAuth mFirebaseAuth;
@@ -80,32 +79,38 @@ public class ProfileFragment extends Fragment {
         tvAge = view.findViewById(R.id.yearValue);
         tvHeight = view.findViewById(R.id.heightValue);
         tvWeight = view.findViewById(R.id.weightValue);
-        tvBMIResult = view.findViewById(R.id.bmiResultTextView); // 새로 추가
+        tvBMIResult = view.findViewById(R.id.bmiResultTextView);
         ivProfileImage = view.findViewById(R.id.imageView);
         btnChangeProfile = view.findViewById(R.id.btn_change_profile);
-        settingsButton = view.findViewById(R.id.rightButton);
+        logoutTextView = view.findViewById(R.id.logoutTextView);
 
-        settingsButton.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(requireContext(), v);
-            popupMenu.getMenuInflater().inflate(R.menu.profile_menu, popupMenu.getMenu());
-
-            popupMenu.setOnMenuItemClickListener(item -> {
-                int id = item.getItemId();
-                if (id == R.id.menu_edit_profile) {
-                    Intent intent = new Intent(requireContext(), SettingsFragment.class);
-                    startActivity(intent);
-                    return true;
-                } else if (id == R.id.menu_logout) {
-                    Toast.makeText(requireContext(), "로그아웃 클릭됨", Toast.LENGTH_SHORT).show();
-                    // TODO: 로그아웃 처리
-                    return true;
-                }
-                return false;
-            });
-
-            popupMenu.show();
+        // 내 정보 수정 버튼 → SettingsFragment로 전환
+        btnChangeProfile.setOnClickListener(v -> {
+            Fragment settingsFragment = new SettingsFragment();
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, settingsFragment)
+                    .addToBackStack(null)
+                    .commit();
         });
 
+        // 로그아웃 처리
+        logoutTextView.setOnClickListener(v -> {
+            new MaterialAlertDialogBuilder(requireContext(), R.style.LogoutDialogStyle)
+                    .setTitle("로그아웃")
+                    .setMessage("정말로 로그아웃 하시겠습니까?")
+                    .setPositiveButton("예", (dialog, which) -> {
+                        mFirebaseAuth.signOut();
+                        Toast.makeText(requireContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(requireContext(), LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        requireActivity().finish();
+                    })
+                    .setNegativeButton("아니오", (dialog, which) -> dialog.dismiss())
+                    .show();
+        });
 
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
@@ -119,8 +124,8 @@ public class ProfileFragment extends Fragment {
                             tvNickname.setText(user.getNickname());
                             tvGender.setText(user.getGender());
                             tvAge.setText(String.valueOf(user.getAge()));
-                            tvHeight.setText(user.getHeight() + " cm");
-                            tvWeight.setText(user.getWeight() + " kg");
+                            tvHeight.setText(String.valueOf(user.getHeight()));
+                            tvWeight.setText(String.valueOf(user.getWeight()));
 
                             calculateAndDisplayBMI(user.getHeight(), user.getWeight(), user.getGender());
 
@@ -129,19 +134,17 @@ public class ProfileFragment extends Fragment {
                                 if (ivProfileImage != null) {
                                     ivProfileImage.setImageURI(uri);
                                 }
-                            }).addOnFailureListener(e -> {
-                            });
+                            }).addOnFailureListener(e -> {});
                         }
                     }
                 }
+
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
             });
         }
-
-        btnChangeProfile.setOnClickListener(v -> openGallery());
     }
 
     private void openGallery() {
@@ -166,23 +169,31 @@ public class ProfileFragment extends Fragment {
     private void calculateAndDisplayBMI(double heightCm, double weightKg, String gender) {
         if (heightCm <= 0 || weightKg <= 0) {
             tvBMIResult.setText("BMI 정보 없음");
+            tvBMIResult.setTextColor(getResources().getColor(android.R.color.darker_gray));
             return;
         }
 
         double heightM = heightCm / 100.0;
         double bmi = weightKg / (heightM * heightM);
         String category;
+        int color;
 
         if (bmi < 18.5) {
             category = "저체중";
+            color = getResources().getColor(R.color.bmi_underweight);
         } else if (bmi < 23) {
             category = "정상";
+            color = getResources().getColor(R.color.bmi_normal);
         } else if (bmi < 25) {
             category = "과체중";
+            color = getResources().getColor(R.color.bmi_overweight);
         } else {
             category = "비만";
+            color = getResources().getColor(R.color.bmi_obese);
         }
 
-        tvBMIResult.setText(String.format("BMI: %.1f (%s)", bmi, category));
+        tvBMIResult.setText(String.format("%.1f(%s)", bmi, category));
+        tvBMIResult.setTextColor(color);
     }
+
 }

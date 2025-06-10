@@ -7,9 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
+import androidx.appcompat.widget.AppCompatButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +29,7 @@ public class KcalFragment extends Fragment {
     private ProgressBar progressKcal, progressCarbs, progressProtein, progressFat;
 
     private LinearLayout datesContainer, detailLayout;
-    private TextView detailText, tvMonthYear;
+    private TextView summaryTextView, tvMonthYear;
     private ImageButton btnPrevMonth;
     private Button btnToday;
     private HorizontalScrollView scrollView;
@@ -57,12 +61,11 @@ public class KcalFragment extends Fragment {
         progressFat = view.findViewById(R.id.progressFat);
 
         datesContainer = view.findViewById(R.id.datesContainer);
-        detailLayout = view.findViewById(R.id.detailLayout);
-        detailText = view.findViewById(R.id.detailText);
         tvMonthYear = view.findViewById(R.id.tvMonthYear);
         btnPrevMonth = view.findViewById(R.id.btnPrevMonth);
         btnToday = view.findViewById(R.id.btnToday);
         scrollView = view.findViewById(R.id.scrollView);
+        summaryTextView = view.findViewById(R.id.summaryTextView);
 
         todayCalendar = Calendar.getInstance();
         currentMonthCalendar = (Calendar) todayCalendar.clone();
@@ -105,33 +108,48 @@ public class KcalFragment extends Fragment {
         temp.set(Calendar.DAY_OF_MONTH, 1);
         int maxDay = temp.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-        tvMonthYear.setText(new SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(temp.getTime()));
+        tvMonthYear.setText(new SimpleDateFormat("yyyy년 MMMM", Locale.getDefault()).format(temp.getTime()));
 
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int screenWidth = displayMetrics.widthPixels;
-        int buttonWidth = screenWidth / 5 - 20;
+        int buttonWidth = screenWidth / 7 - 20;
         int buttonHeight = 200;
 
         for (int i = 1; i <= maxDay; i++) {
             Calendar date = (Calendar) temp.clone();
             date.set(Calendar.DAY_OF_MONTH, i);
 
-            Button btn = new Button(getContext());
+            AppCompatButton btn = new AppCompatButton(getContext());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(buttonWidth, buttonHeight);
             params.setMargins(10, 0, 10, 0);
             btn.setLayoutParams(params);
-            btn.setText(new SimpleDateFormat("d\nEEE", Locale.getDefault()).format(date.getTime()));
+            String dayLabel = new SimpleDateFormat("E", Locale.KOREAN).format(date.getTime());
+            String dayNumber = new SimpleDateFormat("d", Locale.KOREAN).format(date.getTime());
+            String todayLabel = isSameDay(date, todayCalendar) ? "오늘" : dayLabel;
+
+            SpannableString span = new SpannableString(todayLabel + "\n" + dayNumber);
+            int start = todayLabel.length() + 1;
+            int end = span.length();
+
+            // 숫자 크게 + 굵게
+            span.setSpan(new RelativeSizeSpan(1.2f), start, end, 0);
+            span.setSpan(new android.text.style.TypefaceSpan("sans-serif-bold"), start, end, 0);
+
+            btn.setText(span);
+
             btn.setAllCaps(false);
             btn.setTextSize(14);
             btn.setTag(date);
 
             if (isSameDay(date, todayCalendar)) {
-                btn.setBackgroundColor(Color.parseColor("#2196F3"));
+                btn.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.date_today_background));
                 btn.setTextColor(Color.WHITE);
             } else {
-                btn.setBackgroundColor(Color.TRANSPARENT);
+                btn.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.date_default_background));
                 btn.setTextColor(Color.BLACK);
             }
+
+
 
             btn.setOnClickListener(v -> {
                 Calendar clickedDate = (Calendar) btn.getTag();
@@ -154,21 +172,21 @@ public class KcalFragment extends Fragment {
                 for (Button b : allDateButtons) {
                     Calendar bDate = (Calendar) b.getTag();
                     if (isSameDay(bDate, todayCalendar)) {
-                        b.setBackgroundColor(Color.parseColor("#2196F3"));
+                        b.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.date_today_background));
                         b.setTextColor(Color.WHITE);
                     } else {
-                        b.setBackgroundColor(Color.TRANSPARENT);
+                        b.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.date_default_background));
                         b.setTextColor(Color.BLACK);
                     }
                 }
 
-                btn.setBackgroundColor(Color.parseColor("#FF9800"));
+
+                btn.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.date_selected_background));
                 btn.setTextColor(Color.WHITE);
                 selectedButton = btn;
 
-                detailLayout.setVisibility(View.VISIBLE);
-                detailText.setText("선택한 날짜: " +
-                        new SimpleDateFormat("yyyy-MM-dd (EEE)", Locale.getDefault()).format(clickedDate.getTime()));
+                String selectedDateFormatted = new SimpleDateFormat("MM월 dd일", Locale.getDefault()).format(clickedDate.getTime());
+                summaryTextView.setText(selectedDateFormatted + " 총 섭취량");
 
                 scrollToDate(clickedDate);
                 loadFirebaseNutritionData(clickedDate);
@@ -247,15 +265,41 @@ public class KcalFragment extends Fragment {
                             }
                         }
 
-                        kcalTextView.setText((int) totalEnergy + "k");
-                        carbsTextView.setText((int) totalCarbs + "g");
-                        proteinTextView.setText((int) totalProtein + "g");
-                        fatTextView.setText((int) totalFat + "g");
+                        kcalTextView.setText(String.format("%,d k", (int) totalEnergy));
+                        carbsTextView.setText(String.format("%,d g", (int) totalCarbs));
+                        proteinTextView.setText(String.format("%,d g", (int) totalProtein));
+                        fatTextView.setText(String.format("%,d g", (int) totalFat));
 
                         progressKcal.setProgress(Math.min((int) ((totalEnergy / kcalGoal) * 100), 100));
                         progressCarbs.setProgress(Math.min((int) ((totalCarbs / carbsGoal) * 100), 100));
                         progressProtein.setProgress(Math.min((int) ((totalProtein / proteinGoal) * 100), 100));
                         progressFat.setProgress(Math.min((int) ((totalFat / fatGoal) * 100), 100));
+
+                        // 색상 설정 (100% 초과 시 빨강, 이하면 파랑)
+                        if ((totalEnergy / kcalGoal) * 100 > 100) {
+                            progressKcal.setProgressTintList(ContextCompat.getColorStateList(requireContext(), R.color.red));
+                        } else {
+                            progressKcal.setProgressTintList(ContextCompat.getColorStateList(requireContext(), R.color.blue));
+                        }
+
+                        if ((totalCarbs / carbsGoal) * 100 > 100) {
+                            progressCarbs.setProgressTintList(ContextCompat.getColorStateList(requireContext(), R.color.red));
+                        } else {
+                            progressCarbs.setProgressTintList(ContextCompat.getColorStateList(requireContext(), R.color.blue));
+                        }
+
+                        if ((totalProtein / proteinGoal) * 100 > 100) {
+                            progressProtein.setProgressTintList(ContextCompat.getColorStateList(requireContext(), R.color.red));
+                        } else {
+                            progressProtein.setProgressTintList(ContextCompat.getColorStateList(requireContext(), R.color.blue));
+                        }
+
+                        if ((totalFat / fatGoal) * 100 > 100) {
+                            progressFat.setProgressTintList(ContextCompat.getColorStateList(requireContext(), R.color.red));
+                        } else {
+                            progressFat.setProgressTintList(ContextCompat.getColorStateList(requireContext(), R.color.blue));
+                        }
+
                     }
 
                     @Override

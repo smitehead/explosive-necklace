@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -39,6 +40,8 @@ import okhttp3.Response;
 public class LabelFragment extends Fragment {
 
     private ImageView imageView;
+
+    private ImageButton backButton;
     private Button uploadButton;
     private Uri selectedImageUri;
 
@@ -52,13 +55,18 @@ public class LabelFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_label_fragment, container, false);  // ✅ 바르게 수정
+        return inflater.inflate(R.layout.activity_label_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         imageView = view.findViewById(R.id.imageView);
         uploadButton = view.findViewById(R.id.uploadButton);
+        backButton = view.findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager().popBackStack();
+        });
 
         getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 uri -> {

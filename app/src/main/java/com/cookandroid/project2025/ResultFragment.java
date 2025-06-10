@@ -59,7 +59,7 @@ public class ResultFragment extends Fragment {
         receivedJsonTextView = view.findViewById(R.id.receivedJsonTextView);
         foodContainerLayout = view.findViewById(R.id.foodContainerLayout);
 
-        // ✅ "직접 입력하기" 버튼 → SearchActivity로 이동
+        // "직접 입력하기" 버튼 → SearchActivity로 이동
         Button buttonManualInput = view.findViewById(R.id.buttonManualInput);
         buttonManualInput.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SearchActivity.class);

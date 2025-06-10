@@ -3,6 +3,7 @@ package com.cookandroid.project2025;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.ViewGroup;
 import android.widget.*;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
 
+import android.graphics.Color;
+import android.view.Gravity;
+import android.graphics.Typeface;
+import androidx.core.content.res.ResourcesCompat;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -19,12 +25,12 @@ public class SearchActivity extends AppCompatActivity {
 
     private EditText editTextSearch, editTextGram;
     private TextView textViewResult;
-    private Button buttonSearch, buttonSave;
-    private ListView recentListView;
+    private ImageButton backButton, buttonSearch;
+    private Button buttonSave;
+    private LinearLayout recentSearchContainer;
 
     private DataSnapshot latestSnapshot;
-    private ArrayList<String> recentList = new ArrayList<>();
-    private ArrayAdapter<String> recentAdapter;
+    private LinkedHashSet<String> recentSet = new LinkedHashSet<>();
 
     private static final String PREF_NAME = "RecentSearches";
     private static final String KEY_RECENT = "recent_keywords";
@@ -32,25 +38,21 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_fragment); // XML 파일명은 유지하거나 바꿔도 OK
+        setContentView(R.layout.activity_search_fragment);
 
         editTextSearch = findViewById(R.id.editTextSearch);
         editTextGram = findViewById(R.id.editTextGram);
         textViewResult = findViewById(R.id.textViewResult);
         buttonSearch = findViewById(R.id.buttonSearch);
         buttonSave = findViewById(R.id.buttonSave);
-        recentListView = findViewById(R.id.recentListView);
+        recentSearchContainer = findViewById(R.id.recentSearchContainer);
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(v -> {
+            finish();
+        });
 
         loadRecentSearches();
-
-        recentAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, recentList);
-        recentListView.setAdapter(recentAdapter);
-
-        recentListView.setOnItemClickListener((parent, view, position, id) -> {
-            String selected = recentList.get(position);
-            editTextSearch.setText(selected);
-            searchFood(selected);
-        });
 
         buttonSearch.setOnClickListener(v -> {
             String query = editTextSearch.getText().toString().trim();
@@ -70,10 +72,7 @@ public class SearchActivity extends AppCompatActivity {
             return;
         }
 
-        String uid = user.getUid();
-
-        DatabaseReference ref = FirebaseDatabase.getInstance()
-                .getReference("데이터");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("데이터");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -110,7 +109,8 @@ public class SearchActivity extends AppCompatActivity {
         int gram = 100;
         try {
             gram = Integer.parseInt(editTextGram.getText().toString().trim());
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) {
+        }
 
         double ratio = gram / 100.0;
 
@@ -149,29 +149,60 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void saveRecentSearch(String keyword) {
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        Set<String> set = new LinkedHashSet<>(prefs.getStringSet(KEY_RECENT, new LinkedHashSet<>()));
+        recentSet.remove(keyword);
+        recentSet.add(keyword);
 
-        set.remove(keyword);
-        set.add(keyword);
-
-        while (set.size() > 5) {
-            Iterator<String> it = set.iterator();
+        while (recentSet.size() > 5) {
+            Iterator<String> it = recentSet.iterator();
             if (it.hasNext()) {
                 it.next();
                 it.remove();
             }
         }
 
-        prefs.edit().putStringSet(KEY_RECENT, set).apply();
-        loadRecentSearches();
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putStringSet(KEY_RECENT, recentSet).apply();
+
+        refreshChipView();
     }
 
     private void loadRecentSearches() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        Set<String> set = prefs.getStringSet(KEY_RECENT, new LinkedHashSet<>());
-        recentList.clear();
-        recentList.addAll(set);
-        if (recentAdapter != null) recentAdapter.notifyDataSetChanged();
+        Set<String> savedSet = prefs.getStringSet(KEY_RECENT, new LinkedHashSet<>());
+        recentSet.clear();
+        recentSet.addAll(savedSet);
+
+        refreshChipView();
+    }
+
+    private void refreshChipView() {
+        recentSearchContainer.removeAllViews();
+
+        for (String keyword : recentSet) {
+            TextView chip = new TextView(this);
+            chip.setText(keyword);
+            chip.setBackgroundResource(R.drawable.chip_background);
+            chip.setPadding(40, 20, 40, 20);
+            chip.setTextColor(Color.BLACK);
+            chip.setTextSize(14);
+            chip.setGravity(Gravity.CENTER);
+
+            Typeface font = ResourcesCompat.getFont(this, R.font.pretendard_medium);
+            chip.setTypeface(font);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(0, 0, 24, 0);
+            chip.setLayoutParams(params);
+
+            chip.setOnClickListener(v -> {
+                editTextSearch.setText(keyword);
+                searchFood(keyword);
+            });
+
+            recentSearchContainer.addView(chip);
+        }
     }
 }

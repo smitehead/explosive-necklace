@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".LoginActivity">
 
     <!-- 로고 텍스트 -->
@@ -32,7 +33,7 @@
         app:layout_constraintTop_toBottomOf="@id/logoTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp">
 
@@ -40,6 +41,7 @@
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
             android:hint="이메일 입력"
             android:inputType="textEmailAddress"
             android:paddingStart="16dp"
@@ -64,11 +66,12 @@
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
             android:hint="비밀번호 입력"
             android:inputType="textPassword"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- 로그인 버튼 -->
@@ -81,6 +84,7 @@
         android:layout_marginEnd="24dp"
         android:backgroundTint="@color/blue"
         android:text="로그인"
+        android:fontFamily="@font/pretendard_semibold"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,6 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="또는"
+            android:fontFamily="@font/pretendard_medium"
             android:textColor="@color/black"
             android:textSize="14sp"
             android:gravity="center"
@@ -121,6 +126,7 @@
         android:layout_marginEnd="24dp"
         android:backgroundTint="@color/gray"
         android:text="회원가입"
+        android:fontFamily="@font/pretendard_semibold"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/dividerLayout"
