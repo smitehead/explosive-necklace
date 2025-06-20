@@ -204,7 +204,7 @@ public class HomeFragment extends Fragment {
                         double overFat = Math.max(totalFat - fatGoal, 0);
 
                         if (overKcal <= 0 && overCarbs <= 0 && overProtein <= 0 && overFat <= 0) {
-                            recommendationTextView.setText("초과된 영양소가 없습니다");
+                            recommendationTextView.setText("초과된 영양소가\n없습니다");
                             overKcalTextView.setText("0 k");
                             overCarbsTextView.setText("0 g");
                             overProteinTextView.setText("0 g");

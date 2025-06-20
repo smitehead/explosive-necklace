@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -40,10 +41,11 @@ import okhttp3.Response;
 public class LabelFragment extends Fragment {
 
     private ImageView imageView;
-
     private ImageButton backButton;
     private Button uploadButton;
     private Uri selectedImageUri;
+    private ImageView overlayIcon;
+    private TextView overlayText, overlayText2;
 
     private final OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(180, TimeUnit.SECONDS)
@@ -63,6 +65,9 @@ public class LabelFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         uploadButton = view.findViewById(R.id.uploadButton);
         backButton = view.findViewById(R.id.backButton);
+        overlayIcon = view.findViewById(R.id.overlayIcon);
+        overlayText = view.findViewById(R.id.overlayText);
+        overlayText2 = view.findViewById(R.id.overlayText2);
 
         backButton.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
@@ -73,6 +78,9 @@ public class LabelFragment extends Fragment {
                     if (uri != null) {
                         selectedImageUri = uri;
                         imageView.setImageURI(uri);
+                        overlayIcon.setVisibility(View.GONE);
+                        overlayText.setVisibility(View.GONE);
+                        overlayText2.setVisibility(View.GONE);
                     }
                 });
 

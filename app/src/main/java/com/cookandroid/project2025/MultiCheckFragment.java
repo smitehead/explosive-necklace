@@ -54,6 +54,8 @@ public class MultiCheckFragment extends Fragment {
     private TextView textView;
     private Button uploadButton;
     private Uri selectedImageUri;
+    private ImageView overlayIcon;
+    private TextView overlayText, overlayText2;
 
     private final OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(180, TimeUnit.SECONDS)
@@ -75,6 +77,9 @@ public class MultiCheckFragment extends Fragment {
                     if (result) {
                         selectedImageUri = photoUri;
                         imageView.setImageURI(photoUri);
+                        overlayIcon.setVisibility(View.GONE);
+                        overlayText.setVisibility(View.GONE);
+                        overlayText2.setVisibility(View.GONE);
                     } else {
                         Toast.makeText(getContext(), "사진 촬영이 취소되었습니다.", Toast.LENGTH_SHORT).show();
                     }
@@ -92,12 +97,18 @@ public class MultiCheckFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
+        overlayIcon = view.findViewById(R.id.overlayIcon);
+        overlayText = view.findViewById(R.id.overlayText);
+        overlayText2 = view.findViewById(R.id.overlayText2);
 
         getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri != null) {
                         selectedImageUri = uri;
                         imageView.setImageURI(uri);
+                        overlayIcon.setVisibility(View.GONE);
+                        overlayText.setVisibility(View.GONE);
+                        overlayText2.setVisibility(View.GONE);
                     }
                 });
 

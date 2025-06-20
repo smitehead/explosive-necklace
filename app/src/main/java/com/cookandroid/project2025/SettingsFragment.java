@@ -1,11 +1,17 @@
 package com.cookandroid.project2025;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,6 +20,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class SettingsFragment extends Fragment {
 
@@ -24,6 +32,10 @@ public class SettingsFragment extends Fragment {
 
     private DatabaseReference userRef;
     private FirebaseUser currentUser;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageRef;
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
+    private Uri selectedImageUri;
 
     @Nullable
     @Override
@@ -41,17 +53,28 @@ public class SettingsFragment extends Fragment {
         buttonChangePic = view.findViewById(R.id.button);
         backButton = view.findViewById(R.id.backButton);
 
-        backButton.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager().popBackStack();
-        });
-
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) return view;
+
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageRef = firebaseStorage.getReference("profile_images");
         userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());
 
-        loadProfile();
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == getActivity().RESULT_OK && result.getData() != null) {
+                        selectedImageUri = result.getData().getData();
+                        imageView.setImageURI(selectedImageUri);
+                        uploadImageToFirebase(selectedImageUri);
+                    }
+                });
 
+        buttonChangePic.setOnClickListener(v -> openGallery());
         buttonSave.setOnClickListener(v -> saveProfile());
+        backButton.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
 
+        loadProfile();
         return view;
     }
 
@@ -71,6 +94,14 @@ public class SettingsFragment extends Fragment {
                     } else if ("여자".equals(gender)) {
                         radioGroupGender.check(R.id.radioFemale);
                     }
+
+                    // 프로필 이미지 로드
+                    StorageReference profileImageRef = storageRef.child(currentUser.getUid() + ".jpg");
+                    profileImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        imageView.setImageURI(uri);
+                    }).addOnFailureListener(e -> {
+                        imageView.setImageResource(R.drawable.profile_man); // fallback image
+                    });
                 }
             }
 
@@ -95,7 +126,8 @@ public class SettingsFragment extends Fragment {
             gender = "여자";
         }
 
-        if (TextUtils.isEmpty(nickname) || TextUtils.isEmpty(birthYear) || TextUtils.isEmpty(height) || TextUtils.isEmpty(weight) || gender == null) {
+        if (TextUtils.isEmpty(nickname) || TextUtils.isEmpty(birthYear)
+                || TextUtils.isEmpty(height) || TextUtils.isEmpty(weight) || gender == null) {
             Toast.makeText(getContext(), "모든 정보를 입력해주세요", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -107,5 +139,22 @@ public class SettingsFragment extends Fragment {
         userRef.child("gender").setValue(gender);
 
         Toast.makeText(getContext(), "프로필 저장 완료", Toast.LENGTH_SHORT).show();
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        imagePickerLauncher.launch(intent);
+    }
+
+    private void uploadImageToFirebase(Uri imageUri) {
+        if (imageUri == null) return;
+        String userId = currentUser.getUid();
+        StorageReference fileRef = storageRef.child(userId + ".jpg");
+
+        fileRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot ->
+                        Toast.makeText(getContext(), "프로필 이미지 변경 완료!", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e ->
+                        Toast.makeText(getContext(), "이미지 업로드 실패!", Toast.LENGTH_SHORT).show());
     }
 }

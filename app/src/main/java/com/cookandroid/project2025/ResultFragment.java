@@ -59,7 +59,6 @@ public class ResultFragment extends Fragment {
         receivedJsonTextView = view.findViewById(R.id.receivedJsonTextView);
         foodContainerLayout = view.findViewById(R.id.foodContainerLayout);
 
-        // "직접 입력하기" 버튼 → SearchActivity로 이동
         Button buttonManualInput = view.findViewById(R.id.buttonManualInput);
         buttonManualInput.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SearchActivity.class);
@@ -68,12 +67,28 @@ public class ResultFragment extends Fragment {
 
         if (getArguments() != null && getArguments().containsKey("foodListJson")) {
             foodListJson = getArguments().getString("foodListJson");
-            receivedJsonTextView.setText("Received JSON: " + foodListJson);
+
+            try {
+                JSONArray foodArray = new JSONArray(foodListJson);
+                StringBuilder resultText = new StringBuilder("이런 음식들이 보여요:\n");
+
+                for (int i = 0; i < foodArray.length(); i++) {
+                    resultText.append((i + 1) + ". ").append(foodArray.getString(i)).append("\n");
+                }
+
+                receivedJsonTextView.setText(resultText.toString());
+
+            } catch (JSONException e) {
+                receivedJsonTextView.setText("음식 인식 결과를 처리할 수 없습니다");
+                Log.e("JSONError", "파싱 오류: " + e.getMessage());
+            }
+
             loadNutritionDataList(foodListJson);
         } else {
-            receivedJsonTextView.setText("Received JSON: 데이터 없음");
+            receivedJsonTextView.setText("찾으시는 음식이 없습니다");
         }
     }
+
 
     private void loadNutritionDataList(String foodListJson) {
         try {
@@ -151,7 +166,7 @@ public class ResultFragment extends Fragment {
         card.addView(gramInput);
 
         Button saveBtn = new Button(getContext());
-        saveBtn.setText("이 음식 저장하기");
+        saveBtn.setText("섭취 정보 저장하기");
         card.addView(saveBtn);
 
         saveBtn.setOnClickListener(v -> {

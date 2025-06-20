@@ -127,6 +127,12 @@ public class ProfileFragment extends Fragment {
                             tvHeight.setText(String.valueOf(user.getHeight()));
                             tvWeight.setText(String.valueOf(user.getWeight()));
 
+                            if (user.getGender().equalsIgnoreCase("남자")) {
+                                ivProfileImage.setImageResource(R.drawable.profile_man);
+                            } else if (user.getGender().equalsIgnoreCase("여자")) {
+                                ivProfileImage.setImageResource(R.drawable.profile_woman);
+                            }
+
                             calculateAndDisplayBMI(user.getHeight(), user.getWeight(), user.getGender());
 
                             StorageReference profileImageRef = mStorageRef.child(userId + ".jpg");
@@ -138,8 +144,6 @@ public class ProfileFragment extends Fragment {
                         }
                     }
                 }
-
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
@@ -161,9 +165,9 @@ public class ProfileFragment extends Fragment {
 
         fileRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot ->
-                        Toast.makeText(getContext(), "프로필 이미지 변경 완료!", Toast.LENGTH_SHORT).show())
+                        Toast.makeText(getContext(), "프로필 이미지 변경 완료", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e ->
-                        Toast.makeText(getContext(), "이미지 업로드 실패!", Toast.LENGTH_SHORT).show());
+                        Toast.makeText(getContext(), "이미지 업로드 실패", Toast.LENGTH_SHORT).show());
     }
 
     private void calculateAndDisplayBMI(double heightCm, double weightKg, String gender) {

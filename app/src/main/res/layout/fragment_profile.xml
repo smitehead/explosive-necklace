@@ -37,7 +37,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:fillViewport="true">
 
-        <!-- 원래 nutrient_area를 ScrollView 안에 그대로 넣기 -->
         <LinearLayout
             android:id="@+id/nutrient_area"
             android:layout_width="match_parent"
@@ -61,11 +60,8 @@
                     android:scaleType="centerCrop"
                     android:clipToOutline="true"
                     android:background="@drawable/circle_shape"
-                    android:src="@drawable/sample_profile"/>
+                    android:src="@drawable/profile_man"/>
 
-                <!-- 닉네임 -->
-
-                <!-- 내 정보 수정 버튼 -->
                 <TextView
                     android:id="@+id/nicknameTextView"
                     android:layout_width="wrap_content"
@@ -273,7 +269,7 @@
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
-                    <!-- BMI 내용 -->
+                    <!-- BMI -->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

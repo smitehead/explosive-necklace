@@ -56,6 +56,8 @@ public class CheckFragment extends Fragment {
     private TextView textView;
     private Button uploadButton;
     private Uri selectedImageUri;
+    private ImageView overlayIcon;
+    private TextView overlayText;
 
     private final OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(180, TimeUnit.SECONDS)
@@ -77,6 +79,11 @@ public class CheckFragment extends Fragment {
                     if (result) {
                         selectedImageUri = photoUri;
                         imageView.setImageURI(photoUri);
+
+                        if (overlayIcon != null && overlayText != null) {
+                            overlayIcon.setVisibility(View.GONE);
+                            overlayText.setVisibility(View.GONE);
+                        }
                     } else {
                         Toast.makeText(getContext(), "사진 촬영이 취소되었습니다.", Toast.LENGTH_SHORT).show();
                     }
@@ -94,6 +101,8 @@ public class CheckFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
+        overlayIcon = view.findViewById(R.id.overlayIcon);
+        overlayText = view.findViewById(R.id.overlayText);
 
         ImageButton selfUploadButton = view.findViewById(R.id.selfUploadButton);
         selfUploadButton.setOnClickListener(v -> {
@@ -115,6 +124,8 @@ public class CheckFragment extends Fragment {
                     if (uri != null) {
                         selectedImageUri = uri;
                         imageView.setImageURI(uri);
+                        overlayIcon.setVisibility(View.GONE);
+                        overlayText.setVisibility(View.GONE);
                     }
                 });
 

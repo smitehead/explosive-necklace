@@ -166,4 +166,17 @@
         </LinearLayout>
     </ScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cameraFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        app:elevation="2dp"
+        android:contentDescription="카메라 열기"
+        android:src="@drawable/baseline_camera_alt_24"
+        app:tint="@android:color/black"
+        app:backgroundTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:fabSize="normal" />
 </androidx.constraintlayout.widget.ConstraintLayout>
