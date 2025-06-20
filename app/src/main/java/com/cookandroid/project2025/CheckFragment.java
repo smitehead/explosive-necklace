@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,7 +24,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,7 +50,6 @@ import okhttp3.Response;
 public class CheckFragment extends Fragment {
 
     private ImageView imageView;
-    private TextView textView;
     private Button uploadButton;
     private Uri selectedImageUri;
     private ImageView overlayIcon;
@@ -99,7 +95,6 @@ public class CheckFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         imageView = view.findViewById(R.id.imageView);
-        textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
         overlayIcon = view.findViewById(R.id.overlayIcon);
         overlayText = view.findViewById(R.id.overlayText);
@@ -181,7 +176,7 @@ public class CheckFragment extends Fragment {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("https://5a21-118-39-131-129.ngrok-free.app/upload_image")
+                    .url("https://5463-211-197-158-208.ngrok-free.app/upload_image")
                     .post(requestBody)
                     .build();
 
@@ -205,7 +200,6 @@ public class CheckFragment extends Fragment {
                             try {
                                 JSONObject jsonResponse = new JSONObject(responseBodyString);
                                 JSONArray classArray = jsonResponse.getJSONArray("class");
-                                textView.setText("인식된 음식: " + classArray.toString());
 
                                 ResultFragment resultFragment = ResultFragment.newInstance(classArray.toString());
                                 getParentFragmentManager().beginTransaction()

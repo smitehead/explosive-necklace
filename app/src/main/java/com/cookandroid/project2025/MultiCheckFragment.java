@@ -7,15 +7,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -51,7 +48,6 @@ import okhttp3.Response;
 public class MultiCheckFragment extends Fragment {
 
     private ImageView imageView;
-    private TextView textView;
     private Button uploadButton;
     private Uri selectedImageUri;
     private ImageView overlayIcon;
@@ -95,7 +91,6 @@ public class MultiCheckFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         imageView = view.findViewById(R.id.imageView);
-        textView = view.findViewById(R.id.textView);
         uploadButton = view.findViewById(R.id.uploadButton);
         overlayIcon = view.findViewById(R.id.overlayIcon);
         overlayText = view.findViewById(R.id.overlayText);
@@ -164,7 +159,7 @@ public class MultiCheckFragment extends Fragment {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("https://5437-118-39-131-129.ngrok-free.app/upload_image_multi")
+                    .url("https://5463-211-197-158-208.ngrok-free.app/upload_image_multi")
                     .post(requestBody)
                     .build();
 
@@ -188,9 +183,7 @@ public class MultiCheckFragment extends Fragment {
                             try {
                                 JSONObject jsonResponse = new JSONObject(responseBodyString);
                                 JSONArray classArray = jsonResponse.getJSONArray("class");
-                                textView.setText("인식된 음식: " + classArray.toString());
 
-                                // 결과 페이지로 이동
                                 ResultFragment resultFragment = ResultFragment.newInstance(classArray.toString());
                                 getParentFragmentManager().beginTransaction()
                                         .replace(R.id.frame_layout, resultFragment)
