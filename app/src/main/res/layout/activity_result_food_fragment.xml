@@ -5,12 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_bar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="6dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="뒤로 가기"
+            android:src="@drawable/baseline_arrow_back_ios_new_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!-- 타이틀 텍스트 -->
+        <TextView
+            android:id="@+id/topBarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="음식 분석"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:fontFamily="@font/pretendard_semibold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -30,16 +66,19 @@
                 app:cardCornerRadius="16dp"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp"
-                app:cardBackgroundColor="@color/white">
+                app:strokeColor="#D6E6FF"
+                app:cardBackgroundColor="#F3F8FE">
 
                 <TextView
                     android:id="@+id/receivedJsonTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="영양 성분 결과가 여기에 표시됩니다."
-                    android:fontFamily="@font/pretendard_semibold"
-                    android:textSize="16sp"
-                    android:textColor="#000000"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:padding="20dp" />
             </com.google.android.material.card.MaterialCardView>
 
@@ -49,21 +88,92 @@
                 android:id="@+id/foodContainerLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:fontFamily="@font/pretendard_semibold"
                 android:orientation="vertical" />
 
-            <!-- 직접 입력 이동 버튼 -->
-            <Button
-                android:id="@+id/buttonManualInput"
+            <TextView
+                android:id="@+id/sectionNoFoodFound"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="8dp"
-                android:text="직접 입력하기"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:layout_height="wrap_content"
+                android:text="찾으시는 음식이 없으신가요?"
+                android:textSize="20sp"
                 android:fontFamily="@font/pretendard_semibold"
-                android:backgroundTint="@color/blue" />
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardManualInput"
+                android:layout_width="match_parent"
+                android:layout_height="112dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/iconManualInput"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:background="@drawable/rounded_image"
+                        android:clipToOutline="true"
+                        android:src="@drawable/ic_upload_placeholder"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/textLayoutManualInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toEndOf="@id/iconManualInput"
+                        app:layout_constraintEnd_toStartOf="@id/buttonManualInput"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="검색하여 업로드"
+                            android:textSize="18sp"
+                            android:textColor="#000000"
+                            android:fontFamily="@font/pretendard_bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="검색을 통해 빠르게!"
+                            android:textSize="14sp"
+                            android:textColor="#777777"
+                            android:fontFamily="@font/pretendard_regular"/>
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/buttonManualInput"
+                        android:layout_width="48dp"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="검색"
+                        android:src="@drawable/baseline_chevron_right_24"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
         </LinearLayout>
     </ScrollView>
 

@@ -138,16 +138,17 @@
                         android:id="@+id/uploadButton"
                         android:layout_width="0dp"
                         android:layout_height="55dp"
+                        android:layout_marginTop="8dp"
                         android:backgroundTint="@color/blue"
-                        android:text="등록하기"
                         android:fontFamily="@font/pretendard_semibold"
+                        android:text="등록하기"
                         android:textColor="@color/white"
                         android:textSize="18sp"
-                        app:layout_constraintTop_toBottomOf="@id/imageContainer"
-                        android:layout_marginTop="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@id/imageContainer" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 

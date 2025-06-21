@@ -160,7 +160,7 @@ public class MultiCheckFragment extends Fragment {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("https://5463-211-197-158-208.ngrok-free.app/upload_image_multi")
+                    .url("https://0316-211-197-158-208.ngrok-free.app/upload_image_multi")
                     .post(requestBody)
                     .build();
 

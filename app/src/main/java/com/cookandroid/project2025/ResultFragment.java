@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,8 +59,12 @@ public class ResultFragment extends Fragment {
 
         receivedJsonTextView = view.findViewById(R.id.receivedJsonTextView);
         foodContainerLayout = view.findViewById(R.id.foodContainerLayout);
+        ImageButton backButton = view.findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> {
+            requireActivity().onBackPressed();
+        });
 
-        Button buttonManualInput = view.findViewById(R.id.buttonManualInput);
+        ImageButton buttonManualInput = view.findViewById(R.id.buttonManualInput);
         buttonManualInput.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SearchActivity.class);
             startActivity(intent);
@@ -70,7 +75,7 @@ public class ResultFragment extends Fragment {
 
             try {
                 JSONArray foodArray = new JSONArray(foodListJson);
-                StringBuilder resultText = new StringBuilder("이런 음식들이 보여요:\n");
+                StringBuilder resultText = new StringBuilder("다음 음식(들)이 보여요\n\n");
 
                 for (int i = 0; i < foodArray.length(); i++) {
                     resultText.append((i + 1) + ". ").append(foodArray.getString(i)).append("\n");
@@ -148,31 +153,19 @@ public class ResultFragment extends Fragment {
     }
 
     private void createFoodCard(String foodName, String nutritionInfo) {
-        LinearLayout card = new LinearLayout(getContext());
-        card.setOrientation(LinearLayout.VERTICAL);
-        card.setPadding(24, 24, 24, 24);
-        card.setBackgroundColor(0xFFEFEFEF);
-        card.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View cardView = inflater.inflate(R.layout.item_food_card, foodContainerLayout, false);
 
-        TextView title = new TextView(getContext());
-        title.setText("--- " + foodName + " ---\n" + nutritionInfo);
-        card.addView(title);
+        TextView textNutrition = cardView.findViewById(R.id.textNutritionInfo);
+        EditText editGram = cardView.findViewById(R.id.editGramInput);
+        Button btnSave = cardView.findViewById(R.id.buttonSaveFood);
 
-        EditText gramInput = new EditText(getContext());
-        gramInput.setHint("섭취량 (g)");
-        gramInput.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
-        card.addView(gramInput);
+        textNutrition.setText("--- " + foodName + " ---\n" + nutritionInfo);
 
-        Button saveBtn = new Button(getContext());
-        saveBtn.setText("섭취 정보 저장하기");
-        card.addView(saveBtn);
-
-        saveBtn.setOnClickListener(v -> {
+        btnSave.setOnClickListener(v -> {
             int inputGram;
             try {
-                inputGram = Integer.parseInt(gramInput.getText().toString().trim());
+                inputGram = Integer.parseInt(editGram.getText().toString().trim());
             } catch (NumberFormatException e) {
                 Toast.makeText(getContext(), "섭취량을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 return;
@@ -213,6 +206,7 @@ public class ResultFragment extends Fragment {
             Toast.makeText(getContext(), foodName + " 저장 완료", Toast.LENGTH_SHORT).show();
         });
 
-        foodContainerLayout.addView(card);
+        foodContainerLayout.addView(cardView);
     }
+
 }

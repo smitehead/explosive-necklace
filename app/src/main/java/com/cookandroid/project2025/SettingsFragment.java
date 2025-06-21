@@ -25,7 +25,6 @@ public class SettingsFragment extends Fragment {
     private TextInputEditText editTextNickname, editTextBirthYear, editTall, editWeigh;
     private RadioGroup radioGroupGender;
     private Button buttonSave, buttonChangePic;
-
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private DatabaseReference databaseRef;
@@ -39,7 +38,6 @@ public class SettingsFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
-        // 뷰 연결
         imageView = view.findViewById(R.id.imageView);
         editTextNickname = view.findViewById(R.id.editTextNickname);
         editTextBirthYear = view.findViewById(R.id.editTextBirthYear);
@@ -47,7 +45,12 @@ public class SettingsFragment extends Fragment {
         editWeigh = view.findViewById(R.id.editWeigh);
         radioGroupGender = view.findViewById(R.id.radioGroupGender);
         buttonSave = view.findViewById(R.id.buttonSave);
-        buttonChangePic = view.findViewById(R.id.button); // 사진변경 버튼
+        buttonChangePic = view.findViewById(R.id.button);
+        ImageButton buttonBack = view.findViewById(R.id.backButton);
+        buttonBack.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager().popBackStack();
+        });
+
 
         if (currentUser != null) {
             String uid = currentUser.getUid();
@@ -96,7 +99,6 @@ public class SettingsFragment extends Fragment {
                 gender = "여자";
             }
 
-            // 필수 항목 유효성 검사
             if (TextUtils.isEmpty(nickname)) {
                 editTextNickname.setError("닉네임을 입력해주세요");
                 return;

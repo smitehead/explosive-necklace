@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 메인 콘텐츠 영역 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -18,7 +17,6 @@
             android:layout_height="match_parent"
             tools:context=".HomeFragment">
 
-            <!-- 상단 바 -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/top_bar"
                 android:layout_width="match_parent"
@@ -53,8 +51,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <!-- 전체 스크롤 가능한 콘텐츠 영역 -->
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -71,7 +67,6 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp">
 
-                    <!-- 파이 차트와 남은 칼로리 -->
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/pieChart"
                         android:layout_width="360dp"
@@ -101,8 +96,6 @@
                             android:paddingBottom="10dp"
                             android:fontFamily="@font/pretendard_semibold"/>
                     </androidx.cardview.widget.CardView>
-
-
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="355dp"
@@ -251,7 +244,6 @@
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
-                    <!-- 버튼 및 추천 결과 영역 -->
                     <LinearLayout
                         android:layout_width="371dp"
                         android:layout_height="wrap_content"
@@ -264,7 +256,7 @@
                         android:weightSum="2">
 
 
-                        <!-- 초과 섭취 카드 -->
+                        <!-- 초과 섭취량 -->
                         <androidx.cardview.widget.CardView
                             android:layout_width="0dp"
                             android:layout_height="160dp"
@@ -290,7 +282,7 @@
                                     android:layout_gravity="left"
                                     android:textColor="@color/dark_gray"
                                     android:textSize="16sp"
-                                    android:layout_marginBottom="9dp"
+                                    android:layout_marginBottom="15dp"
                                     android:fontFamily="@font/pretendard_semibold"/>
 
                                 <!-- 각 항목 (칼로리, 단백질, 탄수화물, 지방) -->
@@ -306,7 +298,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="칼로리"
                                         android:textColor="@color/black"
-                                        android:textSize="16sp"
+                                        android:textSize="14sp"
                                         android:fontFamily="@font/pretendard_medium"/>
 
                                     <TextView
@@ -317,7 +309,7 @@
                                         android:gravity="end"
                                         android:text="0 k"
                                         android:textColor="@color/black"
-                                        android:textSize="16sp"
+                                        android:textSize="14sp"
                                         android:fontFamily="@font/pretendard_semibold"/>
                                 </LinearLayout>
 
@@ -333,7 +325,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="단백질"
                                         android:textColor="@color/black"
-                                        android:textSize="16sp"
+                                        android:textSize="14sp"
                                         android:fontFamily="@font/pretendard_medium"/>
 
                                     <TextView
@@ -344,7 +336,7 @@
                                         android:gravity="end"
                                         android:text="0 g"
                                         android:textColor="@color/black"
-                                        android:textSize="16sp"
+                                        android:textSize="14sp"
                                         android:fontFamily="@font/pretendard_semibold"/>
                                 </LinearLayout>
 
@@ -360,7 +352,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="탄수화물"
                                         android:textColor="@color/black"
-                                        android:textSize="16sp"
+                                        android:textSize="14sp"
                                         android:fontFamily="@font/pretendard_medium"/>
 
                                     <TextView
@@ -371,7 +363,7 @@
                                         android:gravity="end"
                                         android:text="0 g"
                                         android:textColor="@color/black"
-                                        android:textSize="16sp"
+                                        android:textSize="14sp"
                                         android:fontFamily="@font/pretendard_semibold"/>
                                 </LinearLayout>
 
@@ -387,7 +379,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="지방"
                                         android:textColor="@color/black"
-                                        android:textSize="16sp"
+                                        android:textSize="14sp"
                                         android:fontFamily="@font/pretendard_medium"/>
 
                                     <TextView
@@ -398,13 +390,13 @@
                                         android:gravity="end"
                                         android:text="0 g"
                                         android:textColor="@color/black"
-                                        android:textSize="16sp"
+                                        android:textSize="14sp"
                                         android:fontFamily="@font/pretendard_semibold"/>
                                 </LinearLayout>
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
-                        <!-- 운동 추천 카드 -->
+                        <!-- 운동 추천 -->
                         <androidx.cardview.widget.CardView
                             android:layout_width="0dp"
                             android:layout_height="160dp"
@@ -428,7 +420,7 @@
                                     android:text="영양소 태우기"
                                     android:textSize="16sp"
                                     android:textColor="@color/dark_gray"
-                                    android:layout_marginBottom="9dp"
+                                    android:layout_marginBottom="15dp"
                                     android:fontFamily="@font/pretendard_semibold" />
 
                                 <TextView

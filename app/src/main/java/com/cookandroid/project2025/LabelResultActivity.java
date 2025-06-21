@@ -2,6 +2,7 @@ package com.cookandroid.project2025;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,17 +28,18 @@ public class LabelResultActivity extends AppCompatActivity {
     private String nutritionJson;
 
     private final String[] nutritionNames = {
-            "에너지", "탄수화물", "당류", "지방", "단백질", "칼슘", "인",
-            "나트륨", "칼륨", "마그네슘", "철", "아연", "콜레스테롤", "트랜스지방"
+            "에너지", "탄수화물", "지방", "단백질"
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_label_result_fragment); // XML은 그대로 사용
+        setContentView(R.layout.activity_label_result_fragment);
 
         nutritionTextView = findViewById(R.id.nutritionTextView);
         buttonConfirmSave = findViewById(R.id.buttonConfirmSave);
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
 
         // 전달받은 JSON 문자열 받기
         nutritionJson = getIntent().getStringExtra("nutritionJson");
