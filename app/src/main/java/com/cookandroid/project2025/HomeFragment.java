@@ -249,7 +249,7 @@ public class HomeFragment extends Fragment {
                                     for (int i = 0; i < Math.min(3, sorted.size()); i++) {
                                         String name = sorted.get(i).getKey();
                                         int minutes = timeMap.get(name);
-                                        top3.append("• ").append(name).append(": ").append(minutes).append("분\n");
+                                        top3.append("•").append(name).append(": ").append(minutes).append("분\n");
                                     }
                                     recommendationTextView.setText(top3.toString());
                                 }
