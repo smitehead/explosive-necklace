@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".KcalFragment">
 
-    <!-- 상단 바 -->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- 영양 정보 카드 영역 -->
+
     <LinearLayout
         android:id="@+id/calendarLayout"
         android:layout_width="0dp"
@@ -43,7 +43,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_bar">
 
-        <!-- 월 이동 + 월/년 표시 + 오늘로 돌아가기 -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             android:gravity="start|center_vertical"
             android:baselineAligned="false">
 
-            <!-- 연월 텍스트 -->
+
             <TextView
                 android:id="@+id/tvMonthYear"
                 android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
                 android:fontFamily="@font/pretendard_bold"
                 android:layout_marginEnd="4dp" />
 
-            <!-- 바로 오른쪽에 붙는 이전 버튼 -->
+
             <ImageButton
                 android:id="@+id/btnPrevMonth"
                 android:layout_width="48dp"
@@ -72,7 +72,7 @@
                 android:contentDescription="이전 달"
                 android:src="@drawable/baseline_expand_more_24" />
 
-            <!-- 오른쪽에 오늘로 돌아가기 버튼 -->
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -91,7 +91,7 @@
 
 
 
-        <!-- 날짜 스크롤 뷰 -->
+
         <HorizontalScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
@@ -186,7 +186,7 @@
                         android:textSize="16sp" />
                 </LinearLayout>
 
-                <!-- 단백질 -->
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -225,7 +225,7 @@
                         android:textSize="16sp" />
                 </LinearLayout>
 
-                <!-- 탄수화물 -->
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -264,7 +264,7 @@
                         android:textSize="16sp" />
                 </LinearLayout>
 
-                <!-- 지방 -->
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

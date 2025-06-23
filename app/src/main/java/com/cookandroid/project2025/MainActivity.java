@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         replaceFragment(new HomeFragment());
 
-        // 2. Fragment 붙은 다음에 Drawer 연결 시도 (딜레이 필요하면 post 사용)
+
         binding.getRoot().post(() -> {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
             if (currentFragment != null && drawerView != null) {
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 3. BottomNavigation 연결
+
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
 

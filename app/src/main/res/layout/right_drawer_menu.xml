@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- 우측 메뉴바 -->
+
     <LinearLayout
         android:id="@+id/rightDrawer"
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- 상단 로고 텍스트 -->
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,14 +27,14 @@
             android:fontFamily="@font/pretendard_bold"
             android:paddingBottom="12dp" />
 
-        <!-- 구분선 -->
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E0E0E0"
             android:layout_marginBottom="12dp" />
 
-        <!-- 홈 -->
+
         <TextView
             android:layout_width="200dp"
             android:layout_height="48dp"
@@ -56,7 +56,7 @@
             <TextView android:id="@+id/subBurn" style="@style/DrawerSubMenuItem" android:text="영양소 태우기" android:fontFamily="@font/pretendard_medium" />
         </LinearLayout>
 
-        <!-- 단일 음식 -->
+
         <TextView
             android:layout_width="200dp"
             android:layout_height="48dp"
@@ -78,7 +78,6 @@
             <TextView android:id="@+id/subSingleLabel" style="@style/DrawerSubMenuItem" android:text="라벨로 등록하기" android:fontFamily="@font/pretendard_medium" />
         </LinearLayout>
 
-        <!-- 다중 음식 -->
         <TextView
             android:layout_width="200dp"
             android:layout_height="48dp"
@@ -98,7 +97,7 @@
             <TextView android:id="@+id/subMultiCheck" style="@style/DrawerSubMenuItem" android:text="다중음식 측정하기" android:fontFamily="@font/pretendard_medium" />
         </LinearLayout>
 
-        <!-- 달력 -->
+
 
         <TextView
             android:id="@+id/menuCalendar"
@@ -119,7 +118,7 @@
             <TextView android:id="@+id/subCalendarHistory" style="@style/DrawerSubMenuItem" android:text="내 기록 보기" android:fontFamily="@font/pretendard_medium" />
         </LinearLayout>
 
-        <!-- 프로필 -->
+
         <TextView
             android:layout_width="200dp"
             android:layout_height="48dp"

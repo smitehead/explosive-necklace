@@ -84,7 +84,7 @@ public class ProfileFragment extends Fragment {
         btnChangeProfile = view.findViewById(R.id.btn_change_profile);
         logoutTextView = view.findViewById(R.id.logoutTextView);
 
-        // 내 정보 수정 버튼 → SettingsFragment로 전환
+
         btnChangeProfile.setOnClickListener(v -> {
             Fragment settingsFragment = new SettingsFragment();
             requireActivity().getSupportFragmentManager()
@@ -94,7 +94,7 @@ public class ProfileFragment extends Fragment {
                     .commit();
         });
 
-        // 로그아웃 처리
+        // 로그아웃 부분입니당
         logoutTextView.setOnClickListener(v -> {
             new MaterialAlertDialogBuilder(requireContext(), R.style.LogoutDialogStyle)
                     .setTitle("로그아웃")

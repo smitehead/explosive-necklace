@@ -40,21 +40,21 @@ public class SplashActivity extends AppCompatActivity {
         animatorSet.play(expandX).with(expandY).after(shrinkX);
         animatorSet.start();
 
-        // 애니메이션 끝난 후 실행
+
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 Intent intent;
                 if (user != null) {
-                    // 로그인된 경우
+
                     intent = new Intent(SplashActivity.this, MainActivity.class);
                 } else {
-                    // 로그인 안 된 경우
+
                     intent = new Intent(SplashActivity.this, LoginActivity.class);
                 }
                 startActivity(intent);
-                finish(); // SplashActivity 종료
+                finish();
             }
         });
     }

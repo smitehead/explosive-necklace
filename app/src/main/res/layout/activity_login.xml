@@ -8,7 +8,7 @@
     android:background="@color/white"
     tools:context=".LoginActivity">
 
-    <!-- 로고 텍스트 -->
+
     <TextView
         android:id="@+id/logoTextView"
         android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 이메일 입력 -->
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editTextEmailLayout"
         android:layout_width="0dp"
@@ -49,7 +49,7 @@
             android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- 비밀번호 입력 -->
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editTextPasswordLayout"
         android:layout_width="0dp"
@@ -74,7 +74,7 @@
             android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- 로그인 버튼 -->
+
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="0dp"
@@ -91,7 +91,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextPasswordLayout" />
 
-    <!-- 구분선 -->
+
     <LinearLayout
         android:id="@+id/dividerLayout"
         android:layout_width="0dp"
@@ -116,7 +116,7 @@
             android:layout_gravity="center" />
     </LinearLayout>
 
-    <!-- 회원가입 버튼 -->
+
     <Button
         android:id="@+id/buttonSignup"
         android:layout_width="0dp"

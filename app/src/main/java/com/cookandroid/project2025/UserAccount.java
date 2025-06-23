@@ -6,9 +6,9 @@ public class UserAccount {
     private String idToken;
     private String emailId;
     private String password;
-    private String nickname;  // 닉네임 추가
-    private String gender;    // 성별 추가
-    private int age;          // 나이 추가
+    private String nickname;
+    private String gender;
+    private int age;
 
     public UserAccount() {}
 

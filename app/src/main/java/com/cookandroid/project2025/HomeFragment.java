@@ -131,7 +131,7 @@ public class HomeFragment extends Fragment {
                         progressProtein.setProgress(Math.min(proteinPercent, 100));
                         progressFat.setProgress(Math.min(fatPercent, 100));
 
-                        // 색상 동적으로 변경 (100% 초과 시 빨강)
+
                         if (carbsPercent > 100) {
                             progressCarbs.setProgressTintList(ContextCompat.getColorStateList(requireContext(), R.color.red));
                         } else {

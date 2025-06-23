@@ -31,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     private RadioGroup mRgGender;
     private ImageButton backButton;
     private Button mBtnRegister;
-    private String strGender = "남자";  // 기본값
+    private String strGender = "남자";
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -39,11 +39,11 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // Firebase 초기화
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("UserAccount");
 
-        // UI 요소 연결
+
         mEtEmail = findViewById(R.id.editTextEmail);
         mEtPassword = findViewById(R.id.editText1);
         mEtNickname = findViewById(R.id.editTextNickname);
@@ -63,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        // 성별 라디오 버튼 리스너
+
         mRgGender.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton selectedGender = findViewById(checkedId);
             if (selectedGender != null) {
@@ -71,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        // 가입 버튼 클릭 처리
+
         mBtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,24 +82,24 @@ public class RegisterActivity extends AppCompatActivity {
                 String strHeight = mEtHeight.getText().toString().trim();
                 String strWeight = mEtWeight.getText().toString().trim();
 
-                // 이메일 유효성 검사
+
                 if (!isValidEmail(strEmail)) {
                     Toast.makeText(RegisterActivity.this, "유효한 이메일 주소를 입력하세요.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // 비밀번호 최소 길이 검사
+
                 if (strPwd.length() < 6) {
                     Toast.makeText(RegisterActivity.this, "비밀번호는 최소 6자 이상이어야 합니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // 숫자 입력 변환
+
                 int age = strAge.isEmpty() ? 0 : Integer.parseInt(strAge);
                 int height = strHeight.isEmpty() ? 0 : Integer.parseInt(strHeight);
                 int weight = strWeight.isEmpty() ? 0 : Integer.parseInt(strWeight);
 
-                // Firebase 회원가입
+
                 mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPwd)
                         .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -133,7 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    // 이메일 형식 검사
+
     private boolean isValidEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
