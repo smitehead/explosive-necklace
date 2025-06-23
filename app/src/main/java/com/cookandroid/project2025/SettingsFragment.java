@@ -56,7 +56,7 @@ public class SettingsFragment extends Fragment {
             String uid = currentUser.getUid();
             databaseRef = FirebaseDatabase.getInstance().getReference("UserAccount").child(uid);
 
-            // 기존 사용자 정보 불러오기
+
             databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -81,7 +81,7 @@ public class SettingsFragment extends Fragment {
             });
         }
 
-        // 변경하기 버튼 클릭 시
+
         buttonSave.setOnClickListener(v -> {
             if (currentUser == null) return;
 

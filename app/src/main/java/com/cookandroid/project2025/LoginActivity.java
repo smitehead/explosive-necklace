@@ -18,21 +18,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity {
-    private FirebaseAuth mFirebaseAuth; // Firebase 인증
-    private DatabaseReference mDatabaseRef; // Realtime Database
+    private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference mDatabaseRef;
     private TextInputEditText mEditTextEmail, mEditTextPassword;
     private Button mButtonLogin, mButtonSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 새로운 XML 레이아웃 파일(activity_login.xml) 적용
+
         setContentView(R.layout.activity_login);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
-        // 새 XML의 id에 맞게 수정
+
         mEditTextEmail = findViewById(R.id.editTextEmail);
         mEditTextPassword = findViewById(R.id.editTextPassword);
         mButtonLogin = findViewById(R.id.buttonLogin);

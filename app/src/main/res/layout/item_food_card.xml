@@ -73,7 +73,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- 등록하기 버튼 -->
+
             <Button
                 android:id="@+id/buttonSaveFood"
                 android:layout_width="0dp"

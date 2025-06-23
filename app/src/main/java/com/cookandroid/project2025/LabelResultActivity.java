@@ -41,7 +41,7 @@ public class LabelResultActivity extends AppCompatActivity {
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> finish());
 
-        // 전달받은 JSON 문자열 받기
+
         nutritionJson = getIntent().getStringExtra("nutritionJson");
 
         if (nutritionJson != null) {

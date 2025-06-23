@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 상단 바 -->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_bar"
         android:layout_width="0dp"
@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <!-- 타이틀 텍스트 -->
+
         <TextView
             android:id="@+id/topBarTitle"
             android:layout_width="wrap_content"
@@ -95,7 +95,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- 최근 검색어 제목 -->
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                     android:orientation="horizontal" />
             </HorizontalScrollView>
 
-            <!-- 결과 표시 카드 -->
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/resultCard"
                 android:layout_width="match_parent"
@@ -189,7 +189,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!-- 등록하기 버튼 -->
+
                 <Button
                     android:id="@+id/buttonSave"
                     android:layout_width="0dp"

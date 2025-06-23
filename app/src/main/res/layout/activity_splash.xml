@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <!-- 파란 원 -->
+
     <View
         android:id="@+id/blueCircle"
         android:layout_width="200dp"
@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 앱 이름 -->
+
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 서브텍스트 -->
+
     <TextView
         android:id="@+id/subText"
         android:layout_width="wrap_content"
