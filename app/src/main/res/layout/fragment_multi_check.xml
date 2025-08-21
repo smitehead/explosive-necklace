@@ -32,7 +32,6 @@
             app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- 스크롤 가능한 영역 -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -47,7 +46,7 @@
             android:paddingBottom="100dp">
 
             <TextView
-                android:id="@+id/singleFoodTitle"
+                android:id="@+id/multiFoodTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="여러 음식 한 번에 분석하기"
@@ -59,7 +58,7 @@
                 android:layout_marginTop="12dp" />
 
             <TextView
-                android:id="@+id/singleFoodSubText"
+                android:id="@+id/multiFoodSubText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="한 번에 다양한 음식 영양 정보를 알려드려요"
@@ -80,7 +79,10 @@
                 app:cardElevation="1dp"
                 app:strokeColor="@color/dark_gray"
                 app:strokeWidth="1dp"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardBackgroundColor="@android:color/white"
+                app:layout_constraintTop_toBottomOf="@id/multiFoodSubText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

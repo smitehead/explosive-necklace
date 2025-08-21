@@ -88,7 +88,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/profileInfoCard"
-                android:layout_width="355dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="24dp"
@@ -246,7 +246,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/bmiCard"
-                android:layout_width="355dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 app:cardCornerRadius="20dp"
