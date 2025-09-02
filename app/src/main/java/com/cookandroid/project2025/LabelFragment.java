@@ -66,14 +66,14 @@ public class LabelFragment extends Fragment {
     private ActivityResultLauncher<Uri> cameraLauncher;
     private Uri photoUri;
 
-    // 권한 요청을 위한 새로운 ActivityResultLauncher 추가
+
     private ActivityResultLauncher<String[]> requestPermissionLauncher;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 갤러리 이미지 선택을 위한 ActivityResultLauncher
+
         getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri != null) {
@@ -85,7 +85,7 @@ public class LabelFragment extends Fragment {
                     }
                 });
 
-        // 카메라 촬영을 위한 ActivityResultLauncher
+
         cameraLauncher = registerForActivityResult(
                 new ActivityResultContracts.TakePicture(),
                 result -> {
@@ -101,7 +101,7 @@ public class LabelFragment extends Fragment {
                 }
         );
 
-        // 권한 요청 결과 처리
+
         requestPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(),
                 permissions -> {
@@ -141,17 +141,17 @@ public class LabelFragment extends Fragment {
         overlayText = view.findViewById(R.id.overlayText);
         overlayText2 = view.findViewById(R.id.overlayText2);
 
-        // XML 레이아웃에 FloatingActionButton이 있다고 가정하고 추가
+
         FloatingActionButton cameraFab = view.findViewById(R.id.cameraFab);
 
         backButton.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
 
-        // 갤러리 이미지 선택 리스너
+
         imageView.setOnClickListener(v -> getContent.launch("image/*"));
 
-        // 카메라 버튼 리스너
+
         cameraFab.setOnClickListener(v -> checkAndRequestPermissions());
 
         uploadButton.setOnClickListener(v -> {
