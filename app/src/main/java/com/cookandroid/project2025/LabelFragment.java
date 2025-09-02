@@ -1,11 +1,14 @@
 package com.cookandroid.project2025;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,10 +24,16 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
@@ -54,6 +63,69 @@ public class LabelFragment extends Fragment {
             .build();
 
     private ActivityResultLauncher<String> getContent;
+    private ActivityResultLauncher<Uri> cameraLauncher;
+    private Uri photoUri;
+
+    // 권한 요청을 위한 새로운 ActivityResultLauncher 추가
+    private ActivityResultLauncher<String[]> requestPermissionLauncher;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // 갤러리 이미지 선택을 위한 ActivityResultLauncher
+        getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) {
+                        selectedImageUri = uri;
+                        imageView.setImageURI(uri);
+                        overlayIcon.setVisibility(View.GONE);
+                        overlayText.setVisibility(View.GONE);
+                        overlayText2.setVisibility(View.GONE);
+                    }
+                });
+
+        // 카메라 촬영을 위한 ActivityResultLauncher
+        cameraLauncher = registerForActivityResult(
+                new ActivityResultContracts.TakePicture(),
+                result -> {
+                    if (result) {
+                        selectedImageUri = photoUri;
+                        imageView.setImageURI(photoUri);
+                        overlayIcon.setVisibility(View.GONE);
+                        overlayText.setVisibility(View.GONE);
+                        overlayText2.setVisibility(View.GONE);
+                    } else {
+                        Toast.makeText(getContext(), "사진 촬영이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+
+        // 권한 요청 결과 처리
+        requestPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestMultiplePermissions(),
+                permissions -> {
+                    boolean allPermissionsGranted = true;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        if (Boolean.FALSE.equals(permissions.getOrDefault(Manifest.permission.CAMERA, false)) ||
+                                Boolean.FALSE.equals(permissions.getOrDefault(Manifest.permission.READ_MEDIA_IMAGES, false))) {
+                            allPermissionsGranted = false;
+                        }
+                    } else {
+                        if (Boolean.FALSE.equals(permissions.getOrDefault(Manifest.permission.CAMERA, false)) ||
+                                Boolean.FALSE.equals(permissions.getOrDefault(Manifest.permission.READ_EXTERNAL_STORAGE, false))) {
+                            allPermissionsGranted = false;
+                        }
+                    }
+
+                    if (allPermissionsGranted) {
+                        launchCamera();
+                    } else {
+                        Toast.makeText(getContext(), "카메라 및 갤러리 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,22 +141,18 @@ public class LabelFragment extends Fragment {
         overlayText = view.findViewById(R.id.overlayText);
         overlayText2 = view.findViewById(R.id.overlayText2);
 
+        // XML 레이아웃에 FloatingActionButton이 있다고 가정하고 추가
+        FloatingActionButton cameraFab = view.findViewById(R.id.cameraFab);
+
         backButton.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
 
-        getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
-                uri -> {
-                    if (uri != null) {
-                        selectedImageUri = uri;
-                        imageView.setImageURI(uri);
-                        overlayIcon.setVisibility(View.GONE);
-                        overlayText.setVisibility(View.GONE);
-                        overlayText2.setVisibility(View.GONE);
-                    }
-                });
-
+        // 갤러리 이미지 선택 리스너
         imageView.setOnClickListener(v -> getContent.launch("image/*"));
+
+        // 카메라 버튼 리스너
+        cameraFab.setOnClickListener(v -> checkAndRequestPermissions());
 
         uploadButton.setOnClickListener(v -> {
             if (selectedImageUri != null) {
@@ -93,6 +161,45 @@ public class LabelFragment extends Fragment {
                 Toast.makeText(getContext(), "이미지를 선택해주세요.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void checkAndRequestPermissions() {
+        String[] permissions;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions = new String[]{
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_MEDIA_IMAGES
+            };
+        } else {
+            permissions = new String[]{
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            };
+        }
+
+        boolean allGranted = true;
+        for (String perm : permissions) {
+            if (ContextCompat.checkSelfPermission(requireContext(), perm) != PackageManager.PERMISSION_GRANTED) {
+                allGranted = false;
+                break;
+            }
+        }
+
+        if (allGranted) {
+            launchCamera();
+        } else {
+            requestPermissionLauncher.launch(permissions);
+        }
+    }
+
+    private void launchCamera() {
+        File photoFile = new File(requireContext().getExternalFilesDir(null), "temp_photo.jpg");
+        photoUri = FileProvider.getUriForFile(
+                requireContext(),
+                requireContext().getPackageName() + ".fileprovider",
+                photoFile
+        );
+        cameraLauncher.launch(photoUri);
     }
 
     private void uploadImage(Uri uri) {
