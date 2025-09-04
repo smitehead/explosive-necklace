@@ -217,7 +217,7 @@ public class LabelFragment extends Fragment {
                     .build();
 
             Request request = new Request.Builder()
-                    .url("https://5c62-211-197-158-208.ngrok-free.app/upload_text")
+                    .url("https://bb06ca1bd478.ngrok-free.app/upload_text")
                     .post(requestBody)
                     .build();
 

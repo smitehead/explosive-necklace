@@ -171,7 +171,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cardContainer"
-                android:layout_width="360dp"
+                android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
@@ -183,7 +183,7 @@
                 <!-- 직접 업로드 카드 -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardbutton1"
-                    android:layout_width="355dp"
+                    android:layout_width="match_parent"
                     android:layout_height="112dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="1dp"
@@ -255,7 +255,7 @@
                 <!-- 성분표 등록 카드 -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardbutton2"
-                    android:layout_width="355dp"
+                    android:layout_width="match_parent"
                     android:layout_height="112dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="1dp"
