@@ -131,7 +131,6 @@ public class KcalFragment extends Fragment {
             int start = todayLabel.length() + 1;
             int end = span.length();
 
-            // 숫자 크게 + 굵게
             span.setSpan(new RelativeSizeSpan(1.2f), start, end, 0);
             span.setSpan(new android.text.style.TypefaceSpan("sans-serif-bold"), start, end, 0);
 
